@@ -29,7 +29,11 @@ public class HomeController {
 
         model.setViewName("find-train");
         model.addObject("stations", routeService.getAllStations());
-        model.addObject("answer", routeService.findRoutesWithoutTransfer(departureCity,arrivalCity));
+        if (!routeService.findRoutesWithoutTransfer(departureCity,arrivalCity).isEmpty()) {
+            model.addObject("answer", routeService.findRoutesWithoutTransfer(departureCity, arrivalCity));
+        } else {
+            model.addObject("answer", routeService.findRoutesWithTransfer(departureCity, arrivalCity));
+        }
 
         return model;
     }

@@ -8,22 +8,21 @@ import java.util.List;
 public class Route {
 
     private String title;
-
     private List<Station> routeList;
+    private DayOfWeek departureDay;
+    private LocalTime departureTime;
 
     private int averageSpeed;
 
     private class Station {
 
         private String stationName;
-        private DayOfWeek arrivalDay;
-        private LocalTime arrivalTime;
+        private int travelTime;
         private int stopDuration;
 
-        public Station(String stationName, DayOfWeek arrivalDay, LocalTime arrivalTime, int stopDuration) {
+        public Station(String stationName, int travelTime, int stopDuration) {
             this.stationName = stationName;
-            this.arrivalDay = arrivalDay;
-            this.arrivalTime = arrivalTime;
+            this.travelTime = travelTime;
             this.stopDuration = stopDuration;
         }
 
@@ -33,10 +32,8 @@ public class Route {
 
         @Override
         public String toString() {
-            return String.format("Станция: %s; День прибытия: %s; Время прибытия: %s; Длительность остановки: %s минут\n",
+            return String.format("Станция: %s; Длительность остановки: %s минут\n",
                     stationName,
-                    arrivalDay,
-                    arrivalTime,
                     stopDuration);
         }
     }
@@ -56,16 +53,21 @@ public class Route {
         setDefaultStopDuration(defaultStopDuration);
     }
 
+    public void addStation(String stationName, int travelTime, int stopDuration) {
+        routeList.add(new Station(stationName, travelTime, stopDuration));
+    }
+
+
     public String getTitle() {
         return title;
     }
 
     public DayOfWeek getDepartureDay() {
-        return getStationArrivalDay(0);
+        return departureDay;
     }
 
     public LocalTime getDepartureTime() {
-        return getStationArrivalTime(0);
+        return departureTime;
     }
 
     public int getAverageSpeed() {
@@ -80,46 +82,26 @@ public class Route {
         return routeList.get(index).stationName;
     }
 
-    public boolean isBefor(String firstStation, String secondStation) {
-        for (int i = 0; i < routeList.size(); i++) {
-            if (routeList.get(i).stationName.equals(firstStation)) {
-                for (int j = i; j < routeList.size(); j++) {
-                    if (routeList.get(j).stationName.equals(secondStation)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public DayOfWeek getStationArrivalDay(int index) {
-        return routeList.get(index).arrivalDay;
-    }
-
-    public LocalTime getStationArrivalTime(int index) {
-        return routeList.get(index).arrivalTime;
+    public int getStationTravelTime(int index) {
+        return routeList.get(index).travelTime;
     }
 
     public int getStationStopDuration(int index) {
         return routeList.get(index).stopDuration;
     }
 
-    public void addStation(String stationName, DayOfWeek arrivalDay, LocalTime arrivalTime, int stopDuration) {
-        routeList.add(new Station(stationName, arrivalDay, arrivalTime, stopDuration));
+    public int getStationTravelTime(int index, int travelTime) {
+        return routeList.get(index).travelTime;
     }
+
 
     public void setAverageSpeed(int averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
 
-    public void setStationArrivalDayTime(int index, DayOfWeek day, LocalTime time) {
-        routeList.get(index).arrivalDay = day;
-        routeList.get(index).arrivalTime = time;
-    }
-
-    public void setDepartureDayTime(DayOfWeek day, LocalTime time) {
-        setStationArrivalDayTime(0, day, time);
+    public void setDepartureDayTime(DayOfWeek departureDay, LocalTime departureTime) {
+        this.departureDay = departureDay;
+        this.departureTime = departureTime;
     }
 
     public void setDefaultStopDuration(int minutes) {
@@ -128,16 +110,12 @@ public class Route {
         }
     }
 
-    public void setStationStopDuration(int stationOrder, int minutes) {
-        routeList.get(stationOrder).stopDuration = minutes;
+    public void setStationStopDuration(int index, int minutes) {
+        routeList.get(index).stopDuration = minutes;
     }
 
-    public void setStationStopDuration(String station, int minutes) {
-        for (int i = 0; i < routeList.size(); i++) {
-            if (routeList.get(i).stationName.equals(station)) {
-                setStationStopDuration(i, minutes);
-            }
-        }
+    public void setStationTravelTime(int index, int travelTime) {
+        routeList.get(index).travelTime = travelTime;
     }
 
     @Override
