@@ -1,0 +1,12 @@
+package com.epam.lab.rto;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RailwayTicketOffice {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RailwayTicketOffice.class, args);
+    }
+}

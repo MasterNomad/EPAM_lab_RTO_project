@@ -1,0 +1,162 @@
+body {
+	font-family: Arial, sans-serif;
+	padding: 0;
+	margin: 0;
+	background: #fff;
+	border: 1px, red;
+}
+
+.clearfix::after {
+	content: '';
+	display: table;
+	width: 100%;
+	clear: both;
+}
+
+.separator {
+	box-shadow: inset 0px -12px 10px -10px rgba(0, 0, 0, 0.7);
+	height: 10px;
+}
+
+.login {
+	background: url(../img/login_bg.jpg) no-repeat center center / cover;
+	padding: 60px;
+}
+
+.ticket {
+	background: url(../img/ticket_bg.jpg) no-repeat center center / cover;
+	padding: 60px;
+	min-height: 300px;
+}
+
+a {
+	color: #6F46BA;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.container {
+	max-width: 90vw;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.btn {
+	color: #fff;
+	background: #6F46BA;
+	padding: 10px;
+	border-radius: 4px;
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 17px;
+	border: 0;
+	cursor: pointer;
+	text-decoration: none;
+	height: auto;
+}
+
+.btn:hover {
+	background: #db4f72;
+	transition: 0.3s;
+}
+
+.btn span {
+	display: inline-block;
+	position: relative;
+	transition: 0.5s;
+}
+
+.btn span:after {
+	content: '\00bb';
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	right: -20px;
+	transition: 0.5s;
+}
+
+.btn:hover span {
+	padding-right: 25px;
+}
+
+.btn:hover span:after {
+	opacity: 1;
+	right: 0;
+}
+
+.title_first {
+	padding-top: 90px;
+}
+
+header h1 {
+	font-size: 65px;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: center;
+	margin: 0;
+	stroke: 1px;
+}
+
+.addition {
+	margin: 0;
+	color: #fff;
+	text-align: center;
+}
+
+h2 {
+	text-align: center;
+}
+
+.form {
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 10px;
+	padding: 40px;
+	display: inline-block;
+	font-weight: bold;
+	color: #333;
+}
+
+.form a {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+input {
+	height: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 1px;
+	border: 0;
+	font-size: 18px;
+	text-align: center;
+}
+
+.select-input {
+	height: 30px;
+	width: 180px;
+	margin: 10px;
+	border-radius: 1px;
+	border: 0;
+	font-size: 18px;
+	text-align: center;
+}
+
+.radioBtn {
+	text-align: center;
+	vertical-align: middle
+}
+
+.radioBtn input {
+	height: 15px;
+	width: 15px;
+}
+
+td {
+	text-align: left;
+}
+
+.form-block {
+	display: inline-block;
+}
