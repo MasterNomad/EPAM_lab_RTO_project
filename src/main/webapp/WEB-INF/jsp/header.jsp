@@ -1,5 +1,6 @@
 <%@page pageEncoding="UTF-8"%>
 
+<body>
 <header>
 	<div class="container">
 		<div class="clearfix" id="heading">
@@ -7,21 +8,27 @@
 			<nav>
 				<ul class="menu">
 					<li>
-						<a class="btn" href="/index.html">
+						<a class="btn" href="/find-train">
 							<span>Заказать билет</span>
 						</a>
 					</li>
+										<li>
+                    						<a class="btn" href="/route">
+                    							<span>Маршруты</span>
+                    						</a>
+                    					</li>
 					<li>
-						<a class="btn" href="/html/login.html">
+						<a class="btn" href="/login">
 							<span>Войти</span>
 						</a>
 					</li>
 				</ul>
 			</nav>
 		</div>
-		<div class="title_first">
+		<div id="title_first">
 			<h1>трансгалактическая <br> железная дорога*</h1>
-			<p class="addition">*работает только на территории Российской Федерации</p>
+			<p id="addition">*работает только на территории Российской Федерации</p>
 		</div>
 	</div>
 </header>
+	<div class="separator"></div>

@@ -8,22 +8,21 @@ import java.util.List;
 public class Route {
 
     private String title;
-    private List<Station> routeList;
+    private List<Station> stationList;
     private DayOfWeek departureDay;
     private LocalTime departureTime;
-
     private int averageSpeed;
 
     private class Station {
 
         private String stationName;
-        private int travelTime;
         private int stopDuration;
+        private int travelTime;
 
-        public Station(String stationName, int travelTime, int stopDuration) {
+        private Station(String stationName, int travelTime, int stopDuration) {
             this.stationName = stationName;
-            this.travelTime = travelTime;
             this.stopDuration = stopDuration;
+            this.travelTime = travelTime;
         }
 
         private Station(String stationName) {
@@ -38,23 +37,31 @@ public class Route {
         }
     }
 
-    public Route(String title) {
+    public Route(String title, DayOfWeek departureDay, LocalTime departureTime, int averageSpeed) {
         this.title = title;
-        this.routeList = new ArrayList<>();
+        this.departureDay = departureDay;
+        this.departureTime = departureTime;
+        this.averageSpeed = averageSpeed;
+        this.stationList = new ArrayList<>();
     }
 
-    public Route(String title, List<String> routeList, DayOfWeek departureDay, LocalTime departureTime, int defaultStopDuration, int averageSpeed) {
+    public Route(String title) {
+        this.title = title;
+        this.stationList = new ArrayList<>();
+    }
+
+    public Route(String title, List<String> stationList, DayOfWeek departureDay, LocalTime departureTime, int defaultStopDuration, int averageSpeed) {
         this(title);
-        for (String stationName : routeList) {
-            this.routeList.add(new Station(stationName));
+        for (String stationName : stationList) {
+            this.stationList.add(new Station(stationName));
         }
         setAverageSpeed(averageSpeed);
         setDepartureDayTime(departureDay, departureTime);
         setDefaultStopDuration(defaultStopDuration);
     }
 
-    public void addStation(String stationName, int travelTime, int stopDuration) {
-        routeList.add(new Station(stationName, travelTime, stopDuration));
+    public void addStation(String stationName, int stopDuration,  int travelTime) {
+        stationList.add(new Station(stationName, stopDuration, travelTime));
     }
 
 
@@ -75,23 +82,23 @@ public class Route {
     }
 
     public int length() {
-        return routeList.size();
+        return stationList.size();
     }
 
     public String getStationName(int index) {
-        return routeList.get(index).stationName;
+        return stationList.get(index).stationName;
     }
 
     public int getStationTravelTime(int index) {
-        return routeList.get(index).travelTime;
+        return stationList.get(index).travelTime;
     }
 
     public int getStationStopDuration(int index) {
-        return routeList.get(index).stopDuration;
+        return stationList.get(index).stopDuration;
     }
 
     public int getStationTravelTime(int index, int travelTime) {
-        return routeList.get(index).travelTime;
+        return stationList.get(index).travelTime;
     }
 
 
@@ -105,21 +112,21 @@ public class Route {
     }
 
     public void setDefaultStopDuration(int minutes) {
-        for (int i = 1; i < routeList.size(); i++) {
-            routeList.get(i).stopDuration = minutes;
+        for (int i = 1; i < stationList.size(); i++) {
+            stationList.get(i).stopDuration = minutes;
         }
     }
 
     public void setStationStopDuration(int index, int minutes) {
-        routeList.get(index).stopDuration = minutes;
+        stationList.get(index).stopDuration = minutes;
     }
 
     public void setStationTravelTime(int index, int travelTime) {
-        routeList.get(index).travelTime = travelTime;
+        stationList.get(index).travelTime = travelTime;
     }
 
     @Override
     public String toString() {
-        return String.format("Мршрут: %s\n %s", title, routeList);
+        return String.format("Мршрут: %s\n %s", title, stationList);
     }
 }

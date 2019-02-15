@@ -1,0 +1,27 @@
+#login {
+	background: url(../img/login_bg.jpg) no-repeat center center / cover;
+}
+
+.select-input {
+	height: 30px;
+	width: 180px;
+	margin: 10px;
+	border-radius: 1px;
+	border: 0;
+	font-size: 18px;
+	text-align: center;
+}
+
+.radioBtn {
+	text-align: center;
+	vertical-align: middle
+}
+
+.radioBtn input {
+	height: 15px;
+	width: 15px;
+}
+
+td {
+	text-align: left;
+}

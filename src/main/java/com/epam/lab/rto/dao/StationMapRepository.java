@@ -14,11 +14,8 @@ public class StationMapRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private GraphMap stationMap = new GraphMap();
-
-    public GraphMap getStationMap() {
-        return stationMap;
-    }
+    @Autowired
+    private GraphMap stationMap;
 
     @PostConstruct
     public void refreshStationMap() {
@@ -37,11 +34,6 @@ public class StationMapRepository {
             int distance = (int)result.get("distance");
             stationMap.addConnection(firstStation, secondStation, distance);
         }
-    }
-
-    public int getDistance (String firstStation, String secondStation) {
-        List <String> way = stationMap.getWay(firstStation, secondStation);
-        return stationMap.getStringWayDistance(way);
     }
 
 }

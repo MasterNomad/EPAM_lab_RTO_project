@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="ru">
+<%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Transgalaxy railway</title>
-	<link rel="stylesheet" href="/css/main.css" class="css">
-	<link rel="stylesheet" href="/css/header.css" class="css">
-	<link rel="shortcut icon" href="/favicon.ico">
+<%@include  file="head.jsp" %>
+
 </head>
 
 <body>
-	<div id="header"></div>
+	<div id="header" class = "content"></div>
 	<div class="separator"></div>
 	<section class="login">
 		<div class="container">

@@ -1,8 +1,10 @@
 package com.epam.lab.rto.dto;
 
+import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class GraphMap {
 
     private Map<String, Node> graphMap = new HashMap<>();
@@ -32,6 +34,9 @@ public class GraphMap {
         public String toString() {
             return name;
         }
+    }
+
+    private GraphMap() {
     }
 
     public void add(String name) {
@@ -97,12 +102,9 @@ public class GraphMap {
         return shortestWay.stream().map(Node::toString).collect(Collectors.toList());
     }
 
-    public List<String> getWay(String startKey, String secondKey, String... keys) {
+    public List<String> getWay(String... keys) {
 
-        List<String> nodeList = new ArrayList<>();
-        nodeList.add(startKey);
-        nodeList.add(secondKey);
-        nodeList.addAll(Arrays.asList(keys));
+        List<String> nodeList = Arrays.asList(keys);
 
         List<String> result = new ArrayList<>();
 

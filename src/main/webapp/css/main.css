@@ -18,19 +18,25 @@ body {
 	height: 10px;
 }
 
-.login {
-	background: url(../img/login_bg.jpg) no-repeat center center / cover;
-	padding: 60px;
+#route {
+	background: url(../img/route_bg.jpg) no-repeat center center / cover;
+	min-height: 300px;
 }
 
-.ticket {
+
+#ticket {
 	background: url(../img/ticket_bg.jpg) no-repeat center center / cover;
-	padding: 60px;
 	min-height: 300px;
+}
+
+.content {
+	padding: 60px;
 }
 
 a {
 	color: #6F46BA;
+	display: inline-block;
+	margin-top: 10px;
 }
 
 a:hover {
@@ -86,25 +92,6 @@ a:hover {
 	right: 0;
 }
 
-.title_first {
-	padding-top: 90px;
-}
-
-header h1 {
-	font-size: 65px;
-	color: #fff;
-	text-transform: uppercase;
-	text-align: center;
-	margin: 0;
-	stroke: 1px;
-}
-
-.addition {
-	margin: 0;
-	color: #fff;
-	text-align: center;
-}
-
 h2 {
 	text-align: center;
 }
@@ -118,11 +105,6 @@ h2 {
 	color: #333;
 }
 
-.form a {
-	display: inline-block;
-	margin-top: 10px;
-}
-
 input {
 	height: 30px;
 	margin-top: 10px;
@@ -131,30 +113,6 @@ input {
 	border: 0;
 	font-size: 18px;
 	text-align: center;
-}
-
-.select-input {
-	height: 30px;
-	width: 180px;
-	margin: 10px;
-	border-radius: 1px;
-	border: 0;
-	font-size: 18px;
-	text-align: center;
-}
-
-.radioBtn {
-	text-align: center;
-	vertical-align: middle
-}
-
-.radioBtn input {
-	height: 15px;
-	width: 15px;
-}
-
-td {
-	text-align: left;
 }
 
 .form-block {

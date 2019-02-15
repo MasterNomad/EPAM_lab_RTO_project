@@ -2,11 +2,9 @@ package com.epam.lab.rto.services;
 
 
 import com.epam.lab.rto.dao.RouteRepository;
-import com.epam.lab.rto.dao.StationMapRepository;
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,7 +19,7 @@ public class RouteService {
     private RouteRepository routeRepository;
 
     @Autowired
-    private StationMapRepository stationMapRepository;
+    private StationMapService stationMapService;
 
     public Route createRoute(List<String> stationList, DayOfWeek departureDay, LocalTime departureTime, int defaultStopDuration, int averageSpeed) {
         Route result = new Route(createRouteTitle(stationList), stationList, departureDay, departureTime, defaultStopDuration, averageSpeed);
@@ -37,7 +35,7 @@ public class RouteService {
         route.setStationTravelTime(0, travelTime);
 
         for (int i = 1; i < route.length(); i++) {
-            int distance = stationMapRepository.getDistance(route.getStationName(i - 1), route.getStationName(i));
+            int distance = stationMapService.getDistance(route.getStationName(i - 1), route.getStationName(i));
             travelTime += route.getStationStopDuration(i-1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
             route.setStationTravelTime(i, travelTime);
         }
@@ -48,6 +46,10 @@ public class RouteService {
                 stationList.get(stationList.size() - 1).substring(0, 3).toUpperCase() +
                 stationList.size() +
                 LocalDate.now().getDayOfMonth();
+    }
+
+    public List<Route> getAllRoutes () {
+        return routeRepository.getAllRoutes();
     }
 
     public List<String> getAllStations() {
