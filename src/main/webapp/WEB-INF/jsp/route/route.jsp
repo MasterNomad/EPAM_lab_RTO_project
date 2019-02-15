@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@include  file="head.html" %>
+<%@include  file="../meta/head.html" %>
 
 	<link rel="stylesheet" href="../css/route.css" class="css">
 </head>
 
-	<%@include  file="header.jsp" %>
+	<%@include  file="../meta/header.jsp" %>
 
 		<section id="route" class="content">
 		<div class="container">
@@ -56,10 +56,10 @@
 						</tr>
 						</c:forEach>
 				</table>
-				<a href="/route-create" class= "btn">Создать маршрут</a>	
+				<a href="/route/create" class= "btn">Создать маршрут</a>	
 			</div>
 		</div>
 		</div>
 	</section>
 
-	<%@include  file="footer.jsp" %>
+	<%@include  file="../meta/footer.jsp" %>

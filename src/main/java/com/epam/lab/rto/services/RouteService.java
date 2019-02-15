@@ -21,19 +21,18 @@ public class RouteService {
     @Autowired
     private StationMapService stationMapService;
 
-    public Route createRoute(List<String> stationList, DayOfWeek departureDay, LocalTime departureTime, int defaultStopDuration, int averageSpeed) {
-        Route result = new Route(createRouteTitle(stationList), stationList, departureDay, departureTime, defaultStopDuration, averageSpeed);
-        refreshTravelTimes(result);
-        return result;
+    public Route createRoute (List <String> stationList) {
+        return new Route (createRouteTitle(stationList), stationList);
     }
 
-    private void refreshTravelTimes(Route route) {
-
+    public void refreshTravelTimes(Route route) {
         int travelTime = 0;
         int averageSpeed = route.getAverageSpeed();
+        if (averageSpeed <= 0) {
+            return;
+        }
 
         route.setStationTravelTime(0, travelTime);
-
         for (int i = 1; i < route.length(); i++) {
             int distance = stationMapService.getDistance(route.getStationName(i - 1), route.getStationName(i));
             travelTime += route.getStationStopDuration(i-1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
@@ -46,6 +45,17 @@ public class RouteService {
                 stationList.get(stationList.size() - 1).substring(0, 3).toUpperCase() +
                 stationList.size() +
                 LocalDate.now().getDayOfMonth();
+    }
+
+
+    public void updateRoute(Route route, String departureDay, String departureTime, String averageSpeed, List <String> times) {
+        route.setDepartureDay(DayOfWeek.valueOf(departureDay));
+        route.setDepartureTime(LocalTime.parse(departureTime));
+        route.setAverageSpeed(Integer.valueOf(averageSpeed));
+        for (int i = 1; i < times.size() ; i++) {
+            route.setStationStopDuration(i, Integer.valueOf(times.get(i)));
+        }
+        refreshTravelTimes(route);
     }
 
     public List<Route> getAllRoutes () {

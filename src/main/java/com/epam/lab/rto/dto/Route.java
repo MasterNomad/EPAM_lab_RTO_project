@@ -8,16 +8,16 @@ import java.util.List;
 public class Route {
 
     private String title;
-    private List<Station> stationList;
+    private List<Station> stationList = new ArrayList<>();
     private DayOfWeek departureDay;
     private LocalTime departureTime;
     private int averageSpeed;
 
-    private class Station {
+    public class Station {
 
         private String stationName;
-        private int stopDuration;
-        private int travelTime;
+        private int stopDuration = 0;
+        private int travelTime = 0;
 
         private Station(String stationName, int travelTime, int stopDuration) {
             this.stationName = stationName;
@@ -29,12 +29,18 @@ public class Route {
             this.stationName = stationName;
         }
 
-        @Override
-        public String toString() {
-            return String.format("Станция: %s; Длительность остановки: %s минут\n",
-                    stationName,
-                    stopDuration);
+        public String getStationName() {
+            return stationName;
         }
+
+        public int getStopDuration() {
+            return stopDuration;
+        }
+
+        public int getTravelTime() {
+            return travelTime;
+        }
+
     }
 
     public Route(String title, DayOfWeek departureDay, LocalTime departureTime, int averageSpeed) {
@@ -45,40 +51,19 @@ public class Route {
         this.stationList = new ArrayList<>();
     }
 
-    public Route(String title) {
+    public Route(String title, List<String> stationList) {
         this.title = title;
-        this.stationList = new ArrayList<>();
-    }
-
-    public Route(String title, List<String> stationList, DayOfWeek departureDay, LocalTime departureTime, int defaultStopDuration, int averageSpeed) {
-        this(title);
         for (String stationName : stationList) {
-            this.stationList.add(new Station(stationName));
+            addStation(stationName);
         }
-        setAverageSpeed(averageSpeed);
-        setDepartureDayTime(departureDay, departureTime);
-        setDefaultStopDuration(defaultStopDuration);
     }
 
-    public void addStation(String stationName, int stopDuration,  int travelTime) {
+    public void addStation(String stationName, int stopDuration, int travelTime) {
         stationList.add(new Station(stationName, stopDuration, travelTime));
     }
 
-
-    public String getTitle() {
-        return title;
-    }
-
-    public DayOfWeek getDepartureDay() {
-        return departureDay;
-    }
-
-    public LocalTime getDepartureTime() {
-        return departureTime;
-    }
-
-    public int getAverageSpeed() {
-        return averageSpeed;
+    public void addStation(String stationName) {
+        addStation(stationName, 0, 0);
     }
 
     public int length() {
@@ -97,18 +82,8 @@ public class Route {
         return stationList.get(index).stopDuration;
     }
 
-    public int getStationTravelTime(int index, int travelTime) {
-        return stationList.get(index).travelTime;
-    }
-
-
-    public void setAverageSpeed(int averageSpeed) {
-        this.averageSpeed = averageSpeed;
-    }
-
-    public void setDepartureDayTime(DayOfWeek departureDay, LocalTime departureTime) {
-        this.departureDay = departureDay;
-        this.departureTime = departureTime;
+    public List<Station> getStations() {
+        return this.stationList;
     }
 
     public void setDefaultStopDuration(int minutes) {
@@ -125,8 +100,35 @@ public class Route {
         stationList.get(index).travelTime = travelTime;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Мршрут: %s\n %s", title, stationList);
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public DayOfWeek getDepartureDay() {
+        return departureDay;
+    }
+
+    public void setDepartureDay(DayOfWeek departureDay) {
+        this.departureDay = departureDay;
+    }
+
+    public LocalTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public int getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(int averageSpeed) {
+        this.averageSpeed = averageSpeed;
     }
 }
