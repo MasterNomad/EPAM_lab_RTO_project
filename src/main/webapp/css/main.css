@@ -55,6 +55,7 @@ a:hover {
 	cursor: pointer;
 	text-decoration: none;
 	height: auto;
+	margin: 10px;
 }
 
 .btn:hover {

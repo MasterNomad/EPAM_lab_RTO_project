@@ -41,7 +41,7 @@ public class RouteController {
     public ModelAndView routeCreate() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", routeService.getAllStations());
+        model.addObject("stations", stationMapService.getAllStations());
         List<String> routeWay = routeManager.getRouteWay();
         if (routeWay != null) {
             model.addObject("answer", routeWay);
@@ -56,7 +56,7 @@ public class RouteController {
     public ModelAndView generateRoute(@RequestParam(value = "args[]") String... args) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", routeService.getAllStations());
+        model.addObject("stations", stationMapService.getAllStations());
         List<String> routeWay = stationMapService.createRouteWay(args);
         model.addObject("answer", routeWay);
         model.addObject("next", "true");
@@ -66,19 +66,26 @@ public class RouteController {
     }
 
     @GetMapping("/route/edit")
-    public ModelAndView editRoute(@RequestParam(required = false) boolean refresh) {
+    public ModelAndView editRoute(String title) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/edit");
         List<String> routeWay = routeManager.getRouteWay();
         Route route;
 
-        if (!refresh && routeWay == null) {
+        if (routeWay == null && title == null) {
             return model;
         }
-        if (refresh) {
-            route = routeManager.getCurrentRoute();
-        } else {
+        if (title == null) {
             route = routeService.createRoute(routeWay);
+            routeManager.setCurrentRoute(route);
+        } else if (title.equals("update")) {
+            route = routeManager.getCurrentRoute();
+            model.addObject("answer", "Маршрут обновлён, но не сохрнанён!");
+        } else if (title.equals("save")) {
+            route = routeManager.getCurrentRoute();
+            model.addObject("answer", "Маршрут сохрнанён в базе данных.");
+        } else {
+            route = routeService.getRouteByTitle(title);
             routeManager.setCurrentRoute(route);
         }
 
@@ -88,10 +95,13 @@ public class RouteController {
         return model;
     }
 
-    @PostMapping("/route/refresh")
-    public ModelAndView refreshRoute(String departureDay, String departureTime, String averageSpeed, @RequestParam(value = "time[]") String... times) {
+    @PostMapping("/route/update")
+    public ModelAndView updateRoute(String averageSpeed, @RequestParam(value = "time[]") String[] times, String action) {
         Route route = routeManager.getCurrentRoute();
-        routeService.updateRoute(route, departureDay, departureTime, averageSpeed, new ArrayList<>(Arrays.asList(times)));
-        return editRoute(true);
+        routeService.updateRoute(route, averageSpeed, new ArrayList<>(Arrays.asList(times)));
+        if (action.equals("save")) {
+            routeService.saveRoute(route);
+        }
+        return editRoute(action);
     }
 }

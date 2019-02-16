@@ -16,7 +16,7 @@
 				<div class="form-block">
 					Город отправления: <br>
 					<span id="city_input">
-						<input type="text" list="cities" name="args[]">
+						<input type="text" list="cities" name="args[]" required>
 						<datalist id="cities">
 							<c:forEach items="${stations}" var="station">
 								<option value="${station}">${station}</option>
@@ -24,16 +24,12 @@
 						</datalist>
 					</span>
 				</div>
+
 				<a id="add_btn" class="btn">+</a>
 			
 				<div class="form-block">
 					Город назначения: <br>
-					<input type="text" list="cities" name="args[]">
-					<datalist id="cities">
-						<c:forEach items="${stations}" var="station">
-							<option value="${station}">${station}</option>
-						</c:forEach>
-					</datalist>
+					<input type="text" list="cities" name="args[]" required>
 				</div>
 				<input type="submit" class="btn" value="Сгенерировать">
 			</form>
@@ -44,5 +40,7 @@
 		</div>
 	</div>
 </section>
+
+<script src="../js/route.js"></script>
 
 <%@include  file="../meta/footer.jsp" %>

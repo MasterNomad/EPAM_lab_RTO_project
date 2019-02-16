@@ -6,6 +6,7 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 td, th {
@@ -58,7 +59,7 @@ table input {
     width: 150px;
 }
 
-.delete_btn {
+.a_btn {
     color: #6F46BA;
     display: inline-block;
     margin-top: 10px;
@@ -66,6 +67,6 @@ table input {
     cursor: pointer;
 }
 
-.delete_btn:hover {
+.a_btn:hover {
     text-decoration: none;
 }

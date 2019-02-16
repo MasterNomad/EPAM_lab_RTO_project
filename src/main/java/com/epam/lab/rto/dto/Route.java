@@ -1,7 +1,5 @@
 package com.epam.lab.rto.dto;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,20 +7,19 @@ public class Route {
 
     private String title;
     private List<Station> stationList = new ArrayList<>();
-    private DayOfWeek departureDay;
-    private LocalTime departureTime;
     private int averageSpeed;
 
     public class Station {
 
         private String stationName;
-        private int stopDuration = 0;
         private int travelTime = 0;
+        private int stopDuration = 0;
+
 
         private Station(String stationName, int travelTime, int stopDuration) {
             this.stationName = stationName;
-            this.stopDuration = stopDuration;
             this.travelTime = travelTime;
+            this.stopDuration = stopDuration;
         }
 
         private Station(String stationName) {
@@ -43,10 +40,8 @@ public class Route {
 
     }
 
-    public Route(String title, DayOfWeek departureDay, LocalTime departureTime, int averageSpeed) {
+    public Route(String title, int averageSpeed) {
         this.title = title;
-        this.departureDay = departureDay;
-        this.departureTime = departureTime;
         this.averageSpeed = averageSpeed;
         this.stationList = new ArrayList<>();
     }
@@ -59,7 +54,7 @@ public class Route {
     }
 
     public void addStation(String stationName, int stopDuration, int travelTime) {
-        stationList.add(new Station(stationName, stopDuration, travelTime));
+        stationList.add(new Station(stationName, travelTime, stopDuration));
     }
 
     public void addStation(String stationName) {
@@ -106,22 +101,6 @@ public class Route {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public DayOfWeek getDepartureDay() {
-        return departureDay;
-    }
-
-    public void setDepartureDay(DayOfWeek departureDay) {
-        this.departureDay = departureDay;
-    }
-
-    public LocalTime getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(LocalTime departureTime) {
-        this.departureTime = departureTime;
     }
 
     public int getAverageSpeed() {

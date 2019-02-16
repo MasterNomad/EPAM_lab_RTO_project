@@ -1,5 +1,6 @@
 package com.epam.lab.rto.services;
 
+import com.epam.lab.rto.dao.StationMapRepository;
 import com.epam.lab.rto.dto.GraphMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,14 @@ import java.util.List;
 public class StationMapService {
 
     @Autowired
+    private StationMapRepository stationMapRepository;
+
+    @Autowired
     private GraphMap stationMap;
+
+    public List<String> getAllStations() {
+        return stationMapRepository.getAllStations();
+    }
 
     public int getDistance(String firstStation, String secondStation) {
         List<String> way = stationMap.getWay(firstStation, secondStation);

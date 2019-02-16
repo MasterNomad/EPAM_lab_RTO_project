@@ -1,14 +1,13 @@
 package com.epam.lab.rto.dao;
 
-
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 @Repository
@@ -21,24 +20,45 @@ public class RouteRepository {
     private StationMapRepository stationMapRepository;
 
     private RowMapper<Route> ROW_MAPPER = (rs, rowNum) -> new Route(rs.getString("title"),
-            DayOfWeek.valueOf(rs.getString("departure_day")),
-            rs.getTime("departure_time").toLocalTime(),
-            rs.getInt("averge_speed"));
+            rs.getInt("average_speed"));
 
+    public void addRoute(Route route) {
+        String sql = "INSERT INTO routes " +
+                "(`title`, `average_speed`) " +
+                "VALUES (?, ?)";
+        jdbcTemplate.update(sql, route.getTitle(), route.getAverageSpeed());
 
-//    public void addRoute(Route route) {
-//        String sql = "INSERT INTO route_stations (`title`, `order`, `station_name`, `travel_time`, `stop_duration`) " +
-//                "VALUES (?, ?, ?, ?, ?)";
-//
-//        for (int i = 0; i < route.length(); i++) {
-//            jdbcTemplate.update(sql,
-//                    route.getTitle(),
-//                    i,
-//                    route.getStationName(i),
-//                    route.getStationTravelTime(i),
-//                    route.getStationStopDuration(i));
-//        }
-//    }
+        sql = "INSERT INTO route_stations " +
+                "(`title`, `order`, `station_name`, `stop_duration`, `travel_time`) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        int order = 0;
+        for (Route.Station station : route.getStations()) {
+            jdbcTemplate.update(sql, route.getTitle(),
+                    order++,
+                    station.getStationName(),
+                    station.getStopDuration(),
+                    station.getTravelTime());
+        }
+    }
+
+    public void updateRoute(Route route) {
+        String sql = "UPDATE routes " +
+                "SET `average_speed` = ? " +
+                "WHERE `title` = ? ";
+        jdbcTemplate.update(sql, route.getAverageSpeed(), route.getTitle());
+
+        sql = "UPDATE `route_stations` " +
+                "SET `stop_duration` = ?, `travel_time` = ? " +
+                "WHERE (`title` = ?) and (`order` = ?)";
+
+        int order = 0;
+        for (Route.Station station : route.getStations()) {
+            jdbcTemplate.update(sql, station.getStopDuration(),
+                    station.getTravelTime(),
+                    route.getTitle(),
+                    order++);
+        }
+    }
 
     public List<Route> getAllRoutes() {
         String sql = "SELECT * " +
@@ -56,9 +76,13 @@ public class RouteRepository {
         String sql = "SELECT * " +
                 "FROM routes " +
                 "WHERE title = ? ";
-        Route result = jdbcTemplate.queryForObject(sql, ROW_MAPPER, title);
-        fillRouteStations(result);
-        return result;
+        try {
+            Route result = jdbcTemplate.queryForObject(sql, ROW_MAPPER, title);
+            fillRouteStations(result);
+            return result;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     private void fillRouteStations(Route route) {
@@ -72,26 +96,6 @@ public class RouteRepository {
                     request.getInt("stop_duration"),
                     request.getInt("travel_time"));
         }
-    }
-
-//    public Route getRoutByTitle(String title) {
-
-//        List<Map<String, Object>> sqlResult = jdbcTemplate.queryForList(sql, title);
-//        for (Map<String, Object> entry : sqlResult) {
-//            result.addStation(entry.get("station_name").toString(),
-//                   Integer.valueOf(entry.get("travel_time").toString()),
-//                    Integer.valueOf(entry.get("stop_duration").toString()));
-//        }
-//
-//        return result;
-//    }
-
-    public List<String> getAllStations() {
-        String sql = "SELECT name " +
-                "FROM stations " +
-                "ORDER BY id";
-
-        return jdbcTemplate.queryForList(sql, String.class);
     }
 
     public List<String> getRouteStationsByTitle(String title) {

@@ -17,6 +17,14 @@ public class StationMapRepository {
     @Autowired
     private GraphMap stationMap;
 
+    public List<String> getAllStations() {
+        String sql = "SELECT name " +
+                "FROM stations " +
+                "ORDER BY id";
+
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
+
     @PostConstruct
     public void refreshStationMap() {
         stationMap.clear();

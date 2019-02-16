@@ -5,6 +5,7 @@ import com.epam.lab.rto.dao.RouteRepository;
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,8 +22,8 @@ public class RouteService {
     @Autowired
     private StationMapService stationMapService;
 
-    public Route createRoute (List <String> stationList) {
-        return new Route (createRouteTitle(stationList), stationList);
+    public Route createRoute(List<String> stationList) {
+        return new Route(createRouteTitle(stationList), stationList);
     }
 
     public void refreshTravelTimes(Route route) {
@@ -35,7 +36,7 @@ public class RouteService {
         route.setStationTravelTime(0, travelTime);
         for (int i = 1; i < route.length(); i++) {
             int distance = stationMapService.getDistance(route.getStationName(i - 1), route.getStationName(i));
-            travelTime += route.getStationStopDuration(i-1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
+            travelTime += route.getStationStopDuration(i - 1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
             route.setStationTravelTime(i, travelTime);
         }
     }
@@ -48,22 +49,28 @@ public class RouteService {
     }
 
 
-    public void updateRoute(Route route, String departureDay, String departureTime, String averageSpeed, List <String> times) {
-        route.setDepartureDay(DayOfWeek.valueOf(departureDay));
-        route.setDepartureTime(LocalTime.parse(departureTime));
+    public void updateRoute(Route route, String averageSpeed, List<String> times) {
         route.setAverageSpeed(Integer.valueOf(averageSpeed));
-        for (int i = 1; i < times.size() ; i++) {
+        for (int i = 1; i < times.size(); i++) {
             route.setStationStopDuration(i, Integer.valueOf(times.get(i)));
         }
         refreshTravelTimes(route);
     }
 
-    public List<Route> getAllRoutes () {
+    public void saveRoute(Route route) {
+        if (routeRepository.getRouteByTitle(route.getTitle()) == null) {
+            routeRepository.addRoute(route);
+        } else {
+            routeRepository.updateRoute(route);
+        }
+    }
+
+    public List<Route> getAllRoutes() {
         return routeRepository.getAllRoutes();
     }
 
-    public List<String> getAllStations() {
-        return routeRepository.getAllStations();
+    public Route getRouteByTitle(String title) {
+        return routeRepository.getRouteByTitle(title);
     }
 
     public List<String> findRoutesWithoutTransfer(String departureStation, String arrivalStation) {

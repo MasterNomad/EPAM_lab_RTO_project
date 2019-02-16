@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@include  file="head.html" %>
+<%@include  file="meta/head.html" %>
 
 </head>
 
-	<%@include  file="header.jsp" %>
+	<%@include  file="meta/header.jsp" %>
 
 	<section id="ticket" class = "content">
 		<div class="container">
@@ -29,11 +29,6 @@
 						<label for="arrivalCity">Город назначения: </label>
 						<br>
 						<input type="text" list="cities" name="arrivalCity">
-						<datalist id="cities">
-							<c:forEach items="${stations}" var="station">
-								<option value="${station}">${station}</option>
-							</c:forEach>
-						</datalist>
 					</div>
 					<input type="submit" class="btn" value="Поиск">
 				</form>
@@ -44,4 +39,4 @@
 		</div>
 	</section>
 
-	<%@include  file="footer.jsp" %>
+	<%@include  file="meta/footer.jsp" %>

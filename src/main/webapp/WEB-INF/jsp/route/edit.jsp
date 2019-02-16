@@ -11,24 +11,8 @@
 <section id="route" class="content">
     <div class="container">
         <div class="form">
-            <h2>Редактировать маршрут: <br>
-                ${route.title}
-            </h2>
-            <form action="/route/refresh"  method="POST">
-                <div class="form-block">
-                    День отправления:
-                    <input type="text" list="days" name="departureDay" value="${route.departureDay}">
-                    <datalist id="days">
-                        <c:forEach items="${days}" var="day">
-                            <option value="${day}">${day}</option>
-                        </c:forEach>
-                    </datalist>
-                </div>
-                <div class="form-block">
-                    Время отправления:
-                    <input type="time" name="departureTime" value="${route.departureTime}">
-                </div>
-                <br>
+            <h2>Mаршрут: ${route.title} </h2>
+            <form action="/route/update" method="POST">
                 <div class="form-block">
                     Средняя скорость:
                     <input type="number" name="averageSpeed" value="${route.averageSpeed}">
@@ -51,11 +35,15 @@
                             <c:set var="id" value="${id + 1}" scope="page" />
                     </c:forEach>
                 </table>
-                <input type="submit" class="btn" value="Обновить">
+                <div>${answer}</div>
+                <button type="submit" name="action" value="update" class="btn">Расчитать</button>
+                <button type="submit" name="action" value="save" class="btn">Сохранить</button>
             </form>
         </div>
     </div>
     </div>
 </section>
+
+<script src="../js/route.js"></script>
 
 <%@include  file="../meta/footer.jsp" %>
