@@ -60,9 +60,19 @@ public class RouteRepository {
         }
     }
 
+    public void deleteRouteByTitle(String title) {
+        String sql = "DELETE FROM `route_stations` " +
+                "WHERE `title` = ?";
+        jdbcTemplate.update(sql, title);
+
+        sql = "DELETE FROM `routes` " +
+                "WHERE `title` = ?";
+        jdbcTemplate.update(sql, title);
+    }
+
     public List<Route> getAllRoutes() {
         String sql = "SELECT * " +
-                "FROM routes";
+                "FROM `routes`";
 
         List<Route> result = jdbcTemplate.query(sql, ROW_MAPPER);
         for (Route route : result) {
@@ -74,8 +84,8 @@ public class RouteRepository {
 
     public Route getRouteByTitle(String title) {
         String sql = "SELECT * " +
-                "FROM routes " +
-                "WHERE title = ? ";
+                "FROM `routes` " +
+                "WHERE `title` = ? ";
         try {
             Route result = jdbcTemplate.queryForObject(sql, ROW_MAPPER, title);
             fillRouteStations(result);
@@ -85,10 +95,39 @@ public class RouteRepository {
         }
     }
 
+    public List<String> getAllRouteTitles() {
+        String sql = "SELECT `title` " +
+                "FROM `routes`";
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
+
+    public List <String> getRouteStations (String title) {
+        String sql = "SELECT `station_name` " +
+                "FROM `route_stations` " +
+                "WHERE `title` = ? " +
+                "ORDER BY `order`";
+        return jdbcTemplate.queryForList(sql, String.class, title);
+
+    }
+
+    public List<String> getConnectedRoutes(String station) {
+        String sql = "SELECT `title` " +
+                "FROM `route_stations` " +
+                "WHERE (`station_name` = ?) AND (`stop_duration` > -2 OR `order` = 0)";
+        return jdbcTemplate.queryForList(sql, String.class, station);
+    }
+
+    public List<String> getRoutesWithStation(String station) {
+        String sql = "SELECT `title` " +
+                "FROM `route_stations` " +
+                "WHERE `station_name` = ? AND `stop_duration` <> 0";
+        return jdbcTemplate.queryForList(sql, String.class, station);
+    }
+
     private void fillRouteStations(Route route) {
         String sql = "SELECT * " +
-                "FROM route_stations " +
-                "WHERE title = ? " +
+                "FROM `route_stations` " +
+                "WHERE `title` = ? " +
                 "ORDER BY `order`";
         SqlRowSet request = jdbcTemplate.queryForRowSet(sql, route.getTitle());
         while (request.next()) {
@@ -97,20 +136,4 @@ public class RouteRepository {
                     request.getInt("travel_time"));
         }
     }
-
-    public List<String> getRouteStationsByTitle(String title) {
-        String sql = "SELECT station_name " +
-                "FROM route_stations " +
-                "WHERE title = ? " +
-                "ORDER BY `order`";
-        return jdbcTemplate.queryForList(sql, new Object[]{title}, String.class);
-    }
-
-    public List<String> getRouteTitlesWithStation(String stationName) {
-        String sql = "SELECT distinct title " +
-                "FROM route_stations " +
-                "WHERE station_name = ?";
-        return jdbcTemplate.queryForList(sql, new Object[]{stationName}, String.class);
-    }
-
 }

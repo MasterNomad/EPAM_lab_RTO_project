@@ -1,5 +1,7 @@
 package com.epam.lab.rto.controller;
 
+import com.epam.lab.rto.dto.RouteMap;
+import com.epam.lab.rto.services.RouteMapService;
 import com.epam.lab.rto.services.RouteService;
 import com.epam.lab.rto.services.StationMapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +17,30 @@ public class HomeController {
     private RouteService routeService;
 
     @Autowired
+    private RouteMapService routeMapService;
+
+    @Autowired
     private StationMapService stationMapService;
 
-    @GetMapping(value= {"/", "/find-train"})
-    public ModelAndView homePage () {
+    @GetMapping(value = {"/", "/find-train"})
+    public ModelAndView homePage() {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("find-train");
         model.addObject("stations", stationMapService.getAllStations());
-
         return model;
     }
 
-    @PostMapping ("/find-train")
-    public ModelAndView findTrain (String departureCity, String arrivalCity) {
+    @PostMapping("/find-train")
+    public ModelAndView findTrain(String departureCity, String arrivalCity) {
         ModelAndView model = new ModelAndView();
         model.setViewName("find-train");
         model.addObject("stations", stationMapService.getAllStations());
-        if (!routeService.findRoutesWithoutTransfer(departureCity,arrivalCity).isEmpty()) {
-            model.addObject("answer", routeService.findRoutesWithoutTransfer(departureCity, arrivalCity));
+        if (routeMapService.findWayWithoutTransfer(departureCity, arrivalCity).isEmpty()) {
+            model.addObject("answer", routeMapService.findWayWithTransfer(departureCity, arrivalCity));
         } else {
-            model.addObject("answer", routeService.findRoutesWithTransfer(departureCity, arrivalCity));
+            model.addObject("answer", routeMapService.findWayWithoutTransfer(departureCity, arrivalCity));
         }
-
         return model;
     }
 

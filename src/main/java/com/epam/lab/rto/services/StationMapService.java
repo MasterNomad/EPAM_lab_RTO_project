@@ -1,7 +1,7 @@
 package com.epam.lab.rto.services;
 
 import com.epam.lab.rto.dao.StationMapRepository;
-import com.epam.lab.rto.dto.GraphMap;
+import com.epam.lab.rto.dto.StationMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class StationMapService {
     private StationMapRepository stationMapRepository;
 
     @Autowired
-    private GraphMap stationMap;
+    private StationMap stationMap;
 
     public List<String> getAllStations() {
         return stationMapRepository.getAllStations();

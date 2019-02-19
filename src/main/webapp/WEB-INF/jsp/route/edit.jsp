@@ -30,7 +30,7 @@
                             <td>${id}</td>
                             <td>${station.stationName}</td>
                             <td>${station.travelTime}</td>
-                            <td class="input_td"><input name="time[]" type="text" value="${station.stopDuration}"></td>
+                            <td class="input_td"><input name="time[]" type="number" value="${station.stopDuration}"></td>
                         <tr>
                             <c:set var="id" value="${id + 1}" scope="page" />
                     </c:forEach>

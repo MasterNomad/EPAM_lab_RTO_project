@@ -1,7 +1,7 @@
 package com.epam.lab.rto.dao;
 
 
-import com.epam.lab.rto.dto.GraphMap;
+import com.epam.lab.rto.dto.StationMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public class StationMapRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private GraphMap stationMap;
+    private StationMap stationMap;
 
     public List<String> getAllStations() {
         String sql = "SELECT name " +
@@ -35,7 +35,7 @@ public class StationMapRepository {
             stationMap.add(name);
         }
 
-        sql = "SELECT * FROM connections";
+        sql = "SELECT * FROM station_connections";
         for (Map<String, Object> result : jdbcTemplate.queryForList(sql)) {
             String firstStation = result.get("station_1").toString().trim();
             String secondStation = result.get("station_2").toString().trim();

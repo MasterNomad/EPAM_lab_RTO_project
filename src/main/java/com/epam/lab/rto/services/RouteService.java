@@ -22,6 +22,9 @@ public class RouteService {
     @Autowired
     private StationMapService stationMapService;
 
+    @Autowired
+    private RouteMapService routeMapService;
+
     public Route createRoute(List<String> stationList) {
         return new Route(createRouteTitle(stationList), stationList);
     }
@@ -30,11 +33,11 @@ public class RouteService {
         int travelTime = 0;
         int averageSpeed = route.getAverageSpeed();
         if (averageSpeed <= 0) {
+            route.setAllTravelTime(0);
             return;
         }
-
-        route.setStationTravelTime(0, travelTime);
-        for (int i = 1; i < route.length(); i++) {
+        route.setStationTravelTime(0, 0);
+        for (int i = 1; i < route.size(); i++) {
             int distance = stationMapService.getDistance(route.getStationName(i - 1), route.getStationName(i));
             travelTime += route.getStationStopDuration(i - 1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
             route.setStationTravelTime(i, travelTime);
@@ -51,8 +54,14 @@ public class RouteService {
 
     public void updateRoute(Route route, String averageSpeed, List<String> times) {
         route.setAverageSpeed(Integer.valueOf(averageSpeed));
-        for (int i = 1; i < times.size(); i++) {
-            route.setStationStopDuration(i, Integer.valueOf(times.get(i)));
+        route.setStationStopDuration(0, -1);
+        route.setStationStopDuration(route.size() - 1, -2);
+        for (int i = 1; i < times.size() - 1; i++) {
+            if (times.get(i).matches("\\d+")) {
+                route.setStationStopDuration(i, Integer.valueOf(times.get(i)));
+            } else {
+                route.setStationStopDuration(i, 0);
+            }
         }
         refreshTravelTimes(route);
     }
@@ -63,6 +72,13 @@ public class RouteService {
         } else {
             routeRepository.updateRoute(route);
         }
+        routeMapService.refreshRouteMap();
+    }
+
+    public void deleteRouteByTitle(String title) {
+        if (routeRepository.getRouteByTitle(title) != null) {
+            routeRepository.deleteRouteByTitle(title);
+        }
     }
 
     public List<Route> getAllRoutes() {
@@ -71,51 +87,6 @@ public class RouteService {
 
     public Route getRouteByTitle(String title) {
         return routeRepository.getRouteByTitle(title);
-    }
-
-    public List<String> findRoutesWithoutTransfer(String departureStation, String arrivalStation) {
-        List<String> routes = routeRepository.getRouteTitlesWithStation(departureStation);
-        routes.retainAll(routeRepository.getRouteTitlesWithStation(arrivalStation));
-
-        List<String> result = new ArrayList<>();
-        for (String routeTitle : routes) {
-            List<String> stations = routeRepository.getRouteStationsByTitle(routeTitle);
-            if (isBefore(stations, departureStation, arrivalStation)) {
-                result.add(routeTitle);
-            }
-        }
-        return result;
-    }
-
-    public List<List<String>> findRoutesWithTransfer(String departureStation, String arrivalStation) {
-        List<String> departureRoutes = routeRepository.getRouteTitlesWithStation(departureStation);
-        List<String> arrivalRoutes = routeRepository.getRouteTitlesWithStation(arrivalStation);
-        List<List<String>> result = new ArrayList<>();
-
-        for (String departureRouteTitle : departureRoutes) {
-            List<String> departureRouteStations = routeRepository.getRouteStationsByTitle(departureRouteTitle);
-
-            for (String station : departureRouteStations) {
-
-                if (!isBefore(departureRouteStations, departureStation, station)) {
-                    continue;
-                }
-                for (String arrivalRouteTitle : arrivalRoutes) {
-                    List<String> arrivalRouteStations = routeRepository.getRouteStationsByTitle(arrivalRouteTitle);
-                    if (isBefore(arrivalRouteStations, arrivalStation, station)) {
-                        continue;
-                    }
-                    if (arrivalRouteStations.contains(station)) {
-                        result.add(new ArrayList<>(Arrays.asList(departureRouteTitle, station, arrivalRouteTitle)));
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private boolean isBefore(List<String> routeStations, String firstStation, String secondStation) {
-        return routeStations.indexOf(firstStation) < routeStations.lastIndexOf(secondStation);
     }
 
 }

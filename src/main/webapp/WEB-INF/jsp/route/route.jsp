@@ -42,6 +42,8 @@
 					<td></td>
 					<td>
 						<a href='/route/edit?title=${route.title}'>Редактировать</a>
+						<br>
+						<a href='/route/delete?title=${route.title}'>Удалить</a>
 					</td>
 				</tr>
 				</c:forEach>

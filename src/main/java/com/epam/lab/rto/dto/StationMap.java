@@ -1,11 +1,12 @@
 package com.epam.lab.rto.dto;
 
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class GraphMap {
+public class StationMap {
 
     private Map<String, Node> graphMap = new HashMap<>();
 
@@ -36,7 +37,7 @@ public class GraphMap {
         }
     }
 
-    private GraphMap() {
+    private StationMap() {
     }
 
     public void add(String name) {
@@ -48,11 +49,9 @@ public class GraphMap {
     }
 
     public void addConnection(String firstKey, String secondKey, int weight) {
-
         if (this.hasConnection(firstKey, secondKey)) {
             return;
         }
-
         Node firstNode = get(firstKey);
         Node secondNode = get(secondKey);
         firstNode.connections.put(secondNode, weight);
@@ -129,19 +128,12 @@ public class GraphMap {
     }
 
     public int getStringWayDistance(List<String> way) {
-         return getNodeWayDistance(way.stream().map(graphMap::get).collect(Collectors.toList()));
-    }
-
-    public List<Node> getNodeList(List<String> list) {
-        return list.stream().map(graphMap::get).collect(Collectors.toList());
+        return getNodeWayDistance(way.stream().map(graphMap::get).collect(Collectors.toList()));
     }
 
     private List<Node> findShortestWay(List<Node> currentWay) {
-
         if (shortestWay != null && getNodeWayDistance(currentWay) > shortestDistance) return null;
-
         Node currentNode = currentWay.get(currentWay.size() - 1);
-
         if (isFinish(currentNode)) {
             return currentWay;
         }
@@ -157,10 +149,6 @@ public class GraphMap {
             }
         }
         return null;
-    }
-
-    public Set<String> keySet() {
-        return graphMap.keySet();
     }
 
     public void clear() {

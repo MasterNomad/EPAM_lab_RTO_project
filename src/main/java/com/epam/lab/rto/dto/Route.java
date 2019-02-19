@@ -61,7 +61,7 @@ public class Route {
         addStation(stationName, 0, 0);
     }
 
-    public int length() {
+    public int size() {
         return stationList.size();
     }
 
@@ -84,6 +84,12 @@ public class Route {
     public void setDefaultStopDuration(int minutes) {
         for (int i = 1; i < stationList.size(); i++) {
             stationList.get(i).stopDuration = minutes;
+        }
+    }
+
+    public void setAllTravelTime(int minutes) {
+        for (Station station: stationList) {
+            station.travelTime = minutes;
         }
     }
 

@@ -104,4 +104,11 @@ public class RouteController {
         }
         return editRoute(action);
     }
+
+    @GetMapping("/route/delete")
+    public ModelAndView deleteRoute (@RequestParam String title) {
+        routeService.deleteRouteByTitle(title);
+        return routeList();
+    }
+
 }
