@@ -17,12 +17,12 @@ public class RouteRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private StationMapRepository stationMapRepository;
+    private StationRepository stationRepository;
 
     private RowMapper<Route> ROW_MAPPER = (rs, rowNum) -> new Route(rs.getString("title"),
             rs.getInt("average_speed"));
 
-    public void addRoute(Route route) {
+    public Route addRoute(Route route) {
         String sql = "INSERT INTO routes " +
                 "(`title`, `average_speed`) " +
                 "VALUES (?, ?)";
@@ -39,6 +39,7 @@ public class RouteRepository {
                     station.getStopDuration(),
                     station.getTravelTime());
         }
+        return route;
     }
 
     public void updateRoute(Route route) {
@@ -110,17 +111,17 @@ public class RouteRepository {
 
     }
 
-    public List<String> getConnectedRoutes(String station) {
+    public List<String> getRoutesWithStartStation(String station) {
         String sql = "SELECT `title` " +
                 "FROM `route_stations` " +
-                "WHERE (`station_name` = ?) AND (`stop_duration` > -2 OR `order` = 0)";
+                "WHERE `station_name` = ? AND `stop_duration` <> -2 AND `stop_duration` <> 0";
         return jdbcTemplate.queryForList(sql, String.class, station);
     }
 
-    public List<String> getRoutesWithStation(String station) {
+    public List<String> getRoutesWithFinishStation(String station) {
         String sql = "SELECT `title` " +
                 "FROM `route_stations` " +
-                "WHERE `station_name` = ? AND `stop_duration` <> 0";
+                "WHERE `station_name` = ? AND `stop_duration` <> -1 OR `stop_duration` <> 0";
         return jdbcTemplate.queryForList(sql, String.class, station);
     }
 

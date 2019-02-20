@@ -6,11 +6,7 @@ import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,10 +16,7 @@ public class RouteService {
     private RouteRepository routeRepository;
 
     @Autowired
-    private StationMapService stationMapService;
-
-    @Autowired
-    private RouteMapService routeMapService;
+    private StationService stationService;
 
     public Route createRoute(List<String> stationList) {
         return new Route(createRouteTitle(stationList), stationList);
@@ -38,7 +31,7 @@ public class RouteService {
         }
         route.setStationTravelTime(0, 0);
         for (int i = 1; i < route.size(); i++) {
-            int distance = stationMapService.getDistance(route.getStationName(i - 1), route.getStationName(i));
+            int distance = stationService.getDistance(route.getStationName(i - 1), route.getStationName(i));
             travelTime += route.getStationStopDuration(i - 1) + 5 * (Math.round(((float) distance / averageSpeed * 60) / 5));
             route.setStationTravelTime(i, travelTime);
         }
@@ -50,7 +43,6 @@ public class RouteService {
                 stationList.size() +
                 LocalDate.now().getDayOfMonth();
     }
-
 
     public void updateRoute(Route route, String averageSpeed, List<String> times) {
         route.setAverageSpeed(Integer.valueOf(averageSpeed));
@@ -72,7 +64,6 @@ public class RouteService {
         } else {
             routeRepository.updateRoute(route);
         }
-        routeMapService.refreshRouteMap();
     }
 
     public void deleteRouteByTitle(String title) {

@@ -3,7 +3,7 @@ package com.epam.lab.rto.controller;
 import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.manager.RouteManager;
 import com.epam.lab.rto.services.RouteService;
-import com.epam.lab.rto.services.StationMapService;
+import com.epam.lab.rto.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class RouteController {
     private RouteService routeService;
 
     @Autowired
-    private StationMapService stationMapService;
+    private StationService stationService;
 
     @Autowired
     private RouteManager routeManager;
@@ -41,7 +41,7 @@ public class RouteController {
     public ModelAndView routeCreate() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", stationMapService.getAllStations());
+        model.addObject("stations", stationService.getAllStations());
         List<String> routeWay = routeManager.getRouteWay();
         if (routeWay != null) {
             model.addObject("answer", routeWay);
@@ -56,8 +56,8 @@ public class RouteController {
     public ModelAndView generateRoute(@RequestParam(value = "args[]") String... args) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", stationMapService.getAllStations());
-        List<String> routeWay = stationMapService.createRouteWay(args);
+        model.addObject("stations", stationService.getAllStations());
+        List<String> routeWay = stationService.createRouteWay(args);
         model.addObject("answer", routeWay);
         model.addObject("next", "true");
         routeManager.setRouteWay(routeWay);

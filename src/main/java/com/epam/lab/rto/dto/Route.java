@@ -81,11 +81,11 @@ public class Route {
         return this.stationList;
     }
 
-    public void setDefaultStopDuration(int minutes) {
-        for (int i = 1; i < stationList.size(); i++) {
-            stationList.get(i).stopDuration = minutes;
-        }
-    }
+//    public void setDefaultStopDuration(int minutes) {
+//        for (int i = 1; i < stationList.size(); i++) {
+//            stationList.get(i).stopDuration = minutes;
+//        }
+//    }
 
     public void setAllTravelTime(int minutes) {
         for (Station station: stationList) {
