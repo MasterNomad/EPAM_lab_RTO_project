@@ -19,14 +19,18 @@ public class RouteRepository {
     @Autowired
     private StationRepository stationRepository;
 
+    @Autowired
+    LocomotiveRepository locomotiveRepository;
+
     private RowMapper<Route> ROW_MAPPER = (rs, rowNum) -> new Route(rs.getString("title"),
-            rs.getInt("average_speed"));
+            locomotiveRepository.getLocomotiveById(rs.getLong("locomotive_id"))
+    );
 
     public Route addRoute(Route route) {
         String sql = "INSERT INTO routes " +
-                "(`title`, `average_speed`) " +
+                "(`title`, `locomotive_id`) " +
                 "VALUES (?, ?)";
-        jdbcTemplate.update(sql, route.getTitle(), route.getAverageSpeed());
+        jdbcTemplate.update(sql, route.getTitle(), route.getLocomotive().getId());
 
         sql = "INSERT INTO route_stations " +
                 "(`title`, `order`, `station_name`, `stop_duration`, `travel_time`) " +
@@ -44,9 +48,9 @@ public class RouteRepository {
 
     public void updateRoute(Route route) {
         String sql = "UPDATE routes " +
-                "SET `average_speed` = ? " +
+                "SET `locomotive_id` = ? " +
                 "WHERE `title` = ? ";
-        jdbcTemplate.update(sql, route.getAverageSpeed(), route.getTitle());
+        jdbcTemplate.update(sql, route.getLocomotive().getId(), route.getTitle());
 
         sql = "UPDATE `route_stations` " +
                 "SET `stop_duration` = ?, `travel_time` = ? " +
@@ -96,13 +100,7 @@ public class RouteRepository {
         }
     }
 
-    public List<String> getAllRouteTitles() {
-        String sql = "SELECT `title` " +
-                "FROM `routes`";
-        return jdbcTemplate.queryForList(sql, String.class);
-    }
-
-    public List <String> getRouteStations (String title) {
+    public List<String> getRouteStations(String title) {
         String sql = "SELECT `station_name` " +
                 "FROM `route_stations` " +
                 "WHERE `title` = ? " +

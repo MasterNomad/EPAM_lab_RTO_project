@@ -7,7 +7,7 @@ public class Route {
 
     private String title;
     private List<Station> stationList = new ArrayList<>();
-    private int averageSpeed;
+    private Locomotive locomotive;
 
     public class Station {
 
@@ -40,9 +40,9 @@ public class Route {
 
     }
 
-    public Route(String title, int averageSpeed) {
+    public Route(String title, Locomotive locomotive) {
         this.title = title;
-        this.averageSpeed = averageSpeed;
+        this.locomotive = locomotive;
         this.stationList = new ArrayList<>();
     }
 
@@ -81,12 +81,6 @@ public class Route {
         return this.stationList;
     }
 
-//    public void setDefaultStopDuration(int minutes) {
-//        for (int i = 1; i < stationList.size(); i++) {
-//            stationList.get(i).stopDuration = minutes;
-//        }
-//    }
-
     public void setAllTravelTime(int minutes) {
         for (Station station: stationList) {
             station.travelTime = minutes;
@@ -105,15 +99,15 @@ public class Route {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Locomotive getLocomotive() {
+        return locomotive;
     }
 
-    public int getAverageSpeed() {
-        return averageSpeed;
+    public void setLocomotive(Locomotive locomotive) {
+        this.locomotive = locomotive;
     }
 
-    public void setAverageSpeed(int averageSpeed) {
-        this.averageSpeed = averageSpeed;
+    public List<Station> getStationList() {
+        return stationList;
     }
 }

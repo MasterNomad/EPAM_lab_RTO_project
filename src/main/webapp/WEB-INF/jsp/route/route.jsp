@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%@include  file="../additional/head.html" %>
 
@@ -15,15 +16,16 @@
 			<table>
 				<tr>
 					<th>
-						<label for="title">Идентификатор <br> маршрута</label>
+						<label for="title">Идентификатор маршрута</label>
 					</th>
 					<th>
-						<label for="departureStation"> Станция <br> отправления</label>
+						<label for="departureStation"> Станция отправления</label>
 					</th>
 					<th>
-						<label for="arrivalStation">Конечная <br> станция</label>
+						<label for="arrivalStation">Конечная станция</label>
 					</th>
-					<th>Время <br> в пути</th>
+					<th>Локомотив</th>
+					<th>Время в пути</th>
 					<th></th>
 				</tr>
 				<tr id="search">
@@ -31,15 +33,26 @@
 					<td><input id="departureStation" name="departureStation" type="text"></td>
 					<td><input id="arrivalStation" name="arrivalStation" type="text"></td>
 					<td></td>
+					<td></td>
 					<td>
 						<a href="#">Поиск</a>
 					</td>
+				</tr>
 					<c:forEach items="${routes}" var="route">
 				<tr>
 					<td>${route.title}</td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>${route.stationList[0].stationName}</td>
+					<td>${route.stationList[fn:length(route.stationList)-1].stationName}</td>
+					<td>${route.locomotive.name}</td>
+					<td>
+						<fmt:formatNumber var="expiry" value="${(expire.time - now.time) / (60 * 1000)}"
+							maxFractionDigits="0" />
+						<c:set var="time" scope="session"
+							value="${route.stationList[fn:length(route.stationList)-1].travelTime}" />
+						${fn:substringBefore(time/1440, '.')}д.
+						${fn:substringBefore(time%1440/60, '.')}ч.
+						${time%60}м.
+					</td>
 					<td>
 						<a href='/route/edit?title=${route.title}'>Редактировать</a>
 						<br>

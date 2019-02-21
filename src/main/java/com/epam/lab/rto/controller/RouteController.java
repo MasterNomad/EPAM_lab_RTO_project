@@ -1,5 +1,6 @@
 package com.epam.lab.rto.controller;
 
+import com.epam.lab.rto.dao.LocomotiveRepository;
 import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.manager.RouteManager;
 import com.epam.lab.rto.services.RouteService;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +23,9 @@ public class RouteController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private LocomotiveRepository locomotiveRepository;
 
     @Autowired
     private RouteManager routeManager;
@@ -89,16 +91,16 @@ public class RouteController {
             routeManager.setCurrentRoute(route);
         }
 
-        model.addObject("days", DayOfWeek.values());
         model.addObject("route", route);
         model.addObject("stations", route.getStations());
+        model.addObject("locomotives", locomotiveRepository.getAll());
         return model;
     }
 
     @PostMapping("/route/update")
-    public ModelAndView updateRoute(String averageSpeed, @RequestParam(value = "time[]") String[] times, String action) {
+    public ModelAndView updateRoute(String locomotive, @RequestParam(value = "time[]") String[] times, String action) {
         Route route = routeManager.getCurrentRoute();
-        routeService.updateRoute(route, averageSpeed, new ArrayList<>(Arrays.asList(times)));
+        routeService.updateRoute(route, locomotive, new ArrayList<>(Arrays.asList(times)));
         if (action.equals("save")) {
             routeService.saveRoute(route);
         }

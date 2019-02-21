@@ -1,6 +1,7 @@
 package com.epam.lab.rto.services;
 
 
+import com.epam.lab.rto.dao.LocomotiveRepository;
 import com.epam.lab.rto.dao.RouteRepository;
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class RouteService {
     private RouteRepository routeRepository;
 
     @Autowired
+    private LocomotiveRepository locomotiveRepository;
+
+    @Autowired
     private StationService stationService;
 
     public Route createRoute(List<String> stationList) {
@@ -24,7 +28,7 @@ public class RouteService {
 
     public void refreshTravelTimes(Route route) {
         int travelTime = 0;
-        int averageSpeed = route.getAverageSpeed();
+        int averageSpeed = route.getLocomotive().getAverage_speed();
         if (averageSpeed <= 0) {
             route.setAllTravelTime(0);
             return;
@@ -44,8 +48,8 @@ public class RouteService {
                 LocalDate.now().getDayOfMonth();
     }
 
-    public void updateRoute(Route route, String averageSpeed, List<String> times) {
-        route.setAverageSpeed(Integer.valueOf(averageSpeed));
+    public void updateRoute(Route route, String locomotive, List<String> times) {
+        route.setLocomotive(locomotiveRepository.getLocomotiveByName(locomotive.trim()));
         route.setStationStopDuration(0, -1);
         route.setStationStopDuration(route.size() - 1, -2);
         for (int i = 1; i < times.size() - 1; i++) {
