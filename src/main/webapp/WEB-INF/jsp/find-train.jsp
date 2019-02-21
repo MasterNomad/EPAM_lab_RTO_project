@@ -5,7 +5,7 @@
 
 </head>
 
-<%@include  file="additional/header.jsp" %>
+<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
 <section id="ticket" class="content">
 	<div class="container">

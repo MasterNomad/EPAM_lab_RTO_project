@@ -15,12 +15,12 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private boolean sex;
-    private boolean admin;
+    private UserRole role;
 
     public User () {
     }
 
-    public User(long id, String email, String password, String surname, String name, String patronymic, LocalDate birthDate, boolean sex, boolean admin) {
+    public User(long id, String email, String password, String surname, String name, String patronymic, LocalDate birthDate, boolean sex, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -29,7 +29,7 @@ public class User {
         this.patronymic = patronymic;
         this.birthDate = birthDate;
         this.sex = sex;
-        this.admin = admin;
+        this.role = role;
     }
 
     public long getId() {
@@ -96,11 +96,11 @@ public class User {
         this.sex = sex;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../css/route.css" class="css">
 </head>
 
-<%@include  file="../additional/header${menu}.jsp" %>
+<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
 <section id="route" class="content">
 	<div class="container">
