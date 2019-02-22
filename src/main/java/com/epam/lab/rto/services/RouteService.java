@@ -1,8 +1,8 @@
 package com.epam.lab.rto.services;
 
 
-import com.epam.lab.rto.dao.LocomotiveRepository;
-import com.epam.lab.rto.dao.RouteRepository;
+import com.epam.lab.rto.repository.LocomotiveRepository;
+import com.epam.lab.rto.repository.RouteRepository;
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

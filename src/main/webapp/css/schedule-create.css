@@ -1,0 +1,98 @@
+td {
+    text-align: center;
+}
+
+.input td {
+    padding: 5px;
+}
+
+.input input {
+    margin: 0;
+}
+
+#trip_input {
+    display: none;
+}
+
+.a_btn {
+    color: #6F46BA;
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.a_btn:hover {
+    text-decoration: none;
+}
+
+.amount {
+    max-width: 30px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+.price {
+    width: 70px;
+}
+
+.repeat {
+    width: 40px;
+}
+
+.carriages {
+    margin: 0;
+}
+
+.carriages td {
+    padding: 0;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: help;
+}
+
+.tooltip .tooltiptext {
+    font-weight: normal;
+    padding: 10px;
+    visibility: hidden;
+    width: 120px;
+    background-color: #757575;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #757575 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

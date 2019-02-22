@@ -13,6 +13,11 @@
 							</a>
 						</li>
 						<li>
+							<a class="btn" href="/admin/schedule">
+								<span>Расписание</span>
+							</a>
+						</li>
+						<li>
 							<a class="btn" href="/route">
 								<span>Маршруты</span>
 							</a>

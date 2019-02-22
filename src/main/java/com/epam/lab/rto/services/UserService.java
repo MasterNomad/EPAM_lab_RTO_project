@@ -1,6 +1,6 @@
 package com.epam.lab.rto.services;
 
-import com.epam.lab.rto.dao.UserRepository;
+import com.epam.lab.rto.repository.UserRepository;
 import com.epam.lab.rto.dto.User;
 import com.epam.lab.rto.exceptions.NoSuchUserException;
 import com.epam.lab.rto.exceptions.PasswordNotMatchException;

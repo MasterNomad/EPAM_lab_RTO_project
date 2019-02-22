@@ -1,4 +1,4 @@
-package com.epam.lab.rto.dao;
+package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Locomotive;
 import org.springframework.beans.factory.annotation.Autowired;

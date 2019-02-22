@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@include  file="additional/head.html" %>
+<%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
 </head>
 
@@ -39,4 +39,4 @@
 	</div>
 </section>
 
-<%@include  file="additional/footer.jsp" %>
+<%@include  file="/WEB-INF/jsp/additional/footer.jsp" %>

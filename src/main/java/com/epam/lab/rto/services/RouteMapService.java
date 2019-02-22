@@ -1,6 +1,6 @@
 package com.epam.lab.rto.services;
 
-import com.epam.lab.rto.dao.RouteRepository;
+import com.epam.lab.rto.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

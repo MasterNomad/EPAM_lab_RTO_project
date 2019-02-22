@@ -1,6 +1,6 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.dao.LocomotiveRepository;
+import com.epam.lab.rto.repository.LocomotiveRepository;
 import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.manager.RouteManager;
 import com.epam.lab.rto.services.RouteService;

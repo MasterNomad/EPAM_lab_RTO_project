@@ -1,6 +1,6 @@
 package com.epam.lab.rto.services;
 
-import com.epam.lab.rto.dao.StationRepository;
+import com.epam.lab.rto.repository.StationRepository;
 import com.epam.lab.rto.dto.GraphMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

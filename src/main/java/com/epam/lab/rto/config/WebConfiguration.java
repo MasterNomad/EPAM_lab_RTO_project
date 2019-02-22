@@ -30,8 +30,10 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**");
+
         registry.addInterceptor(alreadyLoginInterceptor()).addPathPatterns("/login")
                 .excludePathPatterns("/css/**", "/js/**", "/img/**");
+
         registry.addInterceptor(userRoleAwareInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**");
     }

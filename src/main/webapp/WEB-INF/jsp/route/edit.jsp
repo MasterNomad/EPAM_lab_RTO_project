@@ -2,9 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
-<%@include  file="../additional/head.html" %>
+<%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
-<link rel="stylesheet" href="../css/route.css" class="css">
+<link rel="stylesheet" href="/css/route.css" class="css">
 </head>
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
@@ -57,6 +57,6 @@
     </div>
 </section>
 
-<script src="../js/route.js"></script>
+<script src="/js/route.js"></script>
 
-<%@include  file="../additional/footer.jsp" %>
+<%@include  file="/WEB-INF/jsp/additional/footer.jsp" %>

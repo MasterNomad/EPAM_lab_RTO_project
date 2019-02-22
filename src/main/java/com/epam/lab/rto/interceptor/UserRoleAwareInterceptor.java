@@ -13,7 +13,7 @@ import java.util.Objects;
 public class UserRoleAwareInterceptor implements HandlerInterceptor {
 
     @Autowired
-    UserManager userManager;
+    private UserManager userManager;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
