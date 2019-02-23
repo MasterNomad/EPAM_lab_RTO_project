@@ -1,6 +1,7 @@
 package com.epam.lab.rto.dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Carriage {
 
@@ -51,5 +52,22 @@ public class Carriage {
 
     public void setPriceFactor(BigDecimal priceFactor) {
         this.priceFactor = priceFactor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Carriage carriage = (Carriage) o;
+        return getId() == carriage.getId() &&
+                getPlaces() == carriage.getPlaces() &&
+                getName().equals(carriage.getName()) &&
+                getDescription().equals(carriage.getDescription()) &&
+                getPriceFactor().equals(carriage.getPriceFactor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), getPlaces(), getPriceFactor());
     }
 }

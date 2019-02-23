@@ -2,15 +2,32 @@ package com.epam.lab.rto.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Trip {
 
     private long id;
     private Route route;
+    private Map <Carriage, Integer> carriages;
     private LocalDateTime departure;
     private BigDecimal price;
 
     public Trip() {
+    }
+
+    public Trip(long id, Route route, LocalDateTime departure, BigDecimal price) {
+        this.id = id;
+        this.route = route;
+        this.departure = departure;
+        this.price = price;
+    }
+
+    public Trip(Route route, Map<Carriage, Integer> carriages, LocalDateTime departure, BigDecimal price) {
+        this.route = route;
+        this.carriages = carriages;
+        this.departure = departure;
+        this.price = price;
     }
 
     public long getId() {

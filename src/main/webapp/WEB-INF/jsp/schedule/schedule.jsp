@@ -12,8 +12,9 @@
     <div class="container">
         <div class="form">
             <h2>Расписание</h2>
-            <form action="">
-                <div>За период: <input type="date"> - <input type="date"></div>
+            <form action="/admin/schedule" method="POST">
+                <div>За период: <input name="firstDate" type="date" value="${firstDate}"> -
+                    <input name="secondDate" type="date" value=${secondDate}></div>
                 <table>
                     <tr>
                         <th>id рейса</th>
@@ -21,12 +22,14 @@
                         <th>Дата/время отправления</th>
                         <th>Цена</th>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    <c:forEach items="${trips}" var="trip">
+                        <tr>
+                            <td>${trip.id}</td>
+                            <td>${trip.route.title}</td>
+                            <td>${trip.departure}</td>
+                            <td>${trip.price}</td>
+                        </tr>
+                    </c:forEach>
                 </table>
                 <input class="btn" type="submit" value="Обновить">
                 <a class="btn" href="/admin/schedule/add">Новое Расписание</a>

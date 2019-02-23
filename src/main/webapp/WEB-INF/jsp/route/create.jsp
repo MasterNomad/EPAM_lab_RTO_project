@@ -24,9 +24,9 @@
 						</datalist>
 					</span>
 				</div>
-
+				
 				<a id="add_btn" class="btn">+</a>
-			
+	
 				<div class="form-block">
 					Город назначения: <br>
 					<input type="text" list="cities" name="args[]" required>

@@ -2,6 +2,7 @@ package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Carriage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +20,19 @@ public class CarriageRepository {
 
     public List<Carriage> getAll() {
         String sql = "SELECT * " +
-                "FROM `carriage_types`";
+                "FROM `carriage_types` " +
+                "ORDER BY `id`";
         return jdbcTemplate.query(sql, ROW_MAPPER);
+    }
+
+    public Carriage getCarriageById(int id) {
+        String sql = "SELECT * " +
+                "FROM `carriage_types` " +
+                "WHERE `id` = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }
