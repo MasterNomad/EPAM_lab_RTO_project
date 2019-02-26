@@ -16,7 +16,8 @@
 				<div class="form-block">
 					<label for="departureCity">Город отправления:</label>
 					<br>
-					<input type="text" list="cities" name="departureCity" value="${departureCity}" required>
+					<input class="clear" type="text" list="cities" name="departureCity" value="${departureCity}"
+						required>
 					<datalist id="cities">
 						<c:forEach items="${stations}" var="station">
 							<option value="${station}">${station}</option>
@@ -26,12 +27,12 @@
 				<div class="form-block">
 					<label for="departure">Дата отправления:</label>
 					<br>
-					<input name="departure" id = "departure" type="datetime-local" value="${departure}" required>
+					<input name="departure" id="departure" type="datetime-local" value="${departure}" required>
 				</div>
 				<div class="form-block">
 					<label for="destinationCity">Город назначения: </label>
 					<br>
-					<input type="text" list="cities" name="destinationCity" id="destinationCity"
+					<input class="clear" type="text" list="cities" name="destinationCity" id="destinationCity"
 						value="${destinationCity}" required>
 				</div>
 				<input type="submit" class="btn" value="Поиск">
@@ -39,20 +40,49 @@
 			<c:forEach items="${answer}" var="request">
 				<div class="request">
 					<form action="">
-						<div class="form-block">Рейс №${request.trip.id}</div>
-						<div class="form-block">Маршрут: ${request.trip.route.title}</div>
+						<div class="form-block">Рейс №
+							<input class="inactive trip-id" disabled type="text" value="${request.trip.id}">
+						</div>
+						<div class="form-block">
+							Маршрут:
+							<span class="tooltip">
+								${request.trip.route.title}
+								<span class="tooltiptext">
+									<c:forEach items="${request.trip.route.stationList}" var="station">
+										<p>${station.name}</p>
+									</c:forEach>
+								</span>
+							</span>
+						</div>
 						<br>
 						<table>
 							<tr>
 								<td>Город отправления</td>
-								<td>Город прибытия</td>
+								<td>Город назначения</td>
 								<td>Тип Вагона</td>
 							</tr>
 							<tr>
-								<td>${request.departureCity}</td>
-								<td>${request.destinationCity}</td>
+								<td>
+									<input class="inactive" disabled type="text" value="${request.departureCity}">
+								</td>
+								<td>
+									<input class="inactive" disabled type="text" value="${request.destinationCity}">
+								</td>
 								<td class="input">
-									<input type="text" value="${request.carriage.name}">?
+									<input class="clear" type="text" list="carriages-${request.trip.id}"
+										value="${request.carriage.name}" required>
+									<datalist id="carriages-${request.trip.id}">
+										<c:forEach items="${request.trip.tripComposition}" var="carriage">
+											<option value="${carriage.carriage.name}">
+												${carriage.carriage.name}
+											</option>
+										</c:forEach>
+									</datalist>
+									<span class="tooltip">?
+										<span class="tooltiptext">
+											${request.carriage.description}
+										</span>
+									</span>
 								</td>
 							</tr>
 							<tr>
@@ -66,12 +96,14 @@
 								<td class="price">${request.price} руб.</td>
 							</tr>
 						</table>
-						<input type="submit" class="btn" value="выбрать">
+						<input type="submit" class="btn" value="оформить">
 					</form>
 				</div>
 			</c:forEach>
 		</div>
 	</div>
 </section>
+
+<script src="/js/find-train.js"></script>
 
 <%@include  file="/WEB-INF/jsp/additional/footer.jsp" %>

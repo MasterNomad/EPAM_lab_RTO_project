@@ -35,7 +35,7 @@
                     <c:forEach items="${stations}" var="station">
                         <tr>
                             <td>${id}</td>
-                            <td>${station.stationName}</td>
+                            <td>${station.name}</td>
                             <td>
                                 <c:set var="time" scope="session" value="${station.travelTime}" />
                                 ${fn:substringBefore(time/1440, '.')}д.

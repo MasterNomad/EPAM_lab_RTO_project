@@ -38,7 +38,7 @@ public class RouteRepository {
         for (Route.Station station : route.getStations()) {
             jdbcTemplate.update(sql, route.getTitle(),
                     order++,
-                    station.getStationName(),
+                    station.getName(),
                     station.getStopDuration(),
                     station.getTravelTime());
         }

@@ -28,7 +28,7 @@ public class RouteService {
     }
 
     public void refreshTravelTimes(Route route) {
-        int travelTime = 0;
+        int travelTime = 1;
         int averageSpeed = route.getLocomotive().getAverage_speed();
         if (averageSpeed <= 0) {
             route.setAllTravelTime(0);

@@ -32,7 +32,6 @@ public class TripService {
         List<Trip> result = new ArrayList<>();
 
         List<Route> routes = routeService.findRoutesBetweenStations(startStation, finishStation);
-        System.out.println("Маршруты " + routes);
         for (Route route : routes) {
             LocalDateTime tripDeparture = departure.minus(
                     route.getStationTravelTime(startStation) + route.getStationStopDuration(startStation),

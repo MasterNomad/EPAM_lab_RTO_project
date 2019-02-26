@@ -33,7 +33,7 @@ public class RequestService {
             LocalDateTime departureDateTime = getDepartureDateTime(trip, departureCity);
             LocalDateTime arrivalDateTime = getArrivalDateTime(trip, destinationCity);
             Carriage carriage = trip.getTripComposition().get(0).getCarriage();
-            BigDecimal price = trip.getPrice().multiply(carriage.getPriceFactor()).round(new MathContext(3, RoundingMode.HALF_UP));
+            BigDecimal price = trip.getPrice().multiply(carriage.getPriceFactor());
             result.add(new Request(trip, departureCity, departureDateTime, destinationCity, arrivalDateTime, carriage, price));
         }
         return result;

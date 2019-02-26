@@ -11,23 +11,23 @@ public class Route {
 
     public class Station {
 
-        private String stationName;
+        private String name;
         private int travelTime = 0;
         private int stopDuration = 0;
 
 
-        private Station(String stationName, int travelTime, int stopDuration) {
-            this.stationName = stationName;
+        private Station(String name, int travelTime, int stopDuration) {
+            this.name = name;
             this.travelTime = travelTime;
             this.stopDuration = stopDuration;
         }
 
-        private Station(String stationName) {
-            this.stationName = stationName;
+        private Station(String name) {
+            this.name = name;
         }
 
-        public String getStationName() {
-            return stationName;
+        public String getName() {
+            return name;
         }
 
         public int getStopDuration() {
@@ -70,7 +70,7 @@ public class Route {
     }
 
     public String getStationName(int index) {
-        return stationList.get(index).stationName;
+        return stationList.get(index).name;
     }
 
     public int getStationTravelTime(int index) {
@@ -131,7 +131,7 @@ public class Route {
 
     private int getStationIndex(String name) {
         for (int i = 0; i < stationList.size(); i++) {
-            if (stationList.get(i).getStationName().equals(name)) {
+            if (stationList.get(i).getName().equals(name)) {
                 return i;
             }
         }

@@ -10,7 +10,7 @@
     padding: 20px;
     padding-bottom: 10px;
     border-style: solid;
-    border-color: #db4f728f; 
+    border-color: #6f46ba8c;
     border-width: 2px;
 }
 
@@ -27,7 +27,7 @@ td {
 }
 
 tr {
-    background-color: #f8f8f8;
+    background-color: #edeafb;
 }
 
 tr:nth-child(odd) {
@@ -52,4 +52,15 @@ tr:nth-child(odd) {
 
 .form-block {
     margin-bottom: 10px;
+}
+
+.inactive {
+    background: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.trip-id {
+    text-align: left;
+    width: 50px;
 }
