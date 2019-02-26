@@ -35,7 +35,7 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**", "/js/**", "/img/**");
 
         registry.addInterceptor(userRoleAwareInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**");
+                .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/find-train/carriage-change");
     }
 
 }

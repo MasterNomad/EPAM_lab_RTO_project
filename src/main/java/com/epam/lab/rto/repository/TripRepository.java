@@ -3,6 +3,7 @@ package com.epam.lab.rto.repository;
 import com.epam.lab.rto.dto.Trip;
 import com.epam.lab.rto.dto.TripComposition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -57,6 +58,18 @@ public class TripRepository {
         tripCompositionRepository.addListTripComposition(trip.getTripComposition());
     }
 
+    public Trip getTripById(long tripId) {
+        String sql = "SELECT * " +
+                "FROM `trips` " +
+                "WHERE `trip_id` = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, tripId);
+        } catch (
+                EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
         String sql = "SELECT * " +
                 "FROM `trips` " +
@@ -70,4 +83,5 @@ public class TripRepository {
                 "WHERE `route` = ? AND `departure` BETWEEN ? and ?";
         return jdbcTemplate.query(sql, ROW_MAPPER, title, firstDateTime, secondDateTime);
     }
+
 }

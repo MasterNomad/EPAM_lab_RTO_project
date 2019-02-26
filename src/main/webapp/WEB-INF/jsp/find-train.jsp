@@ -69,7 +69,7 @@
 									<input class="inactive" disabled type="text" value="${request.destinationCity}">
 								</td>
 								<td class="input">
-									<input class="clear" type="text" list="carriages-${request.trip.id}"
+									<input class="clear carriage" type="text" list="carriages-${request.trip.id}"
 										value="${request.carriage.name}" required>
 									<datalist id="carriages-${request.trip.id}">
 										<c:forEach items="${request.trip.tripComposition}" var="carriage">

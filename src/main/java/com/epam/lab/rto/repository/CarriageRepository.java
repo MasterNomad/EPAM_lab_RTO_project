@@ -35,4 +35,11 @@ public class CarriageRepository {
             return null;
         }
     }
+
+    public Carriage getCarriageByName(String carriage) {
+        String sql = "SELECT * " +
+                "FROM `carriage_types`" +
+                "WHERE `name` = ? ";
+        return jdbcTemplate.queryForObject(sql, ROW_MAPPER, carriage);
+    }
 }

@@ -51,6 +51,11 @@ public class TripService {
         return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
     }
 
+    public BigDecimal getPriceByTripIdAndCarriageId (long tripId, long carriageId){
+        Trip trip = tripRepository.getTripById(tripId);
+        trip.getTripComposition().forEach(ca);
+    }
+
     public void addSchedule(String[] routes,
                             LocalDateTime[] departures,
                             BigDecimal[] prices,
