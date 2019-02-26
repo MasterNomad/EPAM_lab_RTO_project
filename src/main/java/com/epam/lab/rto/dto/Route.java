@@ -40,6 +40,10 @@ public class Route {
 
     }
 
+    public Route(String title) {
+        this.title = title;
+    }
+
     public Route(String title, Locomotive locomotive) {
         this.title = title;
         this.locomotive = locomotive;

@@ -25,7 +25,7 @@ public class CarriageRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER);
     }
 
-    public Carriage getCarriageById(int id) {
+    public Carriage getCarriageById(long id) {
         String sql = "SELECT * " +
                 "FROM `carriage_types` " +
                 "WHERE `id` = ?";

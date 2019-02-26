@@ -1,0 +1,55 @@
+#find-train {
+    background: url(../img/ticket_bg.jpg) no-repeat center center / cover;
+    min-height: 300px;
+}
+
+.request {
+    background: #ffffffd6;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    padding-bottom: 10px;
+    border-style: solid;
+    border-color: #db4f728f; 
+    border-width: 2px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+tr {
+    background-color: #f8f8f8;
+}
+
+tr:nth-child(odd) {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #6F46BA;
+    color: white;
+}
+
+.input td {
+    padding: 5px;
+}
+
+.request input {
+    margin: 0;
+}
+
+.request btn {
+    margin: 0;
+}
+
+.form-block {
+    margin-bottom: 10px;
+}

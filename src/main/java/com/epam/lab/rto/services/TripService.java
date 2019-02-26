@@ -3,6 +3,7 @@ package com.epam.lab.rto.services;
 import com.epam.lab.rto.dto.Carriage;
 import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.dto.Trip;
+import com.epam.lab.rto.dto.TripComposition;
 import com.epam.lab.rto.repository.CarriageRepository;
 import com.epam.lab.rto.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,26 @@ public class TripService {
     @Autowired
     private CarriageRepository carriageRepository;
 
-    public List <Trip> getTripsBetweenDates (LocalDate firstDate, LocalDate secondDate) {
-       return tripRepository.getTripsBetweenDates(firstDate,secondDate);
+
+    public List<Trip> findTripsWithoutTransfer(String startStation, String finishStation, LocalDateTime departure) {
+        List<Trip> result = new ArrayList<>();
+
+        List<Route> routes = routeService.findRoutesBetweenStations(startStation, finishStation);
+        System.out.println("Маршруты " + routes);
+        for (Route route : routes) {
+            LocalDateTime tripDeparture = departure.minus(
+                    route.getStationTravelTime(startStation) + route.getStationStopDuration(startStation),
+                    ChronoUnit.MINUTES);
+            result.addAll(getTripsByRouteAndDepartureDateTime(route, tripDeparture));
+        }
+        return result;
     }
 
-    public List <Trip> getTripsByRouteAndDepartureDateTime (Route route, LocalDateTime departure) {
+    public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+        return tripRepository.getTripsBetweenDates(firstDate, secondDate);
+    }
+
+    public List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {
         LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
         LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
         return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
@@ -42,16 +58,18 @@ public class TripService {
                             Integer[] carriages,
                             Long[] repeats,
                             LocalDate lastDate) {
+
         List<Trip> result = new ArrayList<>();
         int carriageAmount = carriages.length / routes.length;
+
         for (int i = 0; i < routes.length; i++) {
-            Route route = routeService.getRouteByTitle(routes[i]);
-            Map<Carriage, Integer> carriagesMap = getCarriageMap(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
-            result.add(new Trip(route, carriagesMap, departures[i], prices[i]));
-            if (repeats[i]>0) {
-                while (departures[i].plus(repeats[i], ChronoUnit.DAYS).toLocalDate().isBefore(lastDate)){
+            Route route = new Route(routes[i]);
+            List<TripComposition> tripComposition = buildTripComposition(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
+            result.add(new Trip(route, tripComposition, departures[i], prices[i]));
+            if (repeats[i] > 0) {
+                while (departures[i].plus(repeats[i], ChronoUnit.DAYS).toLocalDate().isBefore(lastDate)) {
                     departures[i] = departures[i].plus(repeats[i], ChronoUnit.DAYS);
-                    result.add(new Trip(route, carriagesMap, departures[i], prices[i]));
+                    result.add(new Trip(route, tripComposition, departures[i], prices[i]));
                 }
             }
         }
@@ -64,11 +82,11 @@ public class TripService {
         }
     }
 
-    private Map<Carriage, Integer> getCarriageMap(List<Integer> carriages) {
-        Map<Carriage, Integer> result = new HashMap<>();
+    private List<TripComposition> buildTripComposition(List<Integer> carriages) {
+        List<TripComposition> result = new ArrayList<>();
         for (int i = 0; i < carriages.size(); i++) {
             if (carriages.get(i) > 0) {
-                result.put(carriageRepository.getCarriageById(i + 1), carriages.get(i));
+                result.add(new TripComposition(new Carriage(i + 1), carriages.get(i)));
             }
         }
         return result;

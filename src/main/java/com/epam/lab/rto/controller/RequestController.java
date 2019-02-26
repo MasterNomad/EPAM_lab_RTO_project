@@ -1,6 +1,6 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.services.FindTrainService;
+import com.epam.lab.rto.services.RequestService;
 import com.epam.lab.rto.services.RouteService;
 import com.epam.lab.rto.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +14,18 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDateTime;
 
 @Controller
-public class FindTrainController {
+public class RequestController {
 
     @Autowired
     private RouteService routeService;
 
     @Autowired
-    private FindTrainService findTrainService;
+    private RequestService requestService;
 
     @Autowired
     private StationService stationService;
 
-    @GetMapping( "/find-train")
+    @GetMapping("/find-train")
     public ModelAndView homePage() {
         ModelAndView model = new ModelAndView();
 
@@ -36,13 +36,16 @@ public class FindTrainController {
     }
 
     @PostMapping("/find-train")
-    public ModelAndView findTrain(String departureCity, String arrivalCity,
+    public ModelAndView findTrain(String departureCity, String destinationCity,
                                   @RequestParam(value = "departure") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure) {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("find-train");
         model.addObject("stations", stationService.getAllStations());
-        model.addObject("answer", findTrainService.findTripsWithoutTransfer(departureCity, arrivalCity, departure));
+        model.addObject("departureCity", departureCity);
+        model.addObject("destinationCity", destinationCity);
+        model.addObject("departure", departure);
+        model.addObject("answer", requestService.findTrains(departureCity, destinationCity, departure));
 
         return model;
     }

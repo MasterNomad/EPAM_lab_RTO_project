@@ -1,11 +1,19 @@
 package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Trip;
+import com.epam.lab.rto.dto.TripComposition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,18 +25,36 @@ public class TripRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private RouteRepository routerouteRepository;
+    private RouteRepository routeRepository;
+
+    @Autowired
+    private TripCompositionRepository tripCompositionRepository;
 
     private RowMapper<Trip> ROW_MAPPER = (rs, rowNum) -> new Trip(rs.getLong("trip_id"),
-            routerouteRepository.getRouteByTitle(rs.getString("route")),
-           rs.getTimestamp("departure").toLocalDateTime(),
+            routeRepository.getRouteByTitle(rs.getString("route")),
+            tripCompositionRepository.getTripCompositionByTripId(rs.getLong("trip_id")),
+            rs.getTimestamp("departure").toLocalDateTime(),
             rs.getBigDecimal("price"));
 
-    public int addTrip(Trip trip) {
-        String sql = "INSERT INTO `rto`.`trips` " +
+    public void addTrip(Trip trip) {
+        KeyHolder key = new GeneratedKeyHolder();
+        String sql = "INSERT INTO `trips` " +
                 "(`route`, `departure`, `price`) " +
-                "VALUES (?, ?, ?);";
-      return jdbcTemplate.update(sql, trip.getRoute().getTitle(), trip.getDeparture(), trip.getPrice());
+                "VALUES (?, ?, ?)";
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                final PreparedStatement ps = connection.prepareStatement(sql,
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, trip.getRoute().getTitle());
+                ps.setTimestamp(2, java.sql.Timestamp.valueOf(trip.getDeparture()));
+                ps.setBigDecimal(3, trip.getPrice());
+                return ps;
+            }
+        }, key);
+        long tripId = key.getKey().longValue();
+        trip.getTripComposition().forEach(tripComposition -> tripComposition.setTripId(tripId));
+        tripCompositionRepository.addListTripComposition(trip.getTripComposition());
     }
 
     public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {

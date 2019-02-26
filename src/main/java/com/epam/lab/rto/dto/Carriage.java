@@ -14,6 +14,10 @@ public class Carriage {
     public Carriage() {
     }
 
+    public Carriage(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
