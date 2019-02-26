@@ -37,4 +37,11 @@ public class TripRepository {
                 "WHERE `departure` BETWEEN ? and ?";
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate);
     }
+
+    public List<Trip> getTripsByRouteTitleAndDepartureBetweenDateTimes(String title, LocalDateTime firstDateTime, LocalDateTime secondDateTime) {
+        String sql = "SELECT * " +
+                "FROM `trips` " +
+                "WHERE `route` = ? AND `departure` BETWEEN ? and ?";
+        return jdbcTemplate.query(sql, ROW_MAPPER, title, firstDateTime, secondDateTime);
+    }
 }

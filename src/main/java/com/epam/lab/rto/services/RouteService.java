@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -82,6 +83,23 @@ public class RouteService {
 
     public Route getRouteByTitle(String title) {
         return routeRepository.getRouteByTitle(title);
+    }
+
+    public List <Route> findRoutesBetweenStations (String startStation, String finishStation) {
+        List<Route> result = new ArrayList<>();
+        List<String> routes = routeRepository.getRoutesWithStartStation(startStation);
+        routes.retainAll(routeRepository.getRoutesWithFinishStation(finishStation));
+        for (String title : routes) {
+            List stationList = routeRepository.getRouteStations(title);
+            if (ifBefore(stationList, startStation, finishStation)) {
+                result.add(routeRepository.getRouteByTitle(title));
+            }
+        }
+        return result;
+    }
+
+    private boolean ifBefore(List stationList, String startStation, String finishStation) {
+        return stationList.indexOf(startStation) < stationList.lastIndexOf(finishStation);
     }
 
 }

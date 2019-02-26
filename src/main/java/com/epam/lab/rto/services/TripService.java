@@ -30,6 +30,12 @@ public class TripService {
        return tripRepository.getTripsBetweenDates(firstDate,secondDate);
     }
 
+    public List <Trip> getTripsByRouteAndDepartureDateTime (Route route, LocalDateTime departure) {
+        LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
+        LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
+        return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
+    }
+
     public void addSchedule(String[] routes,
                             LocalDateTime[] departures,
                             BigDecimal[] prices,

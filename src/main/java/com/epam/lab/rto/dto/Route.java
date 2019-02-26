@@ -70,11 +70,25 @@ public class Route {
     }
 
     public int getStationTravelTime(int index) {
+        if (index < 0 || index >= stationList.size()) {
+            throw new NullPointerException();
+        }
         return stationList.get(index).travelTime;
     }
 
+    public int getStationTravelTime(String name) {
+        return getStationTravelTime(getStationIndex(name));
+    }
+
     public int getStationStopDuration(int index) {
+        if (index < 0 || index >= stationList.size()) {
+            throw new NullPointerException();
+        }
         return stationList.get(index).stopDuration;
+    }
+
+    public int getStationStopDuration(String name) {
+        return getStationStopDuration(getStationIndex(name));
     }
 
     public List<Station> getStations() {
@@ -82,7 +96,7 @@ public class Route {
     }
 
     public void setAllTravelTime(int minutes) {
-        for (Station station: stationList) {
+        for (Station station : stationList) {
             station.travelTime = minutes;
         }
     }
@@ -109,5 +123,14 @@ public class Route {
 
     public List<Station> getStationList() {
         return stationList;
+    }
+
+    private int getStationIndex(String name) {
+        for (int i = 0; i < stationList.size(); i++) {
+            if (stationList.get(i).getStationName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

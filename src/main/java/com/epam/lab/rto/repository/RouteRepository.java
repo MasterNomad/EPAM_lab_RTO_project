@@ -23,8 +23,7 @@ public class RouteRepository {
     LocomotiveRepository locomotiveRepository;
 
     private RowMapper<Route> ROW_MAPPER = (rs, rowNum) -> new Route(rs.getString("title"),
-            locomotiveRepository.getLocomotiveById(rs.getLong("locomotive_id"))
-    );
+            locomotiveRepository.getLocomotiveById(rs.getLong("locomotive_id")));
 
     public Route addRoute(Route route) {
         String sql = "INSERT INTO routes " +

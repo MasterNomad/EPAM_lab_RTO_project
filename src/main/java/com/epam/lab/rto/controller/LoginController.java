@@ -25,7 +25,7 @@ public class LoginController {
     @Autowired
     private UserManager userManager;
 
-    @GetMapping("/home")
+    @GetMapping(value = {"/", "/home"})
     public ModelAndView home() {
         ModelAndView model = new ModelAndView();
         User currentUser = userManager.getUser();

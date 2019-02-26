@@ -78,8 +78,11 @@ public class TripController {
                                     @RequestParam(value = "carriage[]") Integer[] carriages,
                                     @RequestParam(value = "repeat[]") Long[] repeats,
                                     @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        ModelAndView model = new ModelAndView();
+
         tripService.addSchedule(routes, departures, prices, carriages, repeats, date);
+        ModelAndView model = new ModelAndView();
+        model.setViewName("/schedule/schedule-success");
+
         return model;
     }
 

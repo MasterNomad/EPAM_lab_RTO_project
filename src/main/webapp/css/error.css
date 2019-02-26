@@ -1,0 +1,4 @@
+#error {
+    background: url(../img/error_bg.jpg) no-repeat top center / cover;
+    height: 300px;
+}

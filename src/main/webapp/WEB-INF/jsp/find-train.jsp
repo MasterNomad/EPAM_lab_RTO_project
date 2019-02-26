@@ -23,7 +23,7 @@
 				</div>
 				<div class="form-block">
 					Дата отправления: <br>
-					<input type="date">
+					<input name="departure" type="datetime-local">
 				</div>
 				<div class="form-block">
 					<label for="arrivalCity">Город назначения: </label>
