@@ -1,16 +1,17 @@
 #personal-area {
     background: url(../img/route_bg.jpg) no-repeat center center / cover;
+    min-height:  390px;
 }
 
 #personal-card {
-    height: 300px;
+    height: 250px;
     width: fit-content;
     margin: auto;
     margin-bottom: 40px;
 }
 
 #avatar {
-    height: 300px;
+    height: 100%;
     float: left;
 }
 
@@ -18,4 +19,16 @@
     margin: 20px;
     display: inline-block;
     text-align: left;
+}
+
+th {
+    text-align: center;
+}
+
+.unpaid {
+    color: #ce0909;
+}
+
+.paid {
+    color: green;
 }

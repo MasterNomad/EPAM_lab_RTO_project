@@ -3,6 +3,7 @@ package com.epam.lab.rto.service;
 import com.epam.lab.rto.dto.*;
 import com.epam.lab.rto.repository.CarriageRepository;
 import com.epam.lab.rto.repository.RequestRepository;
+import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RequestService {
@@ -47,12 +49,44 @@ public class RequestService {
         Carriage carriage = carriageRepository.getCarriageByName(carriageName);
 
         //Добавить проверки
-
-        requestRepository.addRequest(new Request(user, trip,
+        Request request = new Request(user, trip,
                 departureCity, getDepartureDateTime(trip, departureCity),
                 destinationCity, getArrivalDateTime(trip, destinationCity),
                 carriage, tripService.getPriceByTripAndCarriage(trip, carriage),
-                RequestStatus.UNPAID));
+                RequestStatus.UNPAID);
+        requestRepository.addRequest(request);
+        tripService.increaseSoldPlaceByRequest(request);
+    }
+
+    public List<Request> getActiveRequestsByUser(User user) {
+        return requestRepository.getActiveRequestsByUserId(user.getId());
+    }
+
+    public List<Request> getInactiveRequestsByUser(User user) {
+        return requestRepository.getInactiveRequestsByUserId(user.getId());
+    }
+
+    public void closeRequest(long requestId, User user) {
+        Request request = requestRepository.getRequestById(requestId);
+        if (!Objects.isNull(request) && user.equals(request.getUser())) {
+            requestRepository.setRequestStatusById(requestId, RequestStatus.CANCELED);
+            tripService.decreaseSoldPlaceByRequest(request);
+        }
+    }
+
+    public void paidRequest(long requestId, User user) {
+        Request request = requestRepository.getRequestById(requestId);
+        if (!Objects.isNull(request) && user.equals(request.getUser())) {
+            requestRepository.setRequestStatusById(requestId, RequestStatus.PAID);
+        }
+    }
+
+    public void rejectRequest(long requestId, User user) {
+        Request request = requestRepository.getRequestById(requestId);
+        if (!Objects.isNull(request) && user.getRole().equals(UserRole.ADMIN)) {
+            requestRepository.setRequestStatusById(requestId, RequestStatus.REJECTED);
+            tripService.decreaseSoldPlaceByRequest(request);
+        }
     }
 
     private LocalDateTime getDepartureDateTime(Trip trip, String departureCity) {

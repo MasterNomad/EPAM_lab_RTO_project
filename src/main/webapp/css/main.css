@@ -173,3 +173,11 @@ th {
 	background-color: #6F46BA;
 	color: white;
 }
+
+tr {
+    background-color: #f7f7f7;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f3f3;
+}

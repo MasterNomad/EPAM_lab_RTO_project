@@ -8,6 +8,11 @@
 				<nav>
 					<ul class="menu">
 						<li>
+							<a class="btn" href="/personal-area">
+								<span>Личный кабинет</span>
+							</a>
+						</li>
+						<li>
 							<a class="btn" href="/find-train">
 								<span>Заказать билет</span>
 							</a>

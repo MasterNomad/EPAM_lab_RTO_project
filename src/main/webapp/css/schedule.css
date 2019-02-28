@@ -1,12 +1,4 @@
 #schedule {
     background: url(../img/schedule_bg.jpg) no-repeat center center / cover;
-    min-height: 300px;
-}
-
-tr {
-    background-color: #f7f7f7;
-}
-
-tr:nth-child(even) {
-    background-color: #f3f3f3;
+    min-height: 390px;
 }

@@ -31,6 +31,17 @@ public class UserRepository {
         return user;
     }
 
+    public User getUserById(long userId) {
+        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
+                "FROM `users` " +
+                "WHERE `email` = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public User getUserByEmailAndPassword(String email, String password) {
         String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +

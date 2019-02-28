@@ -16,7 +16,20 @@ public class Request {
     private BigDecimal price;
     private RequestStatus requestStatus;
 
-    public Request() {
+    public Request(long id, User user, Trip trip, String departureCity,
+                   LocalDateTime departureDateTime, String destinationCity,
+                   LocalDateTime arrivalDateTime, Carriage carriage, BigDecimal price,
+                   RequestStatus requestStatus) {
+        this.id = id;
+        this.user = user;
+        this.trip = trip;
+        this.departureCity = departureCity;
+        this.departureDateTime = departureDateTime;
+        this.destinationCity = destinationCity;
+        this.arrivalDateTime = arrivalDateTime;
+        this.carriage = carriage;
+        this.price = price;
+        this.requestStatus = requestStatus;
     }
 
     public Request(Trip trip, String departureCity, LocalDateTime departureDateTime,

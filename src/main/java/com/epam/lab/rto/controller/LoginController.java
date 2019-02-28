@@ -8,12 +8,12 @@ import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
 import com.epam.lab.rto.exceptions.WrongAgeException;
 import com.epam.lab.rto.manager.UserManager;
 import com.epam.lab.rto.service.UserService;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.time.LocalDate;
 
 @Controller
@@ -25,25 +25,13 @@ public class LoginController {
     @Autowired
     private UserManager userManager;
 
-    @GetMapping(value = {"/", "/home"})
-    public ModelAndView home() {
-        ModelAndView model = new ModelAndView();
-        User currentUser = userManager.getUser();
-        if (currentUser.getRole().equals(UserRole.ADMIN)){
-            model.setViewName("redirect:/route");
-        }
-        if (currentUser.getRole().equals(UserRole.USER)){
-            model.setViewName("redirect:/find-train");
-        }
-
-        return model;
-    }
-
     @GetMapping("/logout")
-    public ModelAndView logout(){
+    public ModelAndView logout(HttpServletRequest request){
         ModelAndView model = new ModelAndView();
-        userManager.setUser(null);
+
+        request.getSession().invalidate();
         model.setViewName("redirect:/login");
+
         return model;
     }
 

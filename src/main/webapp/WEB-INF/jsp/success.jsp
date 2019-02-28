@@ -4,6 +4,8 @@
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
 <link rel="stylesheet" href="/css/schedule.css" class="css">
+<link rel="stylesheet" href="/css/login.css" class="css">
+<link rel="stylesheet" href="/css/find-train.css" class="css">
 </head>
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
@@ -12,6 +14,7 @@
     <div class="container">
         <div class="form">
             <h2>${msg}</h2>
+            <p>${additional}</p>
             <a href="${link}" class="btn">Продолжить</a>
         </div>
     </div>

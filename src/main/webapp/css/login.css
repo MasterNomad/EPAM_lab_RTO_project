@@ -1,5 +1,6 @@
 #login {
 	background: url(../img/login_bg.jpg) no-repeat center center / cover;
+	min-height:  390px;
 }
 
 .select-input {

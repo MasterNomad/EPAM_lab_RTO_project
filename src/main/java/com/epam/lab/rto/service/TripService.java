@@ -1,10 +1,8 @@
 package com.epam.lab.rto.service;
 
-import com.epam.lab.rto.dto.Carriage;
-import com.epam.lab.rto.dto.Route;
-import com.epam.lab.rto.dto.Trip;
-import com.epam.lab.rto.dto.TripComposition;
+import com.epam.lab.rto.dto.*;
 import com.epam.lab.rto.repository.CarriageRepository;
+import com.epam.lab.rto.repository.TripCompositionRepository;
 import com.epam.lab.rto.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,9 @@ public class TripService {
 
     @Autowired
     private CarriageRepository carriageRepository;
+
+    @Autowired
+    private TripCompositionRepository tripCompositionRepository;
 
     public Trip getTripById(long tripId) {
         return tripRepository.getTripById(tripId);
@@ -54,10 +55,10 @@ public class TripService {
         return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
     }
 
-    public List <String> getPriceAndCarriageDescriptionByTripIdAndCarriageName(long tripId, String carriageName){
-        List <String> result = new ArrayList<>();
+    public List<String> getPriceAndCarriageDescriptionByTripIdAndCarriageName(long tripId, String carriageName) {
+        List<String> result = new ArrayList<>();
         Carriage carriage = carriageRepository.getCarriageByName(carriageName);
-        if (Objects.isNull(carriage)){
+        if (Objects.isNull(carriage)) {
             result.add("В рейсе отсутствует вагон указанного типа");
             result.add("-");
             return result;
@@ -105,7 +106,7 @@ public class TripService {
     public boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
         for (TripComposition currentCarriage : trip.getTripComposition()) {
             if (currentCarriage.getCarriage().equals(carriage)) {
-                return currentCarriage.getPlacesSold() < currentCarriage.getAmount()*carriage.getPlaces();
+                return currentCarriage.getPlacesSold() < currentCarriage.getAmount() * carriage.getPlaces();
             }
         }
         return false;
@@ -125,5 +126,19 @@ public class TripService {
             }
         }
         return result;
+    }
+
+    public void increaseSoldPlaceByRequest(Request request) {
+        tripCompositionRepository.increaseSoldPlaceByTripIdAndCarriageId(
+                request.getTrip().getId(),
+                request.getCarriage().getId()
+        );
+    }
+
+    public void decreaseSoldPlaceByRequest(Request request) {
+        tripCompositionRepository.decreaseSoldPlaceByTripIdAndCarriageId(
+                request.getTrip().getId(),
+                request.getCarriage().getId()
+        );
     }
 }

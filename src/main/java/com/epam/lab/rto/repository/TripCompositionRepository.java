@@ -65,4 +65,18 @@ public class TripCompositionRepository {
             return null;
         }
     }
+
+    public void increaseSoldPlaceByTripIdAndCarriageId (long tripId, long carriageId) {
+       String sql = "UPDATE `trip_composition` " +
+                "SET `places_sold` = `places_sold` + 1 " +
+                "WHERE `trip_id` = ? AND `carriage_id` = ?";
+        jdbcTemplate.update(sql, tripId, carriageId);
+    }
+
+    public void decreaseSoldPlaceByTripIdAndCarriageId (long tripId, long carriageId) {
+        String sql = "UPDATE `trip_composition` " +
+                "SET `places_sold` = `places_sold` - 1 " +
+                "WHERE `trip_id` = ? AND `carriage_id` = ?";
+        jdbcTemplate.update(sql, tripId, carriageId);
+    }
 }
