@@ -30,6 +30,19 @@ public class Request {
         this.price = price;
     }
 
+    public Request(User user, Trip trip, String departureCity, LocalDateTime departureDateTime, String destinationCity,
+                   LocalDateTime arrivalDateTime, Carriage carriage, BigDecimal price, RequestStatus requestStatus) {
+        this.user = user;
+        this.trip = trip;
+        this.departureCity = departureCity;
+        this.departureDateTime = departureDateTime;
+        this.destinationCity = destinationCity;
+        this.arrivalDateTime = arrivalDateTime;
+        this.carriage = carriage;
+        this.price = price;
+        this.requestStatus = requestStatus;
+    }
+
     public long getId() {
         return id;
     }

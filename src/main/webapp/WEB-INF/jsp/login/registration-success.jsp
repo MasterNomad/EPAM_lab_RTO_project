@@ -11,7 +11,7 @@
 <section id="login" class="content">
     <div class="container">
         <div class="form">
-            <h2>Вы успешно зарегистрированны</h2>
+            <h2>ОШИБКА! <br>Вы успешно зарегистрированны</h2>
             <a href="/login" class="btn">Войти</a>
         </div>
     </div>

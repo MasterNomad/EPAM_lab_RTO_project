@@ -1,9 +1,8 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.repository.CarriageRepository;
-import com.epam.lab.rto.services.RouteService;
-import com.epam.lab.rto.services.TripService;
-import org.apache.tomcat.jni.Local;
+import com.epam.lab.rto.service.RouteService;
+import com.epam.lab.rto.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -81,7 +79,10 @@ public class TripController {
 
         tripService.addSchedule(routes, departures, prices, carriages, repeats, date);
         ModelAndView model = new ModelAndView();
-        model.setViewName("/schedule/schedule-success");
+        model.setViewName("success");
+        model.addObject("page", "schedule");
+        model.addObject("msg", "Расписание обновлено");
+        model.addObject("link", "/admin/schedule");
 
         return model;
     }

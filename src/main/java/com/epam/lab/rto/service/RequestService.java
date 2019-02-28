@@ -1,15 +1,12 @@
-package com.epam.lab.rto.services;
+package com.epam.lab.rto.service;
 
-import com.epam.lab.rto.dto.Carriage;
-import com.epam.lab.rto.dto.Request;
-import com.epam.lab.rto.dto.Route;
-import com.epam.lab.rto.dto.Trip;
+import com.epam.lab.rto.dto.*;
+import com.epam.lab.rto.repository.CarriageRepository;
+import com.epam.lab.rto.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -24,6 +21,12 @@ public class RequestService {
     @Autowired
     private RouteService routeService;
 
+    @Autowired
+    private RequestRepository requestRepository;
+
+    // заменить
+    @Autowired
+    private CarriageRepository carriageRepository;
 
     public List<Request> findTrains(String departureCity, String destinationCity, LocalDateTime departure) {
         List<Request> result = new ArrayList<>();
@@ -37,6 +40,19 @@ public class RequestService {
             result.add(new Request(trip, departureCity, departureDateTime, destinationCity, arrivalDateTime, carriage, price));
         }
         return result;
+    }
+
+    public void addRequest(long tripId, String departureCity, String destinationCity, String carriageName, User user) {
+        Trip trip = tripService.getTripById(tripId);
+        Carriage carriage = carriageRepository.getCarriageByName(carriageName);
+
+        //Добавить проверки
+
+        requestRepository.addRequest(new Request(user, trip,
+                departureCity, getDepartureDateTime(trip, departureCity),
+                destinationCity, getArrivalDateTime(trip, destinationCity),
+                carriage, tripService.getPriceByTripAndCarriage(trip, carriage),
+                RequestStatus.UNPAID));
     }
 
     private LocalDateTime getDepartureDateTime(Trip trip, String departureCity) {

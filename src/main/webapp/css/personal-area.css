@@ -1,0 +1,21 @@
+#personal-area {
+    background: url(../img/route_bg.jpg) no-repeat center center / cover;
+}
+
+#personal-card {
+    height: 300px;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+#avatar {
+    height: 300px;
+    float: left;
+}
+
+.info {
+    margin: 20px;
+    display: inline-block;
+    text-align: left;
+}

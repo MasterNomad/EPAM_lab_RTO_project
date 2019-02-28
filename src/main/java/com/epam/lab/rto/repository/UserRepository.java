@@ -31,15 +31,25 @@ public class UserRepository {
         return user;
     }
 
-    public User getUserByEmail(String email) {
-        String sql = "SELECT * " +
+    public User getUserByEmailAndPassword(String email, String password) {
+        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +
-                "WHERE email = ?";
+                "WHERE `email` = ? AND `password` = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, email, password);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public User getUserByEmail(String email) {
+        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
+                "FROM `users` " +
+                "WHERE `email` = ?";
         try {
             return jdbcTemplate.queryForObject(sql, ROW_MAPPER, email);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 }

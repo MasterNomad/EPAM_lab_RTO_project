@@ -1,4 +1,4 @@
-package com.epam.lab.rto.services;
+package com.epam.lab.rto.service;
 
 import com.epam.lab.rto.repository.UserRepository;
 import com.epam.lab.rto.dto.User;
@@ -19,12 +19,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
-    }
-
     public User registerUser(User user, String confirmPassword) {
-        if (userRepository.getUserByEmail(user.getEmail()) != null) {
+        if (!Objects.isNull(userRepository.getUserByEmail(user.getEmail()))) {
             throw new SuchUserAlreadyExistException("e-mail уже занят");
         }
         if (!user.getPassword().equals(confirmPassword)) {
@@ -38,12 +34,9 @@ public class UserService {
     }
 
     public User enter(User user) {
-        User currentUser = userRepository.getUserByEmail(user.getEmail());
+        User currentUser = userRepository.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
         if (Objects.isNull(currentUser)) {
             throw new NoSuchUserException("Неверный логин или пароль");
-        }
-        if (!user.getPassword().equals(currentUser.getPassword())) {
-            throw new PasswordNotMatchException("Неверный логин или пароль");
         }
         return currentUser;
     }

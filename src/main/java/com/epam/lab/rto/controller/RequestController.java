@@ -1,11 +1,10 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.dto.Carriage;
-import com.epam.lab.rto.repository.CarriageRepository;
-import com.epam.lab.rto.services.RequestService;
-import com.epam.lab.rto.services.RouteService;
-import com.epam.lab.rto.services.StationService;
-import com.epam.lab.rto.services.TripService;
+import com.epam.lab.rto.manager.UserManager;
+import com.epam.lab.rto.service.RequestService;
+import com.epam.lab.rto.service.RouteService;
+import com.epam.lab.rto.service.StationService;
+import com.epam.lab.rto.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class RequestController {
@@ -34,27 +30,27 @@ public class RequestController {
     private StationService stationService;
 
     @Autowired
-    private CarriageRepository carriageRepository;
-
-    @Autowired
     private TripService tripService;
 
+    @Autowired
+    private UserManager userManager;
+
     @GetMapping("/find-train")
-    public ModelAndView homePage() {
+    public ModelAndView getFindTrain() {
         ModelAndView model = new ModelAndView();
 
-        model.setViewName("find-train");
+        model.setViewName("request/find-train");
         model.addObject("stations", stationService.getAllStations());
 
         return model;
     }
 
     @PostMapping("/find-train")
-    public ModelAndView findTrain(String departureCity, String destinationCity,
-                                  @RequestParam(value = "departure") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure) {
+    public ModelAndView postFindTrain(String departureCity, String destinationCity,
+                                      @RequestParam(value = "departure") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure) {
         ModelAndView model = new ModelAndView();
 
-        model.setViewName("find-train");
+        model.setViewName("request/find-train");
         model.addObject("stations", stationService.getAllStations());
         model.addObject("departureCity", departureCity);
         model.addObject("destinationCity", destinationCity);
@@ -64,13 +60,22 @@ public class RequestController {
         return model;
     }
 
+    @PostMapping("/find-train/сonfirm")
+    public ModelAndView confirmRequest(long tripId, String departureCity, String destinationCity, String carriageName) {
+        ModelAndView model = new ModelAndView();
+
+        requestService.addRequest(tripId, departureCity, destinationCity, carriageName, userManager.getUser());
+        model.setViewName("success");
+        model.addObject("page", "find-train");
+        model.addObject("msg", "Расписание обновлено");
+        model.addObject("link", "/admin/schedule");
+
+        return model;
+    }
+
     @ResponseBody
     @GetMapping("/find-train/carriage-change")
     public List<String> refreshCarriage(long tripId, String carriageName) {
-        List<String> answer = new ArrayList<>();
-        Carriage carriage = carriageRepository.getCarriageByName(carriageName.trim());
-        answer.add(carriage.getDescription());
-        answer.add(tripService.getPriceByTripIdAndCarriageId(tripId, carriage.getId()).toString());
-        return answer;
+        return tripService.getPriceAndCarriageDescriptionByTripIdAndCarriageName(tripId, carriageName);
     }
 }

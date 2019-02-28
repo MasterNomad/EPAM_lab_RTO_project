@@ -8,11 +8,11 @@
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
-<section id="schedule" class="content">
+<section id="${page}" class="content">
     <div class="container">
         <div class="form">
-            <h2>ОШИБКА! <br> Расписание обновлено</h2>
-            <a href="/admin/schedule" class="btn">Продолжить</a>
+            <h2>${msg}</h2>
+            <a href="${link}" class="btn">Продолжить</a>
         </div>
     </div>
 </section>

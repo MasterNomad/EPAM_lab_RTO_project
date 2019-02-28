@@ -16,10 +16,10 @@ $(document).ready(function () {
                     'carriageName': $call.val()
                 }
             }).done(
-                function (description, price) {
-                    console.log(description);
-                    $call.closest('table').find('.tooltiptext').html(description);
-                    $call.closest(".price").html(price + " руб.");
+                function (answer) {
+                    console.log(answer);
+                    $call.closest('table').find('.tooltiptext').html(answer[0]);
+                    $call.closest('table').find('.price').html(answer[1] + " руб.");
                 }
             )
         })

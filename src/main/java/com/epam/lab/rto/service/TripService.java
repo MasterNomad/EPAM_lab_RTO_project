@@ -1,4 +1,4 @@
-package com.epam.lab.rto.services;
+package com.epam.lab.rto.service;
 
 import com.epam.lab.rto.dto.Carriage;
 import com.epam.lab.rto.dto.Route;
@@ -27,6 +27,9 @@ public class TripService {
     @Autowired
     private CarriageRepository carriageRepository;
 
+    public Trip getTripById(long tripId) {
+        return tripRepository.getTripById(tripId);
+    }
 
     public List<Trip> findTripsWithoutTransfer(String startStation, String finishStation, LocalDateTime departure) {
         List<Trip> result = new ArrayList<>();
@@ -51,9 +54,28 @@ public class TripService {
         return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
     }
 
-    public BigDecimal getPriceByTripIdAndCarriageId (long tripId, long carriageId){
+    public List <String> getPriceAndCarriageDescriptionByTripIdAndCarriageName(long tripId, String carriageName){
+        List <String> result = new ArrayList<>();
+        Carriage carriage = carriageRepository.getCarriageByName(carriageName);
+        if (Objects.isNull(carriage)){
+            result.add("В рейсе отсутствует вагон указанного типа");
+            result.add("-");
+            return result;
+        }
         Trip trip = tripRepository.getTripById(tripId);
-        trip.getTripComposition().forEach(ca);
+        if (isTripContainsCarriageTypePlaces(trip, carriage)) {
+            result.add(carriage.getDescription());
+            result.add(getPriceByTripAndCarriage(trip, carriage).toString());
+            return result;
+        } else {
+            result.add("В рейсе отсутствует вагон указанного типа или все места проданны");
+            result.add("-");
+            return result;
+        }
+    }
+
+    public BigDecimal getPriceByTripAndCarriage(Trip trip, Carriage carriage) {
+        return trip.getPrice().multiply(carriage.getPriceFactor());
     }
 
     public void addSchedule(String[] routes,
@@ -78,6 +100,15 @@ public class TripService {
             }
         }
         addTrips(result);
+    }
+
+    public boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
+        for (TripComposition currentCarriage : trip.getTripComposition()) {
+            if (currentCarriage.getCarriage().equals(carriage)) {
+                return currentCarriage.getPlacesSold() < currentCarriage.getAmount()*carriage.getPlaces();
+            }
+        }
+        return false;
     }
 
     private void addTrips(List<Trip> trips) {

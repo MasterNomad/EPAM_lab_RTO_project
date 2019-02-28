@@ -1,4 +1,4 @@
-package com.epam.lab.rto.services;
+package com.epam.lab.rto.service;
 
 
 import com.epam.lab.rto.repository.LocomotiveRepository;

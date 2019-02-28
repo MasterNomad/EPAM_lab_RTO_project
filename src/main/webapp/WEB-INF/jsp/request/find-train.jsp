@@ -37,11 +37,12 @@
 				</div>
 				<input type="submit" class="btn" value="Поиск">
 			</form>
+
 			<c:forEach items="${answer}" var="request">
 				<div class="request">
-					<form action="">
+					<form action="/find-train/сonfirm" method="POST">
 						<div class="form-block">Рейс №
-							<input class="inactive trip-id" disabled type="text" value="${request.trip.id}">
+							<input name="tripId" class="inactive trip-id" readonly="readonly" type="number" value="${request.trip.id}">
 						</div>
 						<div class="form-block">
 							Маршрут:
@@ -63,13 +64,15 @@
 							</tr>
 							<tr>
 								<td>
-									<input class="inactive" disabled type="text" value="${request.departureCity}">
+									<input name="departureCity" class="inactive" readonly="readonly" type="text"
+										value="${request.departureCity}">
 								</td>
 								<td>
-									<input class="inactive" disabled type="text" value="${request.destinationCity}">
+									<input name="destinationCity" class="inactive" readonly="readonly" type="text"
+										value="${request.destinationCity}">
 								</td>
 								<td class="input">
-									<input class="clear carriage" type="text" list="carriages-${request.trip.id}"
+									<input  name="carriageName" class="clear carriage" type="text" list="carriages-${request.trip.id}"
 										value="${request.carriage.name}" required>
 									<datalist id="carriages-${request.trip.id}">
 										<c:forEach items="${request.trip.tripComposition}" var="carriage">
@@ -100,6 +103,7 @@
 					</form>
 				</div>
 			</c:forEach>
+
 		</div>
 	</div>
 </section>

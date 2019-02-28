@@ -40,6 +40,10 @@ public class CarriageRepository {
         String sql = "SELECT * " +
                 "FROM `carriage_types`" +
                 "WHERE `name` = ? ";
-        return jdbcTemplate.queryForObject(sql, ROW_MAPPER, carriage);
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, carriage);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

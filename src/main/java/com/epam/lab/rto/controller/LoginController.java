@@ -7,7 +7,7 @@ import com.epam.lab.rto.exceptions.PasswordNotMatchException;
 import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
 import com.epam.lab.rto.exceptions.WrongAgeException;
 import com.epam.lab.rto.manager.UserManager;
-import com.epam.lab.rto.services.UserService;
+import com.epam.lab.rto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +70,10 @@ public class LoginController {
     public ModelAndView registrationSuccess() {
         ModelAndView model = new ModelAndView();
 
-        model.setViewName("login/registration-success");
+        model.setViewName("success");
+        model.addObject("page", "login");
+        model.addObject("msg", "Вы успешно зарегистрированны");
+        model.addObject("link", "/login");
 
         return model;
     }

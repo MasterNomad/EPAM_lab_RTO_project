@@ -41,8 +41,8 @@
 					<c:forEach items="${routes}" var="route">
 				<tr>
 					<td>${route.title}</td>
-					<td>${route.stationList[0].stationName}</td>
-					<td>${route.stationList[fn:length(route.stationList)-1].stationName}</td>
+					<td>${route.stationList[0].name}</td>
+					<td>${route.stationList[fn:length(route.stationList)-1].name}</td>
 					<td>${route.locomotive.name}</td>
 					<td>
 						<fmt:formatNumber var="expiry" value="${(expire.time - now.time) / (60 * 1000)}"
