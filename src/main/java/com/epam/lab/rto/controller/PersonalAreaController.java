@@ -24,7 +24,7 @@ public class PersonalAreaController {
         ModelAndView model = new ModelAndView();
         User currentUser = userManager.getUser();
         if (currentUser.getRole().equals(UserRole.ADMIN)) {
-            model.setViewName("redirect:/route");
+            model.setViewName("redirect:/admin/requests");
         }
         if (currentUser.getRole().equals(UserRole.USER)) {
             model.setViewName("redirect:/personal-area");

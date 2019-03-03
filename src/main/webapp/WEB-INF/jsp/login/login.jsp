@@ -8,7 +8,7 @@
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
-<section id="login" class="content">
+<section id="login">
     <div class="container">
         <div class="form">
             <h2>Войти</h2>

@@ -34,7 +34,7 @@ public class UserRepository {
     public User getUserById(long userId) {
         String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +
-                "WHERE `email` = ?";
+                "WHERE `id` = ?";
         try {
             return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);
         } catch (EmptyResultDataAccessException e) {

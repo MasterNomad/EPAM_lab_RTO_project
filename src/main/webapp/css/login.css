@@ -1,6 +1,5 @@
 #login {
 	background: url(../img/login_bg.jpg) no-repeat center center / cover;
-	min-height:  390px;
 }
 
 .select-input {
@@ -23,12 +22,28 @@
 	width: 15px;
 }
 
-td {
-	text-align: left;
-}
 
 .answer {
 	color: #ce0909;
 	text-align: center;
+}
+
+table {
+	background: none;
+}
+
+td {
+	text-align: left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border: 0;
+}
+
+tr {
+	background: none;
+}
+
+tr:nth-child(even) {
+	background: none;
 }
 

@@ -3,38 +3,35 @@
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
-<link rel="stylesheet" href="/css/personal-area.css" class="css">
+<link rel="stylesheet" href="/css/requests.css" class="css">
 </head>
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
-<section id="personal-area">
+<section id="requests">
     <div class="container">
         <div class="form">
-            <h2>Личный кабинет</h2>
-
-            <div id="personal-card">
-                <img id="avatar" src="/img/avatar.jpg" alt="avatar">
-                <div class="info">
-                    <h3>ФИО:</h3>
-                    <div class="form-block">${user.surname} ${user.name} ${user.patronymic}</div>
-                    <h3>Дата рождения: </h3>
-                    <div class="form-block"> ${user.birthDate} </div>
+            <h3>История заявок</h3>
+            <form action="/admin/requests/history#tableMarker" method="POST">
+                <div>
+                    За период: <input name="firstDate" type="date" value="${firstDate}"> -
+                    <input name="secondDate" type="date" value=${secondDate}>
+                    <input class="btn" type="submit" value="Обновить">
+                    <a class="btn" href="/admin/requests#tableMarker">Активные заявки</a>
                 </div>
-            </div>
-            <h3>История</h3>
+            </form>
             <a name="tableMarker"></a>
 
             <c:if test="${empty requests}">
-                <p>Вы ещё не пользовались услугами нашей компании.</p>
+                <p>В указанный период небыло заявок</p>
             </c:if>
 
             <c:if test="${not empty requests}">
-
                 <table>
                     <tr>
-                        <th>Код билета</th>
+                        <th>Код заявки</th>
                         <th>Рейс</th>
+                        <th>Пользователь</th>
                         <th>Город отправления</th>
                         <th>Дата/время отправления</th>
                         <th>Город назначения</th>
@@ -58,6 +55,28 @@
                                     </span>
                                 </span>
                             </td>
+                            <td>
+                                <span class="tooltip">
+                                    ${request.user.id}
+                                    <span class="tooltiptext">
+                                        ФИО: <p>${request.user.surname} ${request.user.name} ${request.user.patronymic}
+                                        </p>
+                                        Дата рождения:
+                                        <p>${request.user.birthDate}</p>
+                                        Пол: <c:choose>
+                                            <c:when test="${request.user.sex == 'true'}">
+                                                <span class="paid">муж.</span>
+                                            </c:when>
+                                            <c:when test="${request.user.sex == 'false'}">
+                                                <span class="unpaid">жен.</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                Неизвестно
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </span>
+                                </span>
+                            </td>
                             <td>${request.departureCity}</td>
                             <td>${request.departureDateTime}</td>
                             <td>${request.destinationCity}</td>
@@ -74,10 +93,10 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${request.paymentState == 'true'}">
-                                        <span> Оплачен</span>
+                                        <span class="paid"> Оплачен</span>
                                     </c:when>
                                     <c:when test="${request.paymentState == 'false'}">
-                                        <span>Не оплачен</span>
+                                        <span class="unpaid">Не оплачен</span>
                                     </c:when>
                                     <c:otherwise>
                                         Неизвестно
@@ -112,7 +131,6 @@
                 </table>
             </c:if>
 
-            <a class="btn" href="/personal-area#tableMarker">Текущие билеты</a>
         </div>
     </div>
 </section>

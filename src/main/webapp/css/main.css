@@ -13,19 +13,34 @@ body {
 	clear: both;
 }
 
-.separator {
-	box-shadow: inset 0px -12px 10px -10px rgba(0, 0, 0, 0.7);
-	height: 10px;
+html, body {
+	height: 100%;
+	margin: 0
 }
 
-.content {
-	padding: 60px;
+body {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+}
+
+header {
+	flex: 0 1 auto;
+}
+
+section {
+	flex: 1 1 auto;
+}
+
+.separator {
+	background: #ddd;
+	box-shadow: inset 0px -12px 10px -10px rgba(0, 0, 0, 0.7);
+	height: 10px;
 }
 
 a {
 	color: #6F46BA;
 	display: inline-block;
-	margin-top: 10px;
 }
 
 a:hover {
@@ -97,7 +112,7 @@ h2 {
 	display: inline-block;
 	font-weight: bold;
 	color: #333;
-	margin: 30px;
+	margin: 40px;
 }
 
 input {
@@ -169,15 +184,14 @@ td, th {
 th {
 	padding-top: 12px;
 	padding-bottom: 12px;
-	text-align: left;
 	background-color: #6F46BA;
 	color: white;
 }
 
 tr {
-    background-color: #f7f7f7;
+	background-color: #f7f7f7;
 }
 
 tr:nth-child(even) {
-    background-color: #f3f3f3;
+	background-color: #f3f3f3;
 }

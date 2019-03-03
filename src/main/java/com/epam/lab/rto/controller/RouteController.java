@@ -94,6 +94,7 @@ public class RouteController {
         model.addObject("route", route);
         model.addObject("stations", route.getStations());
         model.addObject("locomotives", locomotiveRepository.getAll());
+
         return model;
     }
 

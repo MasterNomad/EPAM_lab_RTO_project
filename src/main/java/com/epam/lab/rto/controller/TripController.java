@@ -33,7 +33,20 @@ public class TripController {
         ModelAndView model = new ModelAndView();
 
         LocalDate firstDate = LocalDate.now();
-        LocalDate secondDate = LocalDate.now().plus(1, ChronoUnit.MONTHS);
+        LocalDate secondDate = firstDate.plusMonths(1);
+
+        model.setViewName("schedule/schedule");
+        model.addObject("firstDate", firstDate);
+        model.addObject("secondDate", secondDate);
+        model.addObject("trips", tripService.getTripsBetweenDates(firstDate, secondDate));
+
+        return model;
+    }
+
+    @PostMapping("/admin/schedule")
+    public ModelAndView postSchedule(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
+                                     @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
+        ModelAndView model = new ModelAndView();
 
         model.setViewName("schedule/schedule");
         model.addObject("firstDate", firstDate);
@@ -52,19 +65,6 @@ public class TripController {
         model.addObject("date", LocalDate.now().plus(1, ChronoUnit.MONTHS));
         model.addObject("routes", routeService.getAllRoutes());
         model.addObject("carriages", carriageRepository.getAll());
-
-        return model;
-    }
-
-    @PostMapping("/admin/schedule")
-    public ModelAndView postSchedule(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
-                                     @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
-        ModelAndView model = new ModelAndView();
-
-        model.setViewName("schedule/schedule");
-        model.addObject("firstDate", firstDate);
-        model.addObject("secondDate", secondDate);
-        model.addObject("trips", tripService.getTripsBetweenDates(firstDate, secondDate));
 
         return model;
     }

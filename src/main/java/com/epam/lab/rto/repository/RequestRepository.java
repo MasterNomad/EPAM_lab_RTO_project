@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class RequestRepository {
             rs.getTimestamp("arrival_datetime").toLocalDateTime(),
             carriageRepository.getCarriageById(rs.getLong("carriage_id")),
             rs.getBigDecimal("price"),
-            RequestStatus.valueOf(rs.getString("request_status")));
+            RequestStatus.valueOf(rs.getString("request_status")),
+            rs.getBoolean("payment_state"));
 
     public void addRequest(Request request) {
         String sql = "INSERT INTO `requests` " +
@@ -56,7 +58,7 @@ public class RequestRepository {
     public Request getRequestById(long requestId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
-                "WHERE `requests_id` = ?";
+                "WHERE `request_id` = ?";
         try {
             return jdbcTemplate.queryForObject(sql, ROW_MAPPER, requestId);
         } catch (EmptyResultDataAccessException e) {
@@ -67,7 +69,7 @@ public class RequestRepository {
     public List<Request> getActiveRequestsByUserId(long userId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
-                "WHERE `user_id` = ? AND `arrival_datetime` > ? AND `request_status` IN ('UNPAID','PAID')";
+                "WHERE `user_id` = ? AND `arrival_datetime` > ? AND `request_status` IN ('ACTIVE')";
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 
@@ -78,10 +80,35 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 
+    public List<Request> getInactiveRequestsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+        String sql = "SELECT * " +
+                "FROM (SELECT *" +
+                "FROM `requests` " +
+                "WHERE `departure_datetime` BETWEEN ? AND ?) AS T " +
+                "WHERE `arrival_datetime` < ? OR `request_status` IN ('REJECTED','CANCELED')";
+        return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate, LocalDate.now());
+    }
+
+    public List<Request> getActiveRequestsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+        String sql = "SELECT * " +
+                "FROM `requests` " +
+                "WHERE (`departure_datetime` BETWEEN ? AND ?) AND `request_status` IN ('ACTIVE')";
+        return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate);
+    }
+
     public int setRequestStatusById(long requestId, RequestStatus status) {
         String sql = " UPDATE `requests` " +
                 "SET `request_status` = ? " +
-                "WHERE `request_id` = ?";
+                "WHERE (`request_id` = ?)";
+
         return jdbcTemplate.update(sql, status.toString(), requestId);
+    }
+
+    public int setRequestPaymentStateById(long requestId, boolean paid) {
+        String sql = " UPDATE `requests` " +
+                "SET `payment_state` = ? " +
+                "WHERE (`request_id` = ?)";
+
+        return jdbcTemplate.update(sql, paid, requestId);
     }
 }

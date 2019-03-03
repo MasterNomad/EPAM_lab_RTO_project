@@ -1,6 +1,5 @@
 #personal-area {
     background: url(../img/route_bg.jpg) no-repeat center center / cover;
-    min-height:  390px;
 }
 
 #personal-card {
@@ -31,4 +30,8 @@ th {
 
 .paid {
     color: green;
+}
+
+p a {
+    margin: 0;
 }

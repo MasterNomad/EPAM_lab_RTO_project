@@ -3,45 +3,42 @@
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
-<link rel="stylesheet" href="/css/personal-area.css" class="css">
+<link rel="stylesheet" href="/css/requests.css" class="css">
 </head>
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
 
-<section id="personal-area">
+<section id="requests">
     <div class="container">
         <div class="form">
-            <h2>Личный кабинет</h2>
-
-            <div id="personal-card">
-                <img id="avatar" src="/img/avatar.jpg" alt="avatar">
-                <div class="info">
-                    <h3>ФИО:</h3>
-                    <div class="form-block">${user.surname} ${user.name} ${user.patronymic}</div>
-                    <h3>Дата рождения: </h3>
-                    <div class="form-block"> ${user.birthDate} </div>
+            <h3>Активные заявки</h3>
+            <form action="/admin/requests#tableMarker" method="POST">
+                <div>
+                    За период: <input min="${minDate}" name="firstDate" type="date" value="${firstDate}"> -
+                    <input name="secondDate" type="date" value=${secondDate}>
+                    <input class="btn" type="submit" value="Обновить">
+                    <a class="btn" href="/admin/requests/history#tableMarker">История</a>
                 </div>
-            </div>
-
-            <h3>Билеты</h3>
+            </form>
             <a name="tableMarker"></a>
 
             <c:if test="${empty requests}">
-                <p>Нет активных билетов.</p>
+                <p>Нет активных заявок за указанный период</p>
             </c:if>
 
             <c:if test="${not empty requests}">
                 <table>
                     <tr>
-                        <th>Код билета</th>
+                        <th>Код заявки</th>
                         <th>Рейс</th>
+                        <th>Пользователь</th>
                         <th>Город отправления</th>
                         <th>Дата/время отправления</th>
                         <th>Город назначения</th>
                         <th>Дата/время прибытия</th>
                         <th>Тип вагона</th>
                         <th>Цена</th>
-                        <th>Статус</th>
+                        <th>Оплата</th>
                         <th>Действия</th>
                     </tr>
                     <c:forEach items="${requests}" var="request">
@@ -55,6 +52,28 @@
                                         <c:forEach items="${request.trip.route.stationList}" var="station">
                                             <p>${station.name}</p>
                                         </c:forEach>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="tooltip">
+                                    ${request.user.id}
+                                    <span class="tooltiptext">
+                                        ФИО: <p>${request.user.surname} ${request.user.name} ${request.user.patronymic}
+                                        </p>
+                                        Дата рождения:
+                                        <p>${request.user.birthDate}</p>
+                                        Пол: <c:choose>
+                                            <c:when test="${request.user.sex == 'true'}">
+                                                <span class="paid">муж.</span>
+                                            </c:when>
+                                            <c:when test="${request.user.sex == 'false'}">
+                                                <span class="unpaid">жен.</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                Неизвестно
+                                            </c:otherwise>
+                                        </c:choose>
                                     </span>
                                 </span>
                             </td>
@@ -85,17 +104,14 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <c:if test="${request.paymentState == 'false'}">
-                                    <p><a href="/request/paid?requestId=${request.id}">Оплатить</a></p>
-                                </c:if>
-                                <p><a href="/request/cancel?requestId=${request.id}">Отменить</a></p>
+                                <p>
+                                    <a href="/admin/request/reject?requestId=${request.id}">Отклонить</a>
+                                </p>
                             </td>
                         </tr>
                     </c:forEach>
                 </table>
             </c:if>
-
-            <a class="btn" href="/personal-area?history=true#tableMarker">История</a>
 
         </div>
     </div>

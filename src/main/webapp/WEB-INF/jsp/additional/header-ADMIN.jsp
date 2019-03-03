@@ -8,13 +8,8 @@
 				<nav>
 					<ul class="menu">
 						<li>
-							<a class="btn" href="/personal-area">
-								<span>Личный кабинет</span>
-							</a>
-						</li>
-						<li>
-							<a class="btn" href="/find-train">
-								<span>Заказать билет</span>
+							<a class="btn" href="/admin/requests">
+								<span>Заявки</span>
 							</a>
 						</li>
 						<li>
@@ -25,6 +20,16 @@
 						<li>
 							<a class="btn" href="/route">
 								<span>Маршруты</span>
+							</a>
+						</li>
+						<li>
+							<a class="btn" href="/personal-area">
+								<span>Личный кабинет</span>
+							</a>
+						</li>
+						<li>
+							<a class="btn" href="/find-train">
+								<span>Заказать билет</span>
 							</a>
 						</li>
 						<li>
@@ -40,5 +45,5 @@
 				<p id="addition">*работает только на территории Российской Федерации</p>
 			</div>
 		</div>
+		<div class="separator"></div>
 	</header>
-	<div class="separator"></div>

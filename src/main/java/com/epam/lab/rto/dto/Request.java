@@ -15,11 +15,12 @@ public class Request {
     private Carriage carriage;
     private BigDecimal price;
     private RequestStatus requestStatus;
+    private boolean paymentState = false;
 
     public Request(long id, User user, Trip trip, String departureCity,
                    LocalDateTime departureDateTime, String destinationCity,
                    LocalDateTime arrivalDateTime, Carriage carriage, BigDecimal price,
-                   RequestStatus requestStatus) {
+                   RequestStatus requestStatus, boolean paymentState) {
         this.id = id;
         this.user = user;
         this.trip = trip;
@@ -30,6 +31,7 @@ public class Request {
         this.carriage = carriage;
         this.price = price;
         this.requestStatus = requestStatus;
+        this.paymentState = paymentState;
     }
 
     public Request(Trip trip, String departureCity, LocalDateTime departureDateTime,
@@ -134,5 +136,13 @@ public class Request {
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
+    }
+
+    public boolean isPaymentState() {
+        return paymentState;
+    }
+
+    public void setPaymentState(boolean paymentState) {
+        this.paymentState = paymentState;
     }
 }

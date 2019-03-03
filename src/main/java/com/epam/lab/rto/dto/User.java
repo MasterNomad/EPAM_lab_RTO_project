@@ -3,6 +3,7 @@ package com.epam.lab.rto.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class User {
 
@@ -17,7 +18,7 @@ public class User {
     private boolean sex;
     private UserRole role;
 
-    public User () {
+    public User() {
     }
 
     public User(long id, String email, String password, String surname, String name, String patronymic, LocalDate birthDate, boolean sex, UserRole role) {
@@ -102,5 +103,25 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId() == user.getId() &&
+                getSex() == user.getSex() &&
+                getEmail().equals(user.getEmail()) &&
+                getSurname().equals(user.getSurname()) &&
+                getName().equals(user.getName()) &&
+                getPatronymic().equals(user.getPatronymic()) &&
+                getBirthDate().equals(user.getBirthDate()) &&
+                getRole() == user.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail(), getSurname(), getName(), getPatronymic(), getBirthDate(), getSex(), getRole());
     }
 }

@@ -25,5 +25,5 @@
 				<p id="addition">*работает только на территории Российской Федерации</p>
 			</div>
 		</div>
+		<div class="separator"></div>
 	</header>
-	<div class="separator"></div>

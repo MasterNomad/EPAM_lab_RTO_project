@@ -39,7 +39,7 @@ public class FindTrainController {
     public ModelAndView getFindTrain() {
         ModelAndView model = new ModelAndView();
 
-        model.setViewName("request/find-train");
+        model.setViewName("requests/find-train");
         model.addObject("stations", stationService.getAllStations());
 
         return model;
@@ -50,7 +50,7 @@ public class FindTrainController {
                                       @RequestParam(value = "departure") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure) {
         ModelAndView model = new ModelAndView();
 
-        model.setViewName("request/find-train");
+        model.setViewName("requests/find-train");
         model.addObject("stations", stationService.getAllStations());
         model.addObject("departureCity", departureCity);
         model.addObject("destinationCity", destinationCity);

@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="/css/schedule.css" class="css">
 <link rel="stylesheet" href="/css/login.css" class="css">
 <link rel="stylesheet" href="/css/find-train.css" class="css">
+<link rel="stylesheet" href="/css/personal-area.css" class="css">
+<link rel="stylesheet" href="/css/requests.css" class="css">
 </head>
 
 <jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />

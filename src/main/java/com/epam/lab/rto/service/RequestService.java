@@ -3,11 +3,10 @@ package com.epam.lab.rto.service;
 import com.epam.lab.rto.dto.*;
 import com.epam.lab.rto.repository.CarriageRepository;
 import com.epam.lab.rto.repository.RequestRepository;
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -48,12 +47,11 @@ public class RequestService {
         Trip trip = tripService.getTripById(tripId);
         Carriage carriage = carriageRepository.getCarriageByName(carriageName);
 
-        //Добавить проверки
         Request request = new Request(user, trip,
                 departureCity, getDepartureDateTime(trip, departureCity),
                 destinationCity, getArrivalDateTime(trip, destinationCity),
                 carriage, tripService.getPriceByTripAndCarriage(trip, carriage),
-                RequestStatus.UNPAID);
+                RequestStatus.ACTIVE);
         requestRepository.addRequest(request);
         tripService.increaseSoldPlaceByRequest(request);
     }
@@ -66,19 +64,33 @@ public class RequestService {
         return requestRepository.getInactiveRequestsByUserId(user.getId());
     }
 
-    public void closeRequest(long requestId, User user) {
+    public List <Request> getActiveRequestBetweenDates (LocalDate firstDate, LocalDate secondDate) {
+        if (firstDate.isBefore(LocalDate.now())) {
+            firstDate = LocalDate.now();
+        }
+        return requestRepository.getActiveRequestsBetweenDates(firstDate, secondDate);
+    }
+
+    public Object getInactiveRequestBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+        return requestRepository.getInactiveRequestsBetweenDates(firstDate, secondDate);
+    }
+
+    public boolean cancelRequest(long requestId, User user) {
         Request request = requestRepository.getRequestById(requestId);
         if (!Objects.isNull(request) && user.equals(request.getUser())) {
             requestRepository.setRequestStatusById(requestId, RequestStatus.CANCELED);
             tripService.decreaseSoldPlaceByRequest(request);
+            return true;
         }
+        return false;
     }
 
-    public void paidRequest(long requestId, User user) {
+    public boolean paidRequest(long requestId, User user) {
         Request request = requestRepository.getRequestById(requestId);
         if (!Objects.isNull(request) && user.equals(request.getUser())) {
-            requestRepository.setRequestStatusById(requestId, RequestStatus.PAID);
+            return requestRepository.setRequestPaymentStateById(requestId, true) > 0;
         }
+        return false;
     }
 
     public void rejectRequest(long requestId, User user) {
