@@ -6,7 +6,14 @@
 <link rel="stylesheet" href="/css/find-train.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<c:choose>
+    <c:when test="${role == 'ADMIN'}">
+        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
+    </c:when>
+    <c:otherwise>
+        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
+    </c:otherwise>
+</c:choose>
 
 <section id="find-train" class="content">
 	<div class="container">
@@ -37,6 +44,10 @@
 				</div>
 				<input type="submit" class="btn" value="Поиск">
 			</form>
+
+			<c:if test="${empty answer}">
+                <p>По вашему запросу подходящих поездов не найденно</p>
+            </c:if>
 
 			<c:forEach items="${answer}" var="request">
 				<div class="request">

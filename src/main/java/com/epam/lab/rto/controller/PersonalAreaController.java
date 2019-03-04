@@ -22,6 +22,7 @@ public class PersonalAreaController {
     @GetMapping(value = {"/", "/home"})
     public ModelAndView home() {
         ModelAndView model = new ModelAndView();
+
         User currentUser = userManager.getUser();
         if (currentUser.getRole().equals(UserRole.ADMIN)) {
             model.setViewName("redirect:/admin/requests");

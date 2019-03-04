@@ -2,15 +2,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
-
-<link rel="stylesheet" href="/css/schedule.css" class="css">
-<link rel="stylesheet" href="/css/login.css" class="css">
-<link rel="stylesheet" href="/css/find-train.css" class="css">
-<link rel="stylesheet" href="/css/personal-area.css" class="css">
-<link rel="stylesheet" href="/css/requests.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<c:choose>
+    <c:when test="${role == 'ADMIN'}">
+        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
+    </c:when>
+    <c:otherwise>
+        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
+    </c:otherwise>
+</c:choose>
 
 <section id="${page}" class="content">
     <div class="container">

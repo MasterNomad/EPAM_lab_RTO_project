@@ -1,10 +1,4 @@
 $(document).ready(function () {
-    $(".clear").click(
-        function () {
-            $(this).val('');
-        }
-    );
-
     $(".carriage").change(
         function () {
             var $call = $(this);

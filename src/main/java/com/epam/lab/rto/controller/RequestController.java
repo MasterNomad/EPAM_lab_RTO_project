@@ -57,7 +57,7 @@ public class RequestController {
         ModelAndView model = new ModelAndView();
 
         LocalDate firstDate = LocalDate.now().minusMonths(1);
-        LocalDate secondDate = LocalDate.now();
+        LocalDate secondDate = LocalDate.now().plusMonths(1);
 
         model.setViewName("requests/history");
         model.addObject("requests", requestService.getInactiveRequestBetweenDates(firstDate, secondDate));

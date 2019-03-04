@@ -73,7 +73,8 @@ public class TripRepository {
     public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
         String sql = "SELECT * " +
                 "FROM `trips` " +
-                "WHERE `departure` BETWEEN ? and ?";
+                "WHERE `departure` BETWEEN ? and ?" +
+                "ORDER BY `departure`";
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate);
     }
 

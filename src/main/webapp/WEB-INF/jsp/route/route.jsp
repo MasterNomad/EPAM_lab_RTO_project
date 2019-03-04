@@ -7,12 +7,15 @@
 <link rel="stylesheet" href="/css/route.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
 
 <section id="route" class="content">
 	<div class="container">
 		<div class="form">
 			<h2>Маршруты</h2>
+			
+			<a href="/admin/route/create" class="btn">Создать маршрут</a>
+
 			<table>
 				<tr>
 					<th>
@@ -28,40 +31,30 @@
 					<th>Время в пути</th>
 					<th></th>
 				</tr>
-				<tr id="search">
-					<td><input id="title" name="title" type="text"></td>
-					<td><input id="departureStation" name="departureStation" type="text"></td>
-					<td><input id="arrivalStation" name="arrivalStation" type="text"></td>
-					<td></td>
-					<td></td>
-					<td>
-						<a href="#">Поиск</a>
-					</td>
-				</tr>
-					<c:forEach items="${routes}" var="route">
-				<tr>
-					<td>${route.title}</td>
-					<td>${route.stationList[0].name}</td>
-					<td>${route.stationList[fn:length(route.stationList)-1].name}</td>
-					<td>${route.locomotive.name}</td>
-					<td>
-						<fmt:formatNumber var="expiry" value="${(expire.time - now.time) / (60 * 1000)}"
-							maxFractionDigits="0" />
-						<c:set var="time" scope="session"
-							value="${route.stationList[fn:length(route.stationList)-1].travelTime}" />
-						${fn:substringBefore(time/1440, '.')}д.
-						${fn:substringBefore(time%1440/60, '.')}ч.
-						${time%60}м.
-					</td>
-					<td>
-						<a href='/route/edit?title=${route.title}'>Редактировать</a>
-						<br>
-						<a href='/route/delete?title=${route.title}'>Удалить</a>
-					</td>
-				</tr>
+
+				<c:forEach items="${routes}" var="route">
+					<tr>
+						<td>${route.title}</td>
+						<td>${route.stationList[0].name}</td>
+						<td>${route.stationList[fn:length(route.stationList)-1].name}</td>
+						<td>${route.locomotive.name}</td>
+						<td>
+							<fmt:formatNumber var="expiry" value="${(expire.time - now.time) / (60 * 1000)}"
+								maxFractionDigits="0" />
+							<c:set var="time" scope="session"
+								value="${route.stationList[fn:length(route.stationList)-1].travelTime}" />
+							${fn:substringBefore(time/1440, '.')}д.
+							${fn:substringBefore(time%1440/60, '.')}ч.
+							${time%60}м.
+						</td>
+						<td>
+							<a href='admin/route/edit?title=${route.title}'>Редактировать</a>
+							<br>
+							<a href='admin/route/delete?title=${route.title}'>Удалить</a>
+						</td>
+					</tr>
 				</c:forEach>
 			</table>
-			<a href="/route/create" class="btn">Создать маршрут</a>
 		</div>
 	</div>
 	</div>

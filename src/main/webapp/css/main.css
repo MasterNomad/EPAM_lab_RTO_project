@@ -1,3 +1,31 @@
+#requests {
+	background: url(../img/admin_bg.jpg) no-repeat center center / cover;
+}
+
+#personal-area {
+	background: url(../img/personal_bg.jpg) no-repeat top center / cover;
+}
+
+#route {
+	background: url(../img/admin_bg.jpg) no-repeat center center / cover;
+}
+
+#schedule {
+	background: url(../img/admin_bg.jpg) no-repeat center center / cover;
+}
+
+#error {
+	background: url(../img/error_bg.jpg) no-repeat top center / cover;
+}
+
+#find-train {
+	background: url(../img/ticket_bg.jpg) no-repeat center center / cover;
+}
+
+#login {
+	background: url(../img/login_bg.jpg) no-repeat center center / cover;
+}
+
 body {
 	font-family: Arial, sans-serif;
 	padding: 0;
@@ -139,9 +167,8 @@ input {
 
 .tooltip .tooltiptext {
 	font-weight: normal;
-	padding: 10px;
 	visibility: hidden;
-	width: 120px;
+	width: auto;
 	background-color: #757575;
 	color: #fff;
 	text-align: center;
@@ -189,9 +216,17 @@ th {
 }
 
 tr {
-	background-color: #f7f7f7;
+	background-color: #f3f3f3;
 }
 
 tr:nth-child(even) {
-	background-color: #f3f3f3;
+	background-color: #f7f7f7;
+}
+
+.tip-table tr {
+	background: none;
+}
+
+.tip-table td {
+	padding: 2px;
 }

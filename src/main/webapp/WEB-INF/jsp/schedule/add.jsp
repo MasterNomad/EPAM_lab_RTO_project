@@ -4,10 +4,9 @@
 <%@include  file="/WEB-INF/jsp//additional/head.html" %>
 
 <link rel="stylesheet" href="/css/schedule.css" class="css">
-<link rel="stylesheet" href="/css/schedule-create.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
 
 <section id="schedule" class="content">
     <div class="container">
@@ -38,7 +37,7 @@
                                 </c:forEach>
                             </datalist>
                         </td>
-                        <td><input name="departure[]" type="datetime-local" value="${currentDate}" required></td>
+                        <td><input name="departure[]" type="datetime-local" required></td>
                         <td>
                             <table class="carriages">
                                 <c:forEach items="${carriages}" var="carriage">

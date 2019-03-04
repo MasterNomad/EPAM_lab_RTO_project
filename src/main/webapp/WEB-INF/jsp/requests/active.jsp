@@ -2,11 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
-
-<link rel="stylesheet" href="/css/requests.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
 
 <section id="requests">
     <div class="container">
@@ -49,9 +47,29 @@
                                     ${request.trip.id}
                                     <span class="tooltiptext">
                                         Маршрут: ${request.trip.route.title}
-                                        <c:forEach items="${request.trip.route.stationList}" var="station">
-                                            <p>${station.name}</p>
-                                        </c:forEach>
+                                        <table class="tip-table">
+                                            <tr>
+                                                <td>Город</td>
+                                                <td>Остановка</td>
+                                            </tr>
+                                            <c:forEach items="${request.trip.route.stationList}" var="station">
+                                                <tr>
+                                                    <td>${station.name}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${0 > station.stopDuration}">
+                                                            </c:when>
+                                                            <c:when test="${station.stopDuration > 0}">
+                                                                ${station.stopDuration} мин.
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                -
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
                                     </span>
                                 </span>
                             </td>
@@ -85,7 +103,7 @@
                                 <span class="tooltip">
                                     ${request.carriage.name}
                                     <span class="tooltiptext">
-                                        ${request.carriage.description}
+                                        <p>${request.carriage.description}</p>
                                     </span>
                                 </span>
                             </td>

@@ -1,5 +1,6 @@
 package com.epam.lab.rto.config;
 
+import com.epam.lab.rto.interceptor.AdminInterceptor;
 import com.epam.lab.rto.interceptor.AlreadyLoginInterceptor;
 import com.epam.lab.rto.interceptor.LoginInterceptor;
 import com.epam.lab.rto.interceptor.UserRoleAwareInterceptor;
@@ -22,6 +23,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
+    public AdminInterceptor adminInterceptor() {
+        return new AdminInterceptor();
+    }
+
+    @Bean
     public UserRoleAwareInterceptor userRoleAwareInterceptor() {
         return new UserRoleAwareInterceptor();
     }
@@ -31,8 +37,9 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/error");
 
-        registry.addInterceptor(alreadyLoginInterceptor()).addPathPatterns("/login/**")
-                .excludePathPatterns("/css/**", "/js/**", "/img/**");
+        registry.addInterceptor(alreadyLoginInterceptor()).addPathPatterns("/login/**");
+
+        registry.addInterceptor(adminInterceptor()).addPathPatterns("/admin/**");
 
         registry.addInterceptor(userRoleAwareInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/find-train/carriage-change");

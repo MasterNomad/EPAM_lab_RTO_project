@@ -6,7 +6,14 @@
 <link rel="stylesheet" href="/css/personal-area.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<c:choose>
+    <c:when test="${role == 'ADMIN'}">
+        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
+    </c:when>
+    <c:otherwise>
+        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
+    </c:otherwise>
+</c:choose>
 
 <section id="personal-area">
     <div class="container">
@@ -52,9 +59,29 @@
                                     ${request.trip.id}
                                     <span class="tooltiptext">
                                         Маршрут: ${request.trip.route.title}
-                                        <c:forEach items="${request.trip.route.stationList}" var="station">
-                                            <p>${station.name}</p>
-                                        </c:forEach>
+                                        <table class="tip-table">
+                                            <tr>
+                                                <td>Город</td>
+                                                <td>Остановка</td>
+                                            </tr>
+                                            <c:forEach items="${request.trip.route.stationList}" var="station">
+                                                <tr>
+                                                    <td>${station.name}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${0 > station.stopDuration}">
+                                                            </c:when>
+                                                            <c:when test="${station.stopDuration > 0}">
+                                                                ${station.stopDuration} мин.
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                -
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
                                     </span>
                                 </span>
                             </td>

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Controller
-public class TripController {
+public class ScheduleController {
 
     @Autowired
     private RouteService routeService;
@@ -28,7 +28,7 @@ public class TripController {
     @Autowired
     private CarriageRepository carriageRepository;
 
-    @GetMapping("/admin/schedule")
+    @GetMapping("/schedule")
     public ModelAndView getSchedule() {
         ModelAndView model = new ModelAndView();
 
@@ -43,7 +43,7 @@ public class TripController {
         return model;
     }
 
-    @PostMapping("/admin/schedule")
+    @PostMapping("/schedule")
     public ModelAndView postSchedule(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
                                      @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
         ModelAndView model = new ModelAndView();
@@ -61,7 +61,6 @@ public class TripController {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("schedule/add");
-        model.addObject("currentDate", LocalDateTime.now().withSecond(0).withNano(0));
         model.addObject("date", LocalDate.now().plus(1, ChronoUnit.MONTHS));
         model.addObject("routes", routeService.getAllRoutes());
         model.addObject("carriages", carriageRepository.getAll());

@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    $(".delete_btn").click(
+        function () {
+            $(this).closest('.form-block').remove();
+            return false;
+        }
+    );
     $("#add_btn").click(
         function () {
             $("#add_btn").before("<div class='form-block'>Промежуточная станция: " +
@@ -9,6 +15,11 @@ $(document).ready(function () {
                 function () {
                     $(this).closest('.form-block').remove();
                     return false;
+                }
+            );
+            $(".clear").click(
+                function () {
+                    $(this).val('');
                 }
             );
         }

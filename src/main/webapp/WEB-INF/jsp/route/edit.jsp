@@ -7,13 +7,13 @@
 <link rel="stylesheet" href="/css/route.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header${role}.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
 
 <section id="route" class="content">
     <div class="container">
         <div class="form">
             <h2>Mаршрут: ${route.title} </h2>
-            <form action="/route/update" method="POST">
+            <form action="/admin/route/update" method="POST">
                 <div class="form-block">
                     Локомотив:
                     <input type="text" list="locomotives" name="locomotive" value="${route.locomotive.name}" required>

@@ -1,7 +1,6 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.dto.User;
-import com.epam.lab.rto.dto.UserRole;
 import com.epam.lab.rto.exceptions.NoSuchUserException;
 import com.epam.lab.rto.exceptions.PasswordNotMatchException;
 import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.time.LocalDate;
 
 @Controller
@@ -26,7 +26,7 @@ public class LoginController {
     private UserManager userManager;
 
     @GetMapping("/logout")
-    public ModelAndView logout(HttpServletRequest request){
+    public ModelAndView logout(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
 
         request.getSession().invalidate();
@@ -43,6 +43,23 @@ public class LoginController {
 
         return model;
     }
+
+    @PostMapping("/login")
+    public ModelAndView enter(User user) {
+        ModelAndView model = new ModelAndView();
+
+        try {
+            userManager.setUser(userService.enter(user));
+            model.setViewName("redirect:/home");
+        } catch (NoSuchUserException | PasswordNotMatchException e) {
+            model.addObject("answer", e.getMessage());
+            model.addObject("email", user.getEmail());
+            model.setViewName("login/login");
+        }
+
+        return model;
+    }
+
 
     @GetMapping("/login/registration")
     public ModelAndView registration() {
@@ -62,22 +79,6 @@ public class LoginController {
         model.addObject("page", "login");
         model.addObject("msg", "Вы успешно зарегистрированны");
         model.addObject("link", "/login");
-
-        return model;
-    }
-
-    @PostMapping("/login")
-    public ModelAndView enter(User user) {
-        ModelAndView model = new ModelAndView();
-
-        try {
-            userManager.setUser(userService.enter(user));
-            model.setViewName("redirect:/home");
-        } catch (NoSuchUserException | PasswordNotMatchException e) {
-            model.addObject("answer", e.getMessage());
-            model.addObject("email", user.getEmail());
-            model.setViewName("login/login");
-        }
 
         return model;
     }

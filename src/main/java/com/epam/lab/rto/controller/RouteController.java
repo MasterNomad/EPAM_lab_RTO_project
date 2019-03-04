@@ -30,7 +30,7 @@ public class RouteController {
     @Autowired
     private RouteManager routeManager;
 
-    @GetMapping("/route")
+    @GetMapping("/admin/route")
     public ModelAndView routeList() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/route");
@@ -39,7 +39,7 @@ public class RouteController {
         return model;
     }
 
-    @GetMapping("/route/create")
+    @GetMapping("/admin/route/create")
     public ModelAndView routeCreate() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
@@ -54,7 +54,7 @@ public class RouteController {
         return model;
     }
 
-    @PostMapping("/route/create")
+    @PostMapping("/admin/route/create")
     public ModelAndView generateRoute(@RequestParam(value = "args[]") String... args) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
@@ -67,7 +67,7 @@ public class RouteController {
         return model;
     }
 
-    @GetMapping("/route/edit")
+    @GetMapping("/admin/route/edit")
     public ModelAndView editRoute(String title) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/edit");
@@ -98,7 +98,7 @@ public class RouteController {
         return model;
     }
 
-    @PostMapping("/route/update")
+    @PostMapping("/admin/route/update")
     public ModelAndView updateRoute(String locomotive, @RequestParam(value = "time[]") String[] times, String action) {
         Route route = routeManager.getCurrentRoute();
         routeService.updateRoute(route, locomotive, new ArrayList<>(Arrays.asList(times)));
@@ -108,7 +108,7 @@ public class RouteController {
         return editRoute(action);
     }
 
-    @GetMapping("/route/delete")
+    @GetMapping("/admin/route/delete")
     public ModelAndView deleteRoute (@RequestParam String title) {
         routeService.deleteRouteByTitle(title);
         return routeList();

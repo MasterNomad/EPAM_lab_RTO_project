@@ -22,7 +22,7 @@ public class UserRoleAwareInterceptor implements HandlerInterceptor {
         if (Objects.isNull(currentUser)) {
             return;
         }
-        modelAndView.addObject("role", "-" + userManager.getUser().getRole());
+        modelAndView.addObject("role", userManager.getUser().getRole());
     }
 
 }
