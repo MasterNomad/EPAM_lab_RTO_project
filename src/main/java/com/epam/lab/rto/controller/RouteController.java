@@ -5,11 +5,13 @@ import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.manager.RouteManager;
 import com.epam.lab.rto.service.RouteService;
 import com.epam.lab.rto.service.StationService;
+import com.epam.lab.rto.service.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,9 @@ public class RouteController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private TrainService trainService;
 
     @Autowired
     private LocomotiveRepository locomotiveRepository;
@@ -60,6 +65,7 @@ public class RouteController {
         model.setViewName("route/create");
         model.addObject("stations", stationService.getAllStations());
         List<String> routeWay = stationService.createRouteWay(args);
+        model.addObject("args", args );
         model.addObject("answer", routeWay);
         model.addObject("next", "true");
         routeManager.setRouteWay(routeWay);
@@ -112,6 +118,18 @@ public class RouteController {
     public ModelAndView deleteRoute (@RequestParam String title) {
         routeService.deleteRouteByTitle(title);
         return routeList();
+    }
+
+    @ResponseBody
+    @GetMapping("/route/getstations")
+    public Route refreshCarriage(String routeTitle) {
+        return routeService.getRouteByTitle(routeTitle);
+    }
+
+    @ResponseBody
+    @GetMapping("/route/getlocomotivespeed")
+    public int getLocomotiveSpeed(String locomotiveName) {
+        return trainService.getLocomotiveByName(locomotiveName).getAverage_speed();
     }
 
 }

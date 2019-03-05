@@ -42,7 +42,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(adminInterceptor()).addPathPatterns("/admin/**");
 
         registry.addInterceptor(userRoleAwareInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/find-train/carriage-change");
+                .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/find-train/carriage-change", "/route/getstations", "/route/getlocomotivespeed");
     }
 
 }

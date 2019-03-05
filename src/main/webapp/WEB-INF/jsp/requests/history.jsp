@@ -4,7 +4,7 @@
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/header-admin.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
 
 <section id="requests">
     <div class="container">
@@ -107,7 +107,7 @@
                                     </span>
                                 </span>
                             </td>
-                            <td>${request.price}</td>
+                            <td>${request.price} руб.</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${request.paymentState == 'true'}">

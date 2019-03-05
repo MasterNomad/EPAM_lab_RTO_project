@@ -24,18 +24,45 @@
                     </tr>
                 </table>
                 <div><a id="add_btn" class="btn">+</a></div>
-                <input class="btn" type="submit" value="Утвердить до"><input name = "date" type="date" value="${date}" required>
+                <input class="btn" type="submit" value="Утвердить до"><input name="date" type="date" value="${date}"
+                    required>
                 включительно
             </form>
             <table>
                 <tbody id="trip_input">
                     <tr class="input">
-                        <td><input name="route[]" list="routes" type="text" required>
-                            <datalist id="routes">
+                        <td>
+                            <select name="route[]" class = "route" required>
                                 <c:forEach items="${routes}" var="route">
                                     <option value="${route.title}">${route.title}</option>
                                 </c:forEach>
-                            </datalist>
+                            </select>
+                            <span class="tooltip">?
+                                    <span class="tooltiptext">
+                                            Маршрут: ${routes[0].title}
+                                            <table class="tip-table">
+                                                <tr>
+                                                    <td>Город</td>
+                                                    <td>Остановка</td>
+                                                </tr>
+                                                <c:forEach items="${routes[0].stationList}" var="station">
+                                                    <tr>
+                                                        <td>${station.name}</td>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${station.stopDuration > 0}">
+                                                                    ${station.stopDuration} мин.
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    -
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                    </span>
+                                </span>
                         </td>
                         <td><input name="departure[]" type="datetime-local" required></td>
                         <td>

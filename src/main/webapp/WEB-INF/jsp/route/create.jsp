@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
@@ -16,28 +17,68 @@
 				<div class="form-block">
 					Город отправления: <br>
 					<span id="city_input">
-						<input class ="clear" type="text" list="cities" name="args[]" required>
-						<datalist id="cities">
+						<select name="args[]" required>
 							<c:forEach items="${stations}" var="station">
-								<option value="${station}">${station}</option>
+								<option value="${station}" ${station==args[0] ? 'selected="selected"' : '' }>${station}
+								</option>
 							</c:forEach>
-						</datalist>
+						</select>
 					</span>
 				</div>
 
-				<a id="add_btn" class="btn">+</a>
+				<c:if test="${fn:length(args) > 2}">
+					<c:forEach begin="1" end="${fn:length(args)-2}" varStatus="loop">
+						<div class='form-block'>
+							Промежуточная станция:<span class='a_btn delete_btn'>X</span> <br>
+							<select name="args[]" required>
+								<c:forEach items="${stations}" var="station">
+									<option value="${station}" ${station==args[loop.index] ? 'selected="selected"' : ''
+										}>
+										${station}
+									</option>
+								</c:forEach>
+							</select>
+						</div>
+					</c:forEach>
+				</c:if>
 
+				<a id="add_btn" class="btn">+</a>
 				<div class="form-block">
 					Город назначения: <br>
-					<input class ="clear" type="text" list="cities" name="args[]" required>
+					<select name="args[]" required>
+						<c:forEach items="${stations}" var="station">
+							<option value="${station}" "${station}" ${station==args[fn:length(args)-1]
+								? 'selected="selected"' : '' }>${station}</option>
+						</c:forEach>
+					</select>
 				</div>
 				<input type="submit" class="btn" value="Расчитать">
 			</form>
-			<div>${answer}</div>
-			<c:if test="${next == 'true'}">
-				<div>
-					<a href="/admin/route/edit" class="btn">Продолжить</a>
-				</div>
+
+
+			<c:if test="${not empty answer}">
+				<c:if test="${fn:length(answer) > 1}">
+					<h4>Кратчайший маршрут по вашему запросу проходит через следующие станции:</h3>
+						<div id="route-stations">
+							<p>${answer[0]}</p>
+							<c:set var="index" value="1" />
+							<c:forEach begin="1" end="${fn:length(answer)-2}" varStatus="loop">
+								<c:choose>
+									<c:when test="${answer[loop.index] == args[index]}">
+										<c:set var="index" value="${index + 1}" />
+										<p>${answer[loop.index]}</p>
+									</c:when>
+									<c:otherwise>
+										<span>${answer[loop.index]}</span><br>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<p>${answer[fn:length(answer)-1]}</p>
+						</div>
+						<div>
+							<a href="/admin/route/edit" class="btn">Продолжить</a>
+						</div>
+				</c:if>
 			</c:if>
 		</div>
 	</div>

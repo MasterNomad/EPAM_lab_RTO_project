@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +69,11 @@ public class RequestService {
         if (firstDate.isBefore(LocalDate.now())) {
             firstDate = LocalDate.now();
         }
-        return requestRepository.getActiveRequestsBetweenDates(firstDate, secondDate);
+        return requestRepository.getActiveRequestsBetweenDates(LocalDateTime.of(firstDate, LocalTime.of(4,0)), LocalDateTime.of(secondDate.plusDays(1), LocalTime.of(4,0)));
     }
 
     public Object getInactiveRequestBetweenDates(LocalDate firstDate, LocalDate secondDate) {
-        return requestRepository.getInactiveRequestsBetweenDates(firstDate, secondDate);
+        return requestRepository.getInactiveRequestsBetweenDates(LocalDateTime.of(firstDate, LocalTime.of(4,0)), LocalDateTime.of(secondDate.plusDays(1), LocalTime.of(4,0)));
     }
 
     public boolean cancelRequest(long requestId, User user) {

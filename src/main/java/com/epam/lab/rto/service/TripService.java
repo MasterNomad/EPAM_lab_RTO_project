@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -46,7 +47,7 @@ public class TripService {
     }
 
     public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
-        return tripRepository.getTripsBetweenDates(firstDate, secondDate);
+        return tripRepository.getTripsBetweenDates(LocalDateTime.of(firstDate, LocalTime.of(4,0)), LocalDateTime.of(secondDate.plusDays(1), LocalTime.of(4,0)));
     }
 
     public List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {

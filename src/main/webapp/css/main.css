@@ -153,6 +153,16 @@ input {
 	text-align: center;
 }
 
+select {
+	height: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 1px;
+	border: 0;
+	font-size: 18px;
+	text-align: center;
+}
+
 .form-block {
 	display: inline-block;
 	padding: 5px;
@@ -216,11 +226,11 @@ th {
 }
 
 tr {
-	background-color: #f3f3f3;
+	background-color: #f7f7f7;
 }
 
 tr:nth-child(even) {
-	background-color: #f7f7f7;
+	background-color: #f3f3f3;
 }
 
 .tip-table tr {

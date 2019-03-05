@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,6 +42,8 @@ public class FindTrainController {
 
         model.setViewName("requests/find-train");
         model.addObject("stations", stationService.getAllStations());
+        model.addObject("currentDate", LocalDateTime.now().withSecond(0).withNano(0));
+        model.addObject("answer", "none");
 
         return model;
     }
@@ -55,6 +58,7 @@ public class FindTrainController {
         model.addObject("departureCity", departureCity);
         model.addObject("destinationCity", destinationCity);
         model.addObject("departure", departure);
+        model.addObject("currentDate", LocalDateTime.now().withSecond(0).withNano(0));
         model.addObject("answer", requestService.findTrains(departureCity, destinationCity, departure));
 
         return model;

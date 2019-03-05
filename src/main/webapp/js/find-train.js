@@ -11,7 +11,6 @@ $(document).ready(function () {
                 }
             }).done(
                 function (answer) {
-                    console.log(answer);
                     $call.closest('table').find('.tooltiptext').html(answer[0]);
                     $call.closest('table').find('.price').html(answer[1] + " руб.");
                 }

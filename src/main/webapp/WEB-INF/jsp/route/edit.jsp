@@ -13,16 +13,26 @@
     <div class="container">
         <div class="form">
             <h2>Mаршрут: ${route.title} </h2>
-            <form action="/admin/route/update" method="POST">
+            <a name="marker"></a>
+            <form action="/admin/route/update#marker" method="POST">
                 <div class="form-block">
                     Локомотив:
-                    <input type="text" list="locomotives" name="locomotive" value="${route.locomotive.name}" required>
-                    <datalist id="locomotives">
+                    <select name="locomotive" class="edit" required>
                         <c:forEach items="${locomotives}" var="locomotive">
-                            <option value="${locomotive.name}">${locomotive.name}</option>
+                            <option value="${locomotive.name}" ${locomotive.name==route.locomotive.name ? 'selected="selected"'
+                                : '' }>${locomotive.name}</option>
                         </c:forEach>
-                    </datalist>
-                    Средняя скорость: ${route.locomotive.average_speed} км./ч.
+                    </select>
+                    Средняя скорость: <span id="speed">
+                            <c:choose>
+                                    <c:when test="${not empty route.locomotive}">
+                                        ${route.locomotive.average_speed}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${locomotives[0].average_speed}
+                                    </c:otherwise>
+                                </c:choose>
+                    </span> км/ч
                 </div>
                 <table>
                     <tr>

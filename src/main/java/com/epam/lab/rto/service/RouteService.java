@@ -1,12 +1,10 @@
 package com.epam.lab.rto.service;
 
-
 import com.epam.lab.rto.repository.LocomotiveRepository;
 import com.epam.lab.rto.repository.RouteRepository;
 import com.epam.lab.rto.dto.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +99,4 @@ public class RouteService {
     private boolean ifBefore(List stationList, String startStation, String finishStation) {
         return stationList.indexOf(startStation) < stationList.lastIndexOf(finishStation);
     }
-
 }

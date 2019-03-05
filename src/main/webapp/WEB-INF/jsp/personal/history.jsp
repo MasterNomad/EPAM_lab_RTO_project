@@ -97,7 +97,7 @@
                                     </span>
                                 </span>
                             </td>
-                            <td>${request.price}</td>
+                            <td>${request.price} руб.</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${request.paymentState == 'true'}">

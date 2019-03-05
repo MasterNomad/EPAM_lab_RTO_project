@@ -70,7 +70,7 @@ public class TripRepository {
         }
     }
 
-    public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+    public List<Trip> getTripsBetweenDates(LocalDateTime firstDate, LocalDateTime secondDate) {
         String sql = "SELECT * " +
                 "FROM `trips` " +
                 "WHERE `departure` BETWEEN ? and ?" +

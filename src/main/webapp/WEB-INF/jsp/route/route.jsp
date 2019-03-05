@@ -48,9 +48,9 @@
 							${time%60}м.
 						</td>
 						<td>
-							<a href='admin/route/edit?title=${route.title}'>Редактировать</a>
+							<a href='/admin/route/edit?title=${route.title}'>Редактировать</a>
 							<br>
-							<a href='admin/route/delete?title=${route.title}'>Удалить</a>
+							<a href='/admin/route/delete?title=${route.title}'>Удалить</a>
 						</td>
 					</tr>
 				</c:forEach>

@@ -76,7 +76,7 @@
                             <td>${trip.route.stationList[0].name}</td>
                             <td>${trip.departure}</td>
                             <td>${trip.route.stationList[fn:length(trip.route.stationList)-1].name}</td>
-                            <td>${trip.price}</td>
+                            <td>${trip.price} руб.</td>
                         </tr>
                     </c:forEach>
                 </table>

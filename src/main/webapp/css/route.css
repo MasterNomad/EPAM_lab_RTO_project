@@ -33,3 +33,19 @@ table input {
 .a_btn:hover {
     text-decoration: none;
 }
+
+#route-stations {
+    text-align: left;
+    width: fit-content;
+    margin: auto;
+}
+
+#route-stations p {
+    font-size: 18px;
+    color: #cc2222;
+    margin-left: 0;
+}
+
+#route-stations span {
+    margin-left: 10px; 
+}

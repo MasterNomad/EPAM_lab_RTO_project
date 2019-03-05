@@ -80,7 +80,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 
-    public List<Request> getInactiveRequestsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+    public List<Request> getInactiveRequestsBetweenDates(LocalDateTime firstDate, LocalDateTime secondDate) {
         String sql = "SELECT * " +
                 "FROM (SELECT *" +
                 "FROM `requests` " +
@@ -89,7 +89,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate, LocalDate.now());
     }
 
-    public List<Request> getActiveRequestsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
+    public List<Request> getActiveRequestsBetweenDates(LocalDateTime firstDate, LocalDateTime secondDate) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
                 "WHERE (`departure_datetime` BETWEEN ? AND ?) AND `request_status` IN ('ACTIVE')";
