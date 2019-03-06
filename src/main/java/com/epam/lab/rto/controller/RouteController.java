@@ -1,11 +1,10 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.repository.LocomotiveRepository;
 import com.epam.lab.rto.dto.Route;
 import com.epam.lab.rto.manager.RouteManager;
-import com.epam.lab.rto.service.RouteService;
-import com.epam.lab.rto.service.StationService;
-import com.epam.lab.rto.service.TrainService;
+import com.epam.lab.rto.service.interfaces.IRouteService;
+import com.epam.lab.rto.service.interfaces.IStationMapService;
+import com.epam.lab.rto.service.interfaces.ITrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,19 +21,17 @@ import java.util.List;
 public class RouteController {
 
     @Autowired
-    private RouteService routeService;
+    private IRouteService routeService;
 
     @Autowired
-    private StationService stationService;
+    private IStationMapService stationMapService;
 
     @Autowired
-    private TrainService trainService;
-
-    @Autowired
-    private LocomotiveRepository locomotiveRepository;
+    private ITrainService trainService;
 
     @Autowired
     private RouteManager routeManager;
+
 
     @GetMapping("/admin/route")
     public ModelAndView routeList() {
@@ -48,7 +46,7 @@ public class RouteController {
     public ModelAndView routeCreate() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", stationService.getAllStations());
+        model.addObject("stations", stationMapService.getAllStations());
         List<String> routeWay = routeManager.getRouteWay();
         if (routeWay != null) {
             model.addObject("answer", routeWay);
@@ -63,9 +61,9 @@ public class RouteController {
     public ModelAndView generateRoute(@RequestParam(value = "args[]") String... args) {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/create");
-        model.addObject("stations", stationService.getAllStations());
-        List<String> routeWay = stationService.createRouteWay(args);
-        model.addObject("args", args );
+        model.addObject("stations", stationMapService.getAllStations());
+        List<String> routeWay = stationMapService.createRouteWay(args);
+        model.addObject("args", args);
         model.addObject("answer", routeWay);
         model.addObject("next", "true");
         routeManager.setRouteWay(routeWay);
@@ -99,7 +97,7 @@ public class RouteController {
 
         model.addObject("route", route);
         model.addObject("stations", route.getStations());
-        model.addObject("locomotives", locomotiveRepository.getAll());
+        model.addObject("locomotives", trainService.getAllLocomotives());
 
         return model;
     }
@@ -115,7 +113,7 @@ public class RouteController {
     }
 
     @GetMapping("/admin/route/delete")
-    public ModelAndView deleteRoute (@RequestParam String title) {
+    public ModelAndView deleteRoute(@RequestParam String title) {
         routeService.deleteRouteByTitle(title);
         return routeList();
     }
@@ -129,7 +127,6 @@ public class RouteController {
     @ResponseBody
     @GetMapping("/route/getlocomotivespeed")
     public int getLocomotiveSpeed(String locomotiveName) {
-        return trainService.getLocomotiveByName(locomotiveName).getAverage_speed();
+        return trainService.getLocomotiveByName(locomotiveName).getAverageSpeed();
     }
-
 }

@@ -1,7 +1,7 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.manager.UserManager;
-import com.epam.lab.rto.service.RequestService;
+import com.epam.lab.rto.service.interfaces.IRequestService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,10 +17,11 @@ import java.time.LocalDate;
 public class RequestController {
 
     @Autowired
-    private RequestService requestService;
+    private IRequestService requestService;
 
     @Autowired
     private UserManager userManager;
+
 
     @GetMapping("/admin/requests")
     public ModelAndView showRequests() {
@@ -30,7 +31,7 @@ public class RequestController {
         LocalDate secondDate = firstDate.plusMonths(1);
 
         model.setViewName("requests/active");
-        model.addObject("requests", requestService.getActiveRequestBetweenDates(firstDate, secondDate));
+        model.addObject("requests", requestService.getActiveRequestsBetweenDates(firstDate, secondDate));
         model.addObject("minDate", LocalDate.now());
         model.addObject("firstDate", firstDate);
         model.addObject("secondDate", secondDate);
@@ -44,7 +45,7 @@ public class RequestController {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/active");
-        model.addObject("requests", requestService.getActiveRequestBetweenDates(firstDate, secondDate));
+        model.addObject("requests", requestService.getActiveRequestsBetweenDates(firstDate, secondDate));
         model.addObject("minDate", LocalDate.now());
         model.addObject("firstDate", firstDate);
         model.addObject("secondDate", secondDate);
@@ -60,7 +61,7 @@ public class RequestController {
         LocalDate secondDate = LocalDate.now().plusMonths(1);
 
         model.setViewName("requests/history");
-        model.addObject("requests", requestService.getInactiveRequestBetweenDates(firstDate, secondDate));
+        model.addObject("requests", requestService.getInactiveRequestsBetweenDates(firstDate, secondDate));
         model.addObject("firstDate", firstDate);
         model.addObject("secondDate", secondDate);
 
@@ -73,7 +74,7 @@ public class RequestController {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/history");
-        model.addObject("requests", requestService.getInactiveRequestBetweenDates(firstDate, secondDate));
+        model.addObject("requests", requestService.getInactiveRequestsBetweenDates(firstDate, secondDate));
         model.addObject("firstDate", firstDate);
         model.addObject("secondDate", secondDate);
 
@@ -123,5 +124,4 @@ public class RequestController {
 
         return model;
     }
-
 }

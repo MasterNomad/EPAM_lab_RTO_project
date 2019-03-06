@@ -1,10 +1,11 @@
 package com.epam.lab.rto.controller;
 
+import com.epam.lab.rto.dto.Request;
 import com.epam.lab.rto.manager.UserManager;
-import com.epam.lab.rto.service.RequestService;
-import com.epam.lab.rto.service.RouteService;
-import com.epam.lab.rto.service.StationService;
-import com.epam.lab.rto.service.TripService;
+import com.epam.lab.rto.service.interfaces.IRequestService;
+import com.epam.lab.rto.service.interfaces.IRouteService;
+import com.epam.lab.rto.service.interfaces.IStationMapService;
+import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,26 +22,27 @@ import java.util.*;
 public class FindTrainController {
 
     @Autowired
-    private RouteService routeService;
+    private IRouteService routeService;
 
     @Autowired
-    private RequestService requestService;
+    private IRequestService requestService;
 
     @Autowired
-    private StationService stationService;
+    private IStationMapService stationMapService;
 
     @Autowired
-    private TripService tripService;
+    private ITripService tripService;
 
     @Autowired
     private UserManager userManager;
+
 
     @GetMapping("/find-train")
     public ModelAndView getFindTrain() {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/find-train");
-        model.addObject("stations", stationService.getAllStations());
+        model.addObject("stations", stationMapService.getAllStations());
         model.addObject("currentDate", LocalDateTime.now().withSecond(0).withNano(0));
         model.addObject("answer", "none");
 
@@ -54,12 +55,12 @@ public class FindTrainController {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/find-train");
-        model.addObject("stations", stationService.getAllStations());
+        model.addObject("stations", stationMapService.getAllStations());
         model.addObject("departureCity", departureCity);
         model.addObject("destinationCity", destinationCity);
         model.addObject("departure", departure);
         model.addObject("currentDate", LocalDateTime.now().withSecond(0).withNano(0));
-        model.addObject("answer", requestService.findTrains(departureCity, destinationCity, departure));
+        model.addObject("answer", requestService.createRequests(departureCity, destinationCity, departure));
 
         return model;
     }
@@ -68,7 +69,9 @@ public class FindTrainController {
     public ModelAndView confirmRequest(long tripId, String departureCity, String destinationCity, String carriageName) {
         ModelAndView model = new ModelAndView();
 
-        requestService.addRequest(tripId, departureCity, destinationCity, carriageName, userManager.getUser());
+        Request request = requestService.createRequest(tripId, departureCity, destinationCity, carriageName, userManager.getUser());
+        requestService.addRequest(request);
+
         model.setViewName("success");
         model.addObject("page", "find-train");
         model.addObject("msg", "Заявка оформлена");

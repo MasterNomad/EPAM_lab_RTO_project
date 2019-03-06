@@ -1,8 +1,9 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.repository.CarriageRepository;
-import com.epam.lab.rto.service.RouteService;
-import com.epam.lab.rto.service.TripService;
+import com.epam.lab.rto.dto.Trip;
+import com.epam.lab.rto.service.interfaces.IRouteService;
+import com.epam.lab.rto.service.interfaces.ITrainService;
+import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -15,18 +16,20 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Controller
 public class ScheduleController {
 
     @Autowired
-    private RouteService routeService;
+    private IRouteService routeService;
 
     @Autowired
-    private TripService tripService;
+    private ITripService tripService;
 
     @Autowired
-    private CarriageRepository carriageRepository;
+    private ITrainService trainService;
+
 
     @GetMapping("/schedule")
     public ModelAndView getSchedule() {
@@ -63,7 +66,7 @@ public class ScheduleController {
         model.setViewName("schedule/add");
         model.addObject("date", LocalDate.now().plus(1, ChronoUnit.MONTHS));
         model.addObject("routes", routeService.getAllRoutes());
-        model.addObject("carriages", carriageRepository.getAll());
+        model.addObject("carriages", trainService.getAllCarriages());
 
         return model;
     }
@@ -75,8 +78,9 @@ public class ScheduleController {
                                     @RequestParam(value = "carriage[]") Integer[] carriages,
                                     @RequestParam(value = "repeat[]") Long[] repeats,
                                     @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Trip> schedule = tripService.createSchedule(routes, departures, prices, carriages, repeats, date);
+        tripService.addSchedule(schedule);
 
-        tripService.addSchedule(routes, departures, prices, carriages, repeats, date);
         ModelAndView model = new ModelAndView();
         model.setViewName("success");
         model.addObject("page", "schedule");
@@ -85,5 +89,4 @@ public class ScheduleController {
 
         return model;
     }
-
 }

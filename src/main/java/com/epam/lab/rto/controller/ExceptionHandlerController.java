@@ -8,10 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(Exception.class)
-    public ModelAndView handleRuntimeException(Exception ex) {
+    public ModelAndView handleRuntimeException(Exception e) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
         return modelAndView;
     }
-
 }

@@ -6,7 +6,7 @@ import com.epam.lab.rto.exceptions.PasswordNotMatchException;
 import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
 import com.epam.lab.rto.exceptions.WrongAgeException;
 import com.epam.lab.rto.manager.UserManager;
-import com.epam.lab.rto.service.UserService;
+import com.epam.lab.rto.service.interfaces.IUserService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class LoginController {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private UserManager userManager;

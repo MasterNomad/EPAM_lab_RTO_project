@@ -3,7 +3,7 @@ package com.epam.lab.rto.controller;
 import com.epam.lab.rto.dto.User;
 import com.epam.lab.rto.dto.UserRole;
 import com.epam.lab.rto.manager.UserManager;
-import com.epam.lab.rto.service.RequestService;
+import com.epam.lab.rto.service.interfaces.IRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PersonalAreaController {
 
     @Autowired
-    private RequestService requestService;
+    private IRequestService requestService;
 
     @Autowired
     private UserManager userManager;
