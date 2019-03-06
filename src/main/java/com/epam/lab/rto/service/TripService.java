@@ -64,12 +64,12 @@ public class TripService implements ITripService {
 
         for (int i = 0; i < routes.length; i++) {
             Route route = new Route(routes[i]);
-            List<TrainComposition> trainComposition = buildTripComposition(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
-            result.add(new Trip(route, trainComposition, departures[i], prices[i]));
+            List<CarriageComposition> carriageComposition = buildTripComposition(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
+            result.add(new Trip(route, carriageComposition, departures[i], prices[i]));
             if (repeats[i] > 0) {
                 while (departures[i].plus(repeats[i], ChronoUnit.DAYS).toLocalDate().isBefore(lastDate)) {
                     departures[i] = departures[i].plus(repeats[i], ChronoUnit.DAYS);
-                    result.add(new Trip(route, trainComposition, departures[i], prices[i]));
+                    result.add(new Trip(route, carriageComposition, departures[i], prices[i]));
                 }
             }
         }
@@ -133,7 +133,7 @@ public class TripService implements ITripService {
     }
 
     private boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
-        for (TrainComposition currentCarriage : trip.getTrainComposition()) {
+        for (CarriageComposition currentCarriage : trip.getTrainComposition()) {
             if (currentCarriage.getCarriage().equals(carriage)) {
                 return currentCarriage.getPlacesSold() < currentCarriage.getAmount() * carriage.getPlaces();
             }
@@ -141,11 +141,11 @@ public class TripService implements ITripService {
         return false;
     }
 
-    private List<TrainComposition> buildTripComposition(List<Integer> carriages) {
-        List<TrainComposition> result = new ArrayList<>();
+    private List<CarriageComposition> buildTripComposition(List<Integer> carriages) {
+        List<CarriageComposition> result = new ArrayList<>();
         for (int i = 0; i < carriages.size(); i++) {
             if (carriages.get(i) > 0) {
-                result.add(new TrainComposition(new Carriage(i + 1), carriages.get(i)));
+                result.add(new CarriageComposition(new Carriage(i + 1), carriages.get(i)));
             }
         }
         return result;

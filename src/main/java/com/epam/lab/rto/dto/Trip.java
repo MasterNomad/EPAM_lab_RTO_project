@@ -8,24 +8,21 @@ public class Trip {
 
     private long id;
     private Route route;
-    private List<TripComposition> tripComposition;
+    private List<CarriageComposition> TrainComposition;
     private LocalDateTime departure;
     private BigDecimal price;
 
-    public Trip() {
-    }
-
-    public Trip(long id, Route route, List<TripComposition> tripComposition, LocalDateTime departure, BigDecimal price) {
+    public Trip(long id, Route route, List<CarriageComposition> TrainComposition, LocalDateTime departure, BigDecimal price) {
         this.id = id;
         this.route = route;
-        this.tripComposition = tripComposition;
+        this.TrainComposition = TrainComposition;
         this.departure = departure;
         this.price = price;
     }
 
-    public Trip(Route route, List<TripComposition> tripComposition, LocalDateTime departure, BigDecimal price) {
+    public Trip(Route route, List<CarriageComposition> TrainComposition, LocalDateTime departure, BigDecimal price) {
         this.route = route;
-        this.tripComposition = tripComposition;
+        this.TrainComposition = TrainComposition;
         this.departure = departure;
         this.price = price;
     }
@@ -62,11 +59,11 @@ public class Trip {
         this.price = price;
     }
 
-    public List<TripComposition> getTripComposition() {
-        return tripComposition;
+    public List<CarriageComposition> getTrainComposition() {
+        return TrainComposition;
     }
 
-    public void setTripComposition(List<TripComposition> tripComposition) {
-        this.tripComposition = tripComposition;
+    public void setTrainComposition(List<CarriageComposition> trainComposition) {
+        this.TrainComposition = trainComposition;
     }
 }

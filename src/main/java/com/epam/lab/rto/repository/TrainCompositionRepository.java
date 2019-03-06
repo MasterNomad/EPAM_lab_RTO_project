@@ -1,6 +1,6 @@
 package com.epam.lab.rto.repository;
 
-import com.epam.lab.rto.dto.TrainComposition;
+import com.epam.lab.rto.dto.CarriageComposition;
 import com.epam.lab.rto.repository.interfaces.ICarriageRepository;
 import com.epam.lab.rto.repository.interfaces.ITrainCompositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +19,34 @@ public class TrainCompositionRepository implements ITrainCompositionRepository {
     @Autowired
     private ICarriageRepository carriageRepository;
 
-    private RowMapper<TrainComposition> ROW_MAPPER = (rs, rowNum) -> new TrainComposition(rs.getLong("trip_id"),
+    private RowMapper<CarriageComposition> ROW_MAPPER = (rs, rowNum) -> new CarriageComposition(rs.getLong("trip_id"),
             carriageRepository.getCarriageById(rs.getLong("carriage_id")),
             rs.getInt("amount"),
             rs.getInt("places_sold"));
 
     @Override
-    public TrainComposition addTrainComposition(TrainComposition trainComposition) {
+    public CarriageComposition addTrainComposition(CarriageComposition carriageComposition) {
         String sql = "INSERT INTO `trip_composition` " +
                 "(`trip_id`, `carriage_id`, `amount`, `places_sold`) " +
                 "VALUES (?, ?, ?, ?) ";
 
         jdbcTemplate.update(sql,
-                trainComposition.getTripId(),
-                trainComposition.getCarriage().getId(),
-                trainComposition.getAmount(),
-                trainComposition.getPlacesSold());
+                carriageComposition.getTripId(),
+                carriageComposition.getCarriage().getId(),
+                carriageComposition.getAmount(),
+                carriageComposition.getPlacesSold());
 
-        return trainComposition;
+        return carriageComposition;
     }
 
     @Override
-    public List<TrainComposition> addTrainCompositionList(List<TrainComposition> trainCompositions) {
-        trainCompositions.forEach(this::addTrainComposition);
-        return trainCompositions;
+    public List<CarriageComposition> addTrainCompositionList(List<CarriageComposition> carriageCompositions) {
+        carriageCompositions.forEach(this::addTrainComposition);
+        return carriageCompositions;
     }
 
     @Override
-    public List<TrainComposition> getTrainCompositionByTripId(long tripId) {
+    public List<CarriageComposition> getTrainCompositionByTripId(long tripId) {
         String sql = "SELECT * " +
                 "FROM `trip_composition` " +
                 "WHERE `trip_id` = ?";

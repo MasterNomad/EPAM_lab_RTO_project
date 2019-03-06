@@ -1,16 +1,16 @@
 package com.epam.lab.rto.repository.interfaces;
 
-import com.epam.lab.rto.dto.TrainComposition;
+import com.epam.lab.rto.dto.CarriageComposition;
 
 import java.util.List;
 
 public interface ITrainCompositionRepository {
 
-    TrainComposition addTrainComposition(TrainComposition trainComposition);
+    CarriageComposition addTrainComposition(CarriageComposition carriageComposition);
 
-    List<TrainComposition> addTrainCompositionList(List<TrainComposition> trainCompositions);
+    List<CarriageComposition> addTrainCompositionList(List<CarriageComposition> carriageCompositions);
 
-    List<TrainComposition> getTrainCompositionByTripId(long tripId);
+    List<CarriageComposition> getTrainCompositionByTripId(long tripId);
 
     int increaseSoldPlaceByTripIdAndCarriageId(long tripId, long carriageId);
 

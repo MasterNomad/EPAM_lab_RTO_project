@@ -11,9 +11,6 @@ public class Carriage {
     private int places;
     private BigDecimal priceFactor;
 
-    public Carriage() {
-    }
-
     public Carriage(int id) {
         this.id = id;
     }

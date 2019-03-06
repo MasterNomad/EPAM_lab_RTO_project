@@ -98,7 +98,7 @@ public class RouteService implements IRouteService {
 
     private void refreshTravelTimes(Route route) {
         int travelTime = 1;
-        int averageSpeed = route.getLocomotive().getAverage_speed();
+        int averageSpeed = route.getLocomotive().getAverageSpeed();
         if (averageSpeed <= 0) {
             route.setAllTravelTime(0);
             return;

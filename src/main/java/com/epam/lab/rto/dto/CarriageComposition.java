@@ -1,21 +1,18 @@
 package com.epam.lab.rto.dto;
 
-public class TripComposition {
+public class CarriageComposition {
 
     private long tripId;
     private Carriage carriage;
     private int amount;
     private int placesSold;
 
-    public TripComposition() {
-    }
-
-    public TripComposition(Carriage carriage, int amount) {
+    public CarriageComposition(Carriage carriage, int amount) {
         this.carriage = carriage;
         this.amount = amount;
     }
 
-    public TripComposition(long tripId, Carriage carriage, int amount, int placesSold) {
+    public CarriageComposition(long tripId, Carriage carriage, int amount, int placesSold) {
         this.tripId = tripId;
         this.carriage = carriage;
         this.amount = amount;
