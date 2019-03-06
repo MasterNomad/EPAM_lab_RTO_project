@@ -2,6 +2,10 @@ package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Request;
 import com.epam.lab.rto.dto.RequestStatus;
+import com.epam.lab.rto.repository.interfaces.ICarriageRepository;
+import com.epam.lab.rto.repository.interfaces.IRequestRepository;
+import com.epam.lab.rto.repository.interfaces.ITripRepository;
+import com.epam.lab.rto.repository.interfaces.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,19 +17,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class RequestRepository {
+public class RequestRepository implements IRequestRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private TripRepository tripRepository;
+    private ITripRepository tripRepository;
 
     @Autowired
-    private CarriageRepository carriageRepository;
+    private ICarriageRepository carriageRepository;
 
     private RowMapper<Request> ROW_MAPPER = (rs, rowNum) -> new Request(rs.getLong("request_id"),
             userRepository.getUserById(rs.getLong("user_id")),
@@ -39,7 +43,8 @@ public class RequestRepository {
             RequestStatus.valueOf(rs.getString("request_status")),
             rs.getBoolean("payment_state"));
 
-    public void addRequest(Request request) {
+    @Override
+    public Request addRequest(Request request) {
         String sql = "INSERT INTO `requests` " +
                 "(`user_id`, `trip_id`, `departure_city`, `departure_datetime`, " +
                 "`destination_city`, `arrival_datetime`, `carriage_id`, `price`, `request_status`) " +
@@ -53,8 +58,10 @@ public class RequestRepository {
                 request.getCarriage().getId(),
                 request.getPrice(),
                 request.getRequestStatus().toString());
+        return request;
     }
 
+    @Override
     public Request getRequestById(long requestId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
@@ -66,6 +73,7 @@ public class RequestRepository {
         }
     }
 
+    @Override
     public List<Request> getActiveRequestsByUserId(long userId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
@@ -73,6 +81,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 
+    @Override
     public List<Request> getInactiveRequestsByUserId(long userId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
@@ -80,6 +89,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 
+    @Override
     public List<Request> getInactiveRequestsBetweenDates(LocalDateTime firstDate, LocalDateTime secondDate) {
         String sql = "SELECT * " +
                 "FROM (SELECT *" +
@@ -89,6 +99,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate, LocalDate.now());
     }
 
+    @Override
     public List<Request> getActiveRequestsBetweenDates(LocalDateTime firstDate, LocalDateTime secondDate) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
@@ -96,6 +107,7 @@ public class RequestRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate);
     }
 
+    @Override
     public int setRequestStatusById(long requestId, RequestStatus status) {
         String sql = " UPDATE `requests` " +
                 "SET `request_status` = ? " +
@@ -104,6 +116,7 @@ public class RequestRepository {
         return jdbcTemplate.update(sql, status.toString(), requestId);
     }
 
+    @Override
     public int setRequestPaymentStateById(long requestId, boolean paid) {
         String sql = " UPDATE `requests` " +
                 "SET `payment_state` = ? " +

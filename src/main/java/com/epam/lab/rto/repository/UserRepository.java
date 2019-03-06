@@ -1,6 +1,7 @@
 package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.User;
+import com.epam.lab.rto.repository.interfaces.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,13 +10,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository {
+public class UserRepository implements IUserRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private RowMapper<User> ROW_MAPPER = new BeanPropertyRowMapper<>(User.class);
 
+    @Override
     public User add(User user) {
         String sql = "INSERT INTO `users` " +
                 "(`email`, `password`, `surname`, `name`, `patronymic`, `birthDate`, `sex`) " +
@@ -31,6 +33,7 @@ public class UserRepository {
         return user;
     }
 
+    @Override
     public User getUserById(long userId) {
         String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +
@@ -42,6 +45,7 @@ public class UserRepository {
         }
     }
 
+    @Override
     public User getUserByEmailAndPassword(String email, String password) {
         String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +
@@ -53,6 +57,7 @@ public class UserRepository {
         }
     }
 
+    @Override
     public User getUserByEmail(String email) {
         String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +

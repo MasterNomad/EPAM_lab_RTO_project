@@ -1,7 +1,7 @@
 package com.epam.lab.rto.repository;
 
-
 import com.epam.lab.rto.dto.GraphMap;
+import com.epam.lab.rto.repository.interfaces.IStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public class StationRepository {
+public class StationRepository implements IStationRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public List<String> getAllStations() {
         String sql = "SELECT name " +
                 "FROM stations " +
@@ -22,6 +23,7 @@ public class StationRepository {
         return jdbcTemplate.queryForList(sql, String.class);
     }
 
+    @Override
     public GraphMap getStationMap() {
         GraphMap stationMap = new GraphMap();
         String sql = "SELECT * " +
@@ -42,5 +44,4 @@ public class StationRepository {
         }
         return stationMap;
     }
-
 }

@@ -1,6 +1,7 @@
 package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Carriage;
+import com.epam.lab.rto.repository.interfaces.ICarriageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -11,20 +12,22 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CarriageRepository {
+public class CarriageRepository implements ICarriageRepository {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private RowMapper<Carriage> ROW_MAPPER = new BeanPropertyRowMapper<>(Carriage.class);
 
-    public List<Carriage> getAll() {
+    @Override
+    public List<Carriage> getAllCarriages() {
         String sql = "SELECT * " +
                 "FROM `carriage_types` " +
                 "ORDER BY `id`";
         return jdbcTemplate.query(sql, ROW_MAPPER);
     }
 
+    @Override
     public Carriage getCarriageById(long id) {
         String sql = "SELECT * " +
                 "FROM `carriage_types` " +
@@ -36,6 +39,7 @@ public class CarriageRepository {
         }
     }
 
+    @Override
     public Carriage getCarriageByName(String carriage) {
         String sql = "SELECT * " +
                 "FROM `carriage_types`" +
