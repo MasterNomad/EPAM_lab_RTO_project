@@ -1,6 +1,7 @@
 package com.epam.lab.rto.service;
 
 import com.epam.lab.rto.dto.GraphMap;
+import com.epam.lab.rto.service.interfaces.IWayService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,13 +11,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class WayService {
+public class WayService implements IWayService {
 
     private GraphMap graphMap;
     private GraphMap.Node finish;
     private List<GraphMap.Node> shortestWay;
     private int shortestDistance;
 
+
+    @Override
     public List<String> getWay(GraphMap graphMap, String... keys) {
         this.graphMap = graphMap;
         List<String> nodeList = Arrays.asList(keys);
@@ -39,6 +42,7 @@ public class WayService {
         return result;
     }
 
+    @Override
     public int getWayDistance(GraphMap graphMap, List<String> way) {
         return getNodeWayDistance(way.stream().map(graphMap::get).collect(Collectors.toList()));
     }
@@ -66,6 +70,7 @@ public class WayService {
 
         return shortestWay.stream().map(GraphMap.Node::toString).collect(Collectors.toList());
     }
+
 
     private List<GraphMap.Node> findShortestWay(List<GraphMap.Node> currentWay) {
         if (shortestWay != null && getNodeWayDistance(currentWay) > shortestDistance) {
@@ -100,12 +105,11 @@ public class WayService {
         }
     }
 
-    public int getNodeWayDistance(List<GraphMap.Node> way) {
+    private int getNodeWayDistance(List<GraphMap.Node> way) {
         int result = 0;
         for (int i = 1; i < way.size(); i++) {
             result += way.get(i).getConnectionWeightToNode(way.get(i - 1));
         }
         return result;
     }
-
 }

@@ -1,9 +1,10 @@
 package com.epam.lab.rto.service;
 
 import com.epam.lab.rto.dto.*;
-import com.epam.lab.rto.repository.CarriageRepository;
-import com.epam.lab.rto.repository.TripCompositionRepository;
-import com.epam.lab.rto.repository.TripRepository;
+import com.epam.lab.rto.repository.interfaces.ITripRepository;
+import com.epam.lab.rto.service.interfaces.IRouteService;
+import com.epam.lab.rto.service.interfaces.ITrainService;
+import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +16,24 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class TripService {
+public class TripService implements ITripService {
 
     @Autowired
-    private RouteService routeService;
+    private IRouteService routeService;
 
     @Autowired
-    private TripRepository tripRepository;
+    private ITrainService trainService;
 
     @Autowired
-    private CarriageRepository carriageRepository;
+    private ITripRepository tripRepository;
 
-    @Autowired
-    private TripCompositionRepository tripCompositionRepository;
 
+    @Override
     public Trip getTripById(long tripId) {
         return tripRepository.getTripById(tripId);
     }
 
+    @Override
     public List<Trip> findTripsWithoutTransfer(String startStation, String finishStation, LocalDateTime departure) {
         List<Trip> result = new ArrayList<>();
 
@@ -46,19 +47,46 @@ public class TripService {
         return result;
     }
 
+    @Override
     public List<Trip> getTripsBetweenDates(LocalDate firstDate, LocalDate secondDate) {
-        return tripRepository.getTripsBetweenDates(LocalDateTime.of(firstDate, LocalTime.of(4,0)), LocalDateTime.of(secondDate.plusDays(1), LocalTime.of(4,0)));
+        return tripRepository.getTripsBetweenDates(LocalDateTime.of(firstDate, LocalTime.of(4, 0)), LocalDateTime.of(secondDate.plusDays(1), LocalTime.of(4, 0)));
     }
 
-    public List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {
-        LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
-        LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
-        return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
+    @Override
+    public List<Trip> createSchedule(String[] routes,
+                                     LocalDateTime[] departures,
+                                     BigDecimal[] prices,
+                                     Integer[] carriages,
+                                     Long[] repeats,
+                                     LocalDate lastDate) {
+        List<Trip> result = new ArrayList<>();
+        int carriageAmount = carriages.length / routes.length;
+
+        for (int i = 0; i < routes.length; i++) {
+            Route route = new Route(routes[i]);
+            List<TrainComposition> trainComposition = buildTripComposition(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
+            result.add(new Trip(route, trainComposition, departures[i], prices[i]));
+            if (repeats[i] > 0) {
+                while (departures[i].plus(repeats[i], ChronoUnit.DAYS).toLocalDate().isBefore(lastDate)) {
+                    departures[i] = departures[i].plus(repeats[i], ChronoUnit.DAYS);
+                    result.add(new Trip(route, trainComposition, departures[i], prices[i]));
+                }
+            }
+        }
+        return result;
     }
 
+    @Override
+    public void addSchedule(List<Trip> schedule) {
+        for (Trip trip : schedule) {
+            tripRepository.addTrip(trip);
+        }
+    }
+
+    @Override
     public List<String> getPriceAndCarriageDescriptionByTripIdAndCarriageName(long tripId, String carriageName) {
         List<String> result = new ArrayList<>();
-        Carriage carriage = carriageRepository.getCarriageByName(carriageName);
+        Carriage carriage = trainService.getCarriageByName(carriageName);
         if (Objects.isNull(carriage)) {
             result.add("В рейсе отсутствует вагон указанного типа");
             result.add("-");
@@ -76,36 +104,36 @@ public class TripService {
         }
     }
 
+    @Override
     public BigDecimal getPriceByTripAndCarriage(Trip trip, Carriage carriage) {
         return trip.getPrice().multiply(carriage.getPriceFactor());
     }
 
-    public void addSchedule(String[] routes,
-                            LocalDateTime[] departures,
-                            BigDecimal[] prices,
-                            Integer[] carriages,
-                            Long[] repeats,
-                            LocalDate lastDate) {
-
-        List<Trip> result = new ArrayList<>();
-        int carriageAmount = carriages.length / routes.length;
-
-        for (int i = 0; i < routes.length; i++) {
-            Route route = new Route(routes[i]);
-            List<TripComposition> tripComposition = buildTripComposition(Arrays.asList(carriages).subList(i * carriageAmount, i * carriageAmount + carriageAmount));
-            result.add(new Trip(route, tripComposition, departures[i], prices[i]));
-            if (repeats[i] > 0) {
-                while (departures[i].plus(repeats[i], ChronoUnit.DAYS).toLocalDate().isBefore(lastDate)) {
-                    departures[i] = departures[i].plus(repeats[i], ChronoUnit.DAYS);
-                    result.add(new Trip(route, tripComposition, departures[i], prices[i]));
-                }
-            }
-        }
-        addTrips(result);
+    @Override
+    public void increaseSoldPlaceByRequest(Request request) {
+        trainService.increaseSoldPlaceByTripIdAndCarriageId(
+                request.getTrip().getId(),
+                request.getCarriage().getId()
+        );
     }
 
-    public boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
-        for (TripComposition currentCarriage : trip.getTripComposition()) {
+    @Override
+    public void decreaseSoldPlaceByRequest(Request request) {
+        trainService.decreaseSoldPlaceByTripIdAndCarriageId(
+                request.getTrip().getId(),
+                request.getCarriage().getId()
+        );
+    }
+
+
+    private List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {
+        LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
+        LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
+        return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
+    }
+
+    private boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
+        for (TrainComposition currentCarriage : trip.getTrainComposition()) {
             if (currentCarriage.getCarriage().equals(carriage)) {
                 return currentCarriage.getPlacesSold() < currentCarriage.getAmount() * carriage.getPlaces();
             }
@@ -113,33 +141,13 @@ public class TripService {
         return false;
     }
 
-    private void addTrips(List<Trip> trips) {
-        for (Trip trip : trips) {
-            tripRepository.addTrip(trip);
-        }
-    }
-
-    private List<TripComposition> buildTripComposition(List<Integer> carriages) {
-        List<TripComposition> result = new ArrayList<>();
+    private List<TrainComposition> buildTripComposition(List<Integer> carriages) {
+        List<TrainComposition> result = new ArrayList<>();
         for (int i = 0; i < carriages.size(); i++) {
             if (carriages.get(i) > 0) {
-                result.add(new TripComposition(new Carriage(i + 1), carriages.get(i)));
+                result.add(new TrainComposition(new Carriage(i + 1), carriages.get(i)));
             }
         }
         return result;
-    }
-
-    public void increaseSoldPlaceByRequest(Request request) {
-        tripCompositionRepository.increaseSoldPlaceByTripIdAndCarriageId(
-                request.getTrip().getId(),
-                request.getCarriage().getId()
-        );
-    }
-
-    public void decreaseSoldPlaceByRequest(Request request) {
-        tripCompositionRepository.decreaseSoldPlaceByTripIdAndCarriageId(
-                request.getTrip().getId(),
-                request.getCarriage().getId()
-        );
     }
 }
