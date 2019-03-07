@@ -122,9 +122,7 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <p>
-                                    <a href="/admin/request/reject?requestId=${request.id}">Отклонить</a>
-                                </p>
+                                <a href="/admin/request/reject?requestId=${request.id}">Отклонить</a>
                             </td>
                         </tr>
                     </c:forEach>

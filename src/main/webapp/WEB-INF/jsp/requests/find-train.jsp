@@ -69,11 +69,33 @@
 								<div class="form-block">
 									Маршрут:
 									<span class="tooltip">
-										${request.trip.route.title}
-										<span class="tooltiptext">
-											<c:forEach items="${request.trip.route.stationList}" var="station">
-												<p>${station.name}</p>
-											</c:forEach>
+											${request.trip.route.title}
+											<span class="tooltiptext">
+												Маршрут: ${request.trip.route.title}
+												<table class="tip-table">
+													<tr>
+														<td>Город</td>
+														<td>Остановка</td>
+													</tr>
+													<c:forEach items="${request.trip.route.stationList}" var="station">
+														<tr>
+															<td>${station.name}</td>
+															<td>
+																<c:choose>
+																	<c:when test="${0 > station.stopDuration}">
+																	</c:when>
+																	<c:when test="${station.stopDuration > 0}">
+																		${station.stopDuration} мин.
+																	</c:when>
+																	<c:otherwise>
+																		-
+																	</c:otherwise>
+																</c:choose>
+															</td>
+														</tr>
+													</c:forEach>
+												</table>
+											</span>
 										</span>
 									</span>
 								</div>
@@ -96,7 +118,7 @@
 										<td class="input">
 
 											<select name="carriageName" class="carriage" required>
-												<c:forEach items="${request.trip.tripComposition}" var="carriage">
+												<c:forEach items="${request.trip.trainComposition}" var="carriage">
 													<option value="${carriage.carriage.name}"
 														${carriage.carriage.name==request.carriage.name
 														? 'selected="selected"' : '' }>

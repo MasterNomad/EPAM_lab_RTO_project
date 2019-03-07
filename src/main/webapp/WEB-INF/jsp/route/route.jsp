@@ -13,7 +13,7 @@
 	<div class="container">
 		<div class="form">
 			<h2>Маршруты</h2>
-			
+
 			<a href="/admin/route/create" class="btn">Создать маршрут</a>
 
 			<table>
@@ -34,7 +34,37 @@
 
 				<c:forEach items="${routes}" var="route">
 					<tr>
-						<td>${route.title}</td>
+						<td>
+							<span class="tooltip">
+								${route.title}
+								<span class="tooltiptext">
+									Маршрут: ${route.title}
+									<table class="tip-table">
+										<tr>
+											<td>Город</td>
+											<td>Остановка</td>
+										</tr>
+										<c:forEach items="${route.stationList}" var="station">
+											<tr>
+												<td>${station.name}</td>
+												<td>
+													<c:choose>
+														<c:when test="${0 > station.stopDuration}">
+														</c:when>
+														<c:when test="${station.stopDuration > 0}">
+															${station.stopDuration} мин.
+														</c:when>
+														<c:otherwise>
+															-
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+										</c:forEach>
+									</table>
+								</span>
+							</span>
+						</td>
 						<td>${route.stationList[0].name}</td>
 						<td>${route.stationList[fn:length(route.stationList)-1].name}</td>
 						<td>${route.locomotive.name}</td>

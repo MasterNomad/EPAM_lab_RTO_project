@@ -5,6 +5,9 @@ public class Locomotive {
     private String name;
     private int averageSpeed;
 
+    public Locomotive() {
+    }
+
     public Locomotive(long id, String name, int averageSpeed) {
         this.id = id;
         this.name = name;

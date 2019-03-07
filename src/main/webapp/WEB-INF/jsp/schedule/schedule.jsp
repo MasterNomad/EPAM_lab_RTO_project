@@ -20,9 +20,12 @@
     <div class="container">
         <div class="form">
             <h2>Расписание</h2>
-            <form action="/schedule" method="POST">
 
-                <div>За период: <input name="firstDate" type="date" value="${firstDate}"> -
+            <a name="marker"></a>
+
+            <form action="/schedule" method="GET">
+                <div>
+                    За период: <input name="firstDate" type="date" value="${firstDate}"> -
                     <input name="secondDate" type="date" value=${secondDate}>
                     <input class="btn" type="submit" value="Обновить">
                     <c:if test="${role == 'ADMIN'}">
@@ -81,6 +84,20 @@
                     </c:forEach>
                 </table>
             </form>
+            <c:if test="${not empty pages}">
+                <c:forEach begin="1" end="${pages + 1}" varStatus="loop">
+                    <c:choose>
+                        <c:when test="${loop.index == page}">
+                            <span> ${loop.index} </span>
+                        </c:when>
+                        <c:otherwise>
+                            <a
+                                href="/schedule?page=${loop.index}&firstDate=${firstDate}&secondDate=${secondDate}#marker">
+                                ${loop.index} </a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
     </div>

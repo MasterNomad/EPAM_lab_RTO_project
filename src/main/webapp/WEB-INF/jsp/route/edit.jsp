@@ -26,10 +26,10 @@
                     Средняя скорость: <span id="speed">
                             <c:choose>
                                     <c:when test="${not empty route.locomotive}">
-                                        ${route.locomotive.average_speed}
+                                        ${route.locomotive.averageSpeed}
                                     </c:when>
                                     <c:otherwise>
-                                        ${locomotives[0].average_speed}
+                                        ${locomotives[0].averageSpeed}
                                     </c:otherwise>
                                 </c:choose>
                     </span> км/ч

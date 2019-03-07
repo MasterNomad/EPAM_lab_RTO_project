@@ -2,6 +2,7 @@ package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.dto.Trip;
 import com.epam.lab.rto.service.interfaces.IRouteService;
+import com.epam.lab.rto.service.interfaces.IStationMapService;
 import com.epam.lab.rto.service.interfaces.ITrainService;
 import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ScheduleController {
+
+    @Autowired
+    private IStationMapService stationMapService;
 
     @Autowired
     private IRouteService routeService;
@@ -32,29 +37,38 @@ public class ScheduleController {
 
 
     @GetMapping("/schedule")
-    public ModelAndView getSchedule() {
+    public ModelAndView getSchedule(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate,
+                                    @RequestParam(defaultValue = "1") int page) {
         ModelAndView model = new ModelAndView();
+        int count = 15;
+        int pages;
 
-        LocalDate firstDate = LocalDate.now();
-        LocalDate secondDate = firstDate.plusMonths(1);
+        if (Objects.isNull(firstDate)) {
+            firstDate = LocalDate.now();
+        }
+        if (Objects.isNull(secondDate)) {
+            secondDate = firstDate.plusMonths(1);
+        }
 
         model.setViewName("schedule/schedule");
+        model.addObject("stations", stationMapService.getAllStations());
         model.addObject("firstDate", firstDate);
         model.addObject("secondDate", secondDate);
-        model.addObject("trips", tripService.getTripsBetweenDates(firstDate, secondDate));
 
-        return model;
-    }
-
-    @PostMapping("/schedule")
-    public ModelAndView postSchedule(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
-                                     @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
-        ModelAndView model = new ModelAndView();
-
-        model.setViewName("schedule/schedule");
-        model.addObject("firstDate", firstDate);
-        model.addObject("secondDate", secondDate);
-        model.addObject("trips", tripService.getTripsBetweenDates(firstDate, secondDate));
+        List<Trip> trips = tripService.getTripsBetweenDates(firstDate, secondDate);
+        int tripSize = trips.size();
+        if (tripSize > count) {
+            pages = tripSize / count;
+            if (tripSize > page * count) {
+                trips = trips.subList(page * count - count, page * count);
+            } else {
+                trips = trips.subList(page * count - count, tripSize - 1);
+            }
+            model.addObject("page", page);
+            model.addObject("pages", pages);
+        }
+        model.addObject("trips", trips);
 
         return model;
     }
@@ -85,7 +99,7 @@ public class ScheduleController {
         model.setViewName("success");
         model.addObject("page", "schedule");
         model.addObject("msg", "Расписание обновлено");
-        model.addObject("link", "/admin/schedule");
+        model.addObject("link", "/schedule");
 
         return model;
     }

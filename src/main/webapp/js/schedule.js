@@ -1,25 +1,12 @@
 $(document).ready(function () {
-    $("#schedule_table tr:last").after($("#trip_input").html());
-    $(".delete_btn").click(
-        function () {
-            $(this).closest('tr').remove();
-            return false;
-        }
-    );
-    $("#add_btn").click(
-        function () {
-            $("#schedule_table tr:last").after($("#trip_input").html());
-            $(".delete_btn").click(
-                function () {
-                    $(this).closest('tr').remove();
-                    return false;
-                }
-            );
-        }
-    );
-    $(".route").change(function () {
-        var $call = $(this);
 
+    function deleterow() {
+        $(this).closest('tr').remove();
+        return false;
+    }
+
+    function refreshroute() {
+        var $call = $(this);
         $.ajax({
             type: 'GET',
             url: '/route/getstations',
@@ -28,7 +15,6 @@ $(document).ready(function () {
             }
         }).done(
             function (answer) {
-                console.log(answer);
                 var html = "<table class='tip-table'>Маршрут: " + answer.title + "<tr><td>Город</td><td>Остановка</td></tr>";
                 answer.stations.forEach(
                     function (station) {
@@ -42,8 +28,23 @@ $(document).ready(function () {
                     }
                 );
                 html += "</table>";
-                $call.closest('table').find('.tooltiptext').html(html);
+                $call.closest('tr').find('.route-discription').html(html);
             }
         );
-    });
+    }
+
+
+    $("#schedule_table tr:last").after($("#trip_input").html());
+
+    $(".delete_btn").click(deleterow);
+
+    $(".route").change(refreshroute);
+
+    $("#add_btn").click(
+        function () {
+            $("#schedule_table tr:last").after($("#trip_input").html());
+            $(".delete_btn").click(deleterow);
+            $(".route").change(refreshroute);
+        }
+    );
 });

@@ -85,7 +85,7 @@ public class RequestRepository implements IRequestRepository {
     public List<Request> getInactiveRequestsByUserId(long userId) {
         String sql = "SELECT * " +
                 "FROM `requests` " +
-                "WHERE `user_id` = ? AND `arrival_datetime` < ? OR `request_status` IN ('REJECTED','CANCELED')";
+                "WHERE `user_id` = ? AND (`arrival_datetime` < ? OR `request_status` IN ('REJECTED','CANCELED'))";
         return jdbcTemplate.query(sql, ROW_MAPPER, userId, LocalDateTime.now());
     }
 

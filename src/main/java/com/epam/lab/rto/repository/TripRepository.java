@@ -78,6 +78,7 @@ public class TripRepository implements ITripRepository {
         return jdbcTemplate.query(sql, ROW_MAPPER, firstDate, secondDate);
     }
 
+
     @Override
     public List<Trip> getTripsByRouteTitleAndDepartureBetweenDateTimes(String title, LocalDateTime firstDateTime, LocalDateTime secondDateTime) {
         String sql = "SELECT * " +

@@ -38,7 +38,7 @@
                                 </c:forEach>
                             </select>
                             <span class="tooltip">?
-                                    <span class="tooltiptext">
+                                    <span class="tooltiptext route-discription">
                                             Маршрут: ${routes[0].title}
                                             <table class="tip-table">
                                                 <tr>
