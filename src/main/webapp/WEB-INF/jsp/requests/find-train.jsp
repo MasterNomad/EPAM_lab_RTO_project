@@ -100,7 +100,7 @@
 									</span>
 								</div>
 								<br>
-								<table>
+								<table class ="ticket-table">
 									<tr>
 										<td>Город отправления</td>
 										<td>Город назначения</td>

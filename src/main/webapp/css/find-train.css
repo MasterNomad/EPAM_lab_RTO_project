@@ -9,11 +9,11 @@
     border-width: 2px;
 }
 
-tr {
+.ticket-table tr {
     background-color: #edeafb;
 }
 
-tr:nth-child(odd) {
+.ticket-table tr:nth-child(odd) {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
