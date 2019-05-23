@@ -1,6 +1,8 @@
 package com.epam.lab.rto.service;
 
 import com.epam.lab.rto.dto.*;
+import com.epam.lab.rto.dto.enums.RequestStatus;
+import com.epam.lab.rto.dto.enums.UserRole;
 import com.epam.lab.rto.repository.interfaces.IRequestRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
 import com.epam.lab.rto.service.interfaces.IRouteService;

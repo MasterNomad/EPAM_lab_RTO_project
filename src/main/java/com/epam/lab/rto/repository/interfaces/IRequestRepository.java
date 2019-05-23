@@ -1,7 +1,7 @@
 package com.epam.lab.rto.repository.interfaces;
 
 import com.epam.lab.rto.dto.Request;
-import com.epam.lab.rto.dto.RequestStatus;
+import com.epam.lab.rto.dto.enums.RequestStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

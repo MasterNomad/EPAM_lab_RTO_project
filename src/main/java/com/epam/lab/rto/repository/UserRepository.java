@@ -29,7 +29,7 @@ public class UserRepository implements IUserRepository {
                 user.getName().trim(),
                 user.getPatronymic().trim(),
                 user.getBirthDate(),
-                user.getSex());
+                user.isSex());
         return user;
     }
 

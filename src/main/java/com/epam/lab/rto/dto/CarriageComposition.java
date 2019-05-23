@@ -1,5 +1,8 @@
 package com.epam.lab.rto.dto;
 
+import lombok.Data;
+
+@Data
 public class CarriageComposition {
 
     private long tripId;
@@ -19,35 +22,4 @@ public class CarriageComposition {
         this.placesSold = placesSold;
     }
 
-    public long getTripId() {
-        return tripId;
-    }
-
-    public void setTripId(long tripId) {
-        this.tripId = tripId;
-    }
-
-    public Carriage getCarriage() {
-        return carriage;
-    }
-
-    public void setCarriage(Carriage carriage) {
-        this.carriage = carriage;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public int getPlacesSold() {
-        return placesSold;
-    }
-
-    public void setPlacesSold(int placesSold) {
-        this.placesSold = placesSold;
-    }
 }

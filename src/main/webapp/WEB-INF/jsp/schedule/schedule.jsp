@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
@@ -21,9 +22,11 @@
                     За период: <input name="firstDate" type="date" value="${firstDate}"> -
                     <input name="secondDate" type="date" value=${secondDate}>
                     <input class="btn" type="submit" value="Обновить">
+
                     <security:authorize access="hasAuthority('ADMIN')">
                         <a class="btn" href="/admin/schedule/add">Новое Расписание</a>
                     </security:authorize>
+
                 </div>
 
                 <table>

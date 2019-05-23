@@ -20,16 +20,6 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/logout")
-    public ModelAndView logout(HttpServletRequest request) {
-        ModelAndView model = new ModelAndView();
-
-        request.getSession().invalidate();
-        model.setViewName("redirect:/login");
-
-        return model;
-    }
-
     @GetMapping("/login")
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();

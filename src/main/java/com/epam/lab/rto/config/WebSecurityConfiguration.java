@@ -28,9 +28,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**")
                 .access("hasAuthority('ADMIN')")
                 .and().exceptionHandling()
-                .accessDeniedPage("/home");
-
-        http
+                .accessDeniedPage("/home")
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login/**", "/css/**", "/js/**", "/img/**", "/error")
@@ -48,17 +47,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
-
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("u@u")
-//                        .password("pass")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
 }

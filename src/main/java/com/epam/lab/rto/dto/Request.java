@@ -1,8 +1,12 @@
 package com.epam.lab.rto.dto;
 
+import com.epam.lab.rto.dto.enums.RequestStatus;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 public class Request {
 
     private long id;
@@ -56,93 +60,5 @@ public class Request {
         this.carriage = carriage;
         this.price = price;
         this.requestStatus = requestStatus;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    public String getDepartureCity() {
-        return departureCity;
-    }
-
-    public void setDepartureCity(String departureCity) {
-        this.departureCity = departureCity;
-    }
-
-    public LocalDateTime getDepartureDateTime() {
-        return departureDateTime;
-    }
-
-    public void setDepartureDateTime(LocalDateTime departureDateTime) {
-        this.departureDateTime = departureDateTime;
-    }
-
-    public String getDestinationCity() {
-        return destinationCity;
-    }
-
-    public void setDestinationCity(String destinationCity) {
-        this.destinationCity = destinationCity;
-    }
-
-    public LocalDateTime getArrivalDateTime() {
-        return arrivalDateTime;
-    }
-
-    public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
-        this.arrivalDateTime = arrivalDateTime;
-    }
-
-    public Carriage getCarriage() {
-        return carriage;
-    }
-
-    public void setCarriage(Carriage carriage) {
-        this.carriage = carriage;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public RequestStatus getRequestStatus() {
-        return requestStatus;
-    }
-
-    public void setRequestStatus(RequestStatus requestStatus) {
-        this.requestStatus = requestStatus;
-    }
-
-    public boolean isPaymentState() {
-        return paymentState;
-    }
-
-    public void setPaymentState(boolean paymentState) {
-        this.paymentState = paymentState;
     }
 }

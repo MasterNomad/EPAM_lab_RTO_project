@@ -1,7 +1,7 @@
 package com.epam.lab.rto.repository;
 
 import com.epam.lab.rto.dto.Request;
-import com.epam.lab.rto.dto.RequestStatus;
+import com.epam.lab.rto.dto.enums.RequestStatus;
 import com.epam.lab.rto.repository.interfaces.ICarriageRepository;
 import com.epam.lab.rto.repository.interfaces.IRequestRepository;
 import com.epam.lab.rto.repository.interfaces.ITripRepository;
