@@ -20,7 +20,6 @@ public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
 
-
     @Override
     public User registerUser(User user, String confirmPassword) {
         if (!Objects.isNull(userRepository.getUserByEmail(user.getEmail()))) {
@@ -33,14 +32,5 @@ public class UserService implements IUserService {
             throw new WrongAgeException("Регстрация возможна с 18 лет");
         }
         return userRepository.add(user);
-    }
-
-    @Override
-    public User enter(User user) {
-        User currentUser = userRepository.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
-        if (Objects.isNull(currentUser)) {
-            throw new NoSuchUserException("Неверный логин или пароль");
-        }
-        return currentUser;
     }
 }

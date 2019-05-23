@@ -7,14 +7,7 @@
 <link rel="stylesheet" href="/css/schedule.css" class="css">
 </head>
 
-<c:choose>
-    <c:when test="${role == 'ADMIN'}">
-        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
-    </c:when>
-    <c:otherwise>
-        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
-    </c:otherwise>
-</c:choose>
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="schedule" class="content">
     <div class="container">
@@ -28,9 +21,9 @@
                     За период: <input name="firstDate" type="date" value="${firstDate}"> -
                     <input name="secondDate" type="date" value=${secondDate}>
                     <input class="btn" type="submit" value="Обновить">
-                    <c:if test="${role == 'ADMIN'}">
+                    <security:authorize access="hasAuthority('ADMIN')">
                         <a class="btn" href="/admin/schedule/add">Новое Расписание</a>
-                    </c:if>
+                    </security:authorize>
                 </div>
 
                 <table>

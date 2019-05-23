@@ -1,11 +1,9 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.dto.User;
-import com.epam.lab.rto.exceptions.NoSuchUserException;
 import com.epam.lab.rto.exceptions.PasswordNotMatchException;
 import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
 import com.epam.lab.rto.exceptions.WrongAgeException;
-import com.epam.lab.rto.manager.UserManager;
 import com.epam.lab.rto.service.interfaces.IUserService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +19,6 @@ public class LoginController {
 
     @Autowired
     private IUserService userService;
-
-    @Autowired
-    private UserManager userManager;
 
     @GetMapping("/logout")
     public ModelAndView logout(HttpServletRequest request) {
@@ -43,23 +38,6 @@ public class LoginController {
 
         return model;
     }
-
-    @PostMapping("/login")
-    public ModelAndView enter(User user) {
-        ModelAndView model = new ModelAndView();
-
-        try {
-            userManager.setUser(userService.enter(user));
-            model.setViewName("redirect:/home");
-        } catch (NoSuchUserException | PasswordNotMatchException e) {
-            model.addObject("answer", e.getMessage());
-            model.addObject("email", user.getEmail());
-            model.setViewName("login/login");
-        }
-
-        return model;
-    }
-
 
     @GetMapping("/login/registration")
     public ModelAndView registration() {

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/login.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/menu-login.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="login">
 	<div class="container">

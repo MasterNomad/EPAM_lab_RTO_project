@@ -6,14 +6,7 @@
 <link rel="stylesheet" href="/css/find-train.css" class="css">
 </head>
 
-<c:choose>
-	<c:when test="${role == 'ADMIN'}">
-		<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
-	</c:when>
-	<c:otherwise>
-		<jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
-	</c:otherwise>
-</c:choose>
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="find-train" class="content">
 	<div class="container">

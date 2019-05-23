@@ -1,19 +1,13 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 
 <link rel="stylesheet" href="/css/personal-area.css" class="css">
 </head>
 
-<c:choose>
-    <c:when test="${role == 'ADMIN'}">
-        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
-    </c:when>
-    <c:otherwise>
-        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
-    </c:otherwise>
-</c:choose>
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="personal-area">
     <div class="container">

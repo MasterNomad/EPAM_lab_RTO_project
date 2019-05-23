@@ -1,13 +1,14 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.dto.Request;
-import com.epam.lab.rto.manager.UserManager;
+import com.epam.lab.rto.repository.interfaces.IUserRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
 import com.epam.lab.rto.service.interfaces.IRouteService;
 import com.epam.lab.rto.service.interfaces.IStationMapService;
 import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class FindTrainController {
@@ -34,7 +35,7 @@ public class FindTrainController {
     private ITripService tripService;
 
     @Autowired
-    private UserManager userManager;
+    private IUserRepository userRepository;
 
 
     @GetMapping("/find-train")
@@ -66,10 +67,10 @@ public class FindTrainController {
     }
 
     @PostMapping("/find-train/сonfirm")
-    public ModelAndView confirmRequest(long tripId, String departureCity, String destinationCity, String carriageName) {
+    public ModelAndView confirmRequest(long tripId, String departureCity, String destinationCity, String carriageName, Authentication authentication) {
         ModelAndView model = new ModelAndView();
 
-        Request request = requestService.createRequest(tripId, departureCity, destinationCity, carriageName, userManager.getUser());
+        Request request = requestService.createRequest(tripId, departureCity, destinationCity, carriageName, userRepository.getUserByEmail(authentication.getName()));
         requestService.addRequest(request);
 
         model.setViewName("success");

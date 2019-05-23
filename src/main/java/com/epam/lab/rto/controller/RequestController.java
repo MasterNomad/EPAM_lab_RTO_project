@@ -1,16 +1,17 @@
 package com.epam.lab.rto.controller;
 
-import com.epam.lab.rto.manager.UserManager;
+import com.epam.lab.rto.repository.interfaces.IUserRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
 @Controller
@@ -20,7 +21,7 @@ public class RequestController {
     private IRequestService requestService;
 
     @Autowired
-    private UserManager userManager;
+    private IUserRepository userRepository;
 
 
     @GetMapping("/admin/requests")
@@ -41,7 +42,7 @@ public class RequestController {
 
     @PostMapping("/admin/requests")
     public ModelAndView showActiveRequestsBetweenDates(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
-                                                 @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
+                                                       @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/active");
@@ -70,7 +71,7 @@ public class RequestController {
 
     @PostMapping("/admin/requests/history")
     public ModelAndView showRequestsHistoryBetweenDates(@RequestParam(value = "firstDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate firstDate,
-                                            @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
+                                                        @RequestParam(value = "secondDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate) {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("requests/history");
@@ -82,10 +83,10 @@ public class RequestController {
     }
 
     @GetMapping("/request/cancel")
-    public ModelAndView cancelRequest(long requestId) {
+    public ModelAndView cancelRequest(long requestId, Authentication authentication) {
         ModelAndView model = new ModelAndView();
 
-        if (requestService.cancelRequest(requestId, userManager.getUser())) {
+        if (requestService.cancelRequest(requestId, userRepository.getUserByEmail(authentication.getName()))) {
             model.setViewName("success");
             model.addObject("page", "personal-area");
             model.addObject("msg", "Отмена подтверждена");
@@ -97,10 +98,10 @@ public class RequestController {
     }
 
     @GetMapping("/request/paid")
-    public ModelAndView paidRequest(long requestId) {
+    public ModelAndView paidRequest(long requestId, Authentication authentication) {
         ModelAndView model = new ModelAndView();
 
-        if (requestService.paidRequest(requestId, userManager.getUser())) {
+        if (requestService.paidRequest(requestId, userRepository.getUserByEmail(authentication.getName()))) {
             model.setViewName("success");
             model.addObject("page", "personal-area");
             model.addObject("msg", "Оплата подтверждена");
@@ -112,10 +113,10 @@ public class RequestController {
     }
 
     @GetMapping("/admin/request/reject")
-    public ModelAndView rejectRequest(long requestId, HttpServletRequest request) {
+    public ModelAndView rejectRequest(long requestId, HttpServletRequest request, Authentication authentication) {
         ModelAndView model = new ModelAndView();
 
-        requestService.rejectRequest(requestId, userManager.getUser());
+        requestService.rejectRequest(requestId, userRepository.getUserByEmail(authentication.getName()));
         model.setViewName("success");
         model.addObject("page", "requests");
         model.addObject("msg", "Отмена подтверждена");

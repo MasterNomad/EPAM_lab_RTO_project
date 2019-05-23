@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/css/route.css" class="css">
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="route" class="content">
     <div class="container">

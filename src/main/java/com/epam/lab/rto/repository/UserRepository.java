@@ -59,7 +59,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User getUserByEmail(String email) {
-        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
+        String sql = "SELECT `id`, `email`, `password` , `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
                 "FROM `users` " +
                 "WHERE `email` = ?";
         try {

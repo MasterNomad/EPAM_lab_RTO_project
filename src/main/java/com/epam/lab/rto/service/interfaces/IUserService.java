@@ -6,5 +6,4 @@ public interface IUserService {
 
     User registerUser(User user, String confirmPassword);
 
-    User enter(User user);
 }

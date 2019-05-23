@@ -4,7 +4,7 @@
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 </head>
 
-<jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="requests">
     <div class="container">

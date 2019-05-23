@@ -4,14 +4,7 @@
 <%@include  file="/WEB-INF/jsp/additional/head.html" %>
 </head>
 
-<c:choose>
-    <c:when test="${role == 'ADMIN'}">
-        <jsp:include page="/WEB-INF/jsp/additional/menu-admin.jsp" />
-    </c:when>
-    <c:otherwise>
-        <jsp:include page="/WEB-INF/jsp/additional/menu-user.jsp" />
-    </c:otherwise>
-</c:choose>
+<jsp:include page="/WEB-INF/jsp/additional/menu.jsp" />
 
 <section id="error" class="content">
     <div class="container">

@@ -1,10 +1,10 @@
 package com.epam.lab.rto.controller;
 
 import com.epam.lab.rto.dto.User;
-import com.epam.lab.rto.dto.UserRole;
-import com.epam.lab.rto.manager.UserManager;
+import com.epam.lab.rto.repository.interfaces.IUserRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,17 +17,18 @@ public class PersonalAreaController {
     private IRequestService requestService;
 
     @Autowired
-    private UserManager userManager;
+    private IUserRepository userRepository;
 
     @GetMapping(value = {"/", "/home"})
-    public ModelAndView home() {
+    public ModelAndView home(Authentication authentication) {
         ModelAndView model = new ModelAndView();
 
-        User currentUser = userManager.getUser();
-        if (currentUser.getRole().equals(UserRole.ADMIN)) {
+        if (authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ADMIN"))) {
             model.setViewName("redirect:/admin/requests");
         }
-        if (currentUser.getRole().equals(UserRole.USER)) {
+        if (authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("USER"))) {
             model.setViewName("redirect:/personal-area");
         }
 
@@ -35,11 +36,11 @@ public class PersonalAreaController {
     }
 
     @GetMapping("/personal-area")
-    public ModelAndView personalArea(@RequestParam(required= false, defaultValue = "false") boolean history) {
+    public ModelAndView personalArea(@RequestParam(required = false, defaultValue = "false") boolean history, Authentication authentication) {
         ModelAndView model = new ModelAndView();
-        User currentUser = userManager.getUser();
+        User currentUser = userRepository.getUserByEmail(authentication.getName());
 
-        if (!history){
+        if (!history) {
             model.setViewName("personal/bills");
             model.addObject("requests", requestService.getActiveRequestsByUser(currentUser));
         } else {
@@ -47,7 +48,6 @@ public class PersonalAreaController {
             model.addObject("requests", requestService.getInactiveRequestsByUser(currentUser));
         }
         model.addObject("user", currentUser);
-
 
         return model;
     }
