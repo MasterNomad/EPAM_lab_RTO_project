@@ -6,6 +6,7 @@ import com.epam.lab.rto.service.interfaces.IStationMapService;
 import com.epam.lab.rto.service.interfaces.ITrainService;
 import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +42,7 @@ public class ScheduleController {
                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate secondDate,
                                     @RequestParam(defaultValue = "1") int page) {
         ModelAndView model = new ModelAndView();
-        int count = 15;
-        int pages;
+        int paigeSize = 15;
 
         if (Objects.isNull(firstDate)) {
             firstDate = LocalDate.now();
@@ -51,24 +51,31 @@ public class ScheduleController {
             secondDate = firstDate.plusMonths(1);
         }
 
-        model.setViewName("schedule/schedule");
-        model.addObject("stations", stationMapService.getAllStations());
-        model.addObject("firstDate", firstDate);
-        model.addObject("secondDate", secondDate);
-
         List<Trip> trips = tripService.getTripsBetweenDates(firstDate, secondDate);
-        int tripSize = trips.size();
-        if (tripSize > count) {
-            pages = tripSize / count;
-            if (tripSize > page * count) {
-                trips = trips.subList(page * count - count, page * count);
-            } else {
-                trips = trips.subList(page * count - count, tripSize - 1);
-            }
-            model.addObject("page", page);
-            model.addObject("pages", pages);
-        }
-        model.addObject("trips", trips);
+        PagedListHolder pagedTrips = new PagedListHolder<>(trips);
+        pagedTrips.setPageSize(paigeSize);
+        pagedTrips.setPage(page - 1);
+
+        model.setViewName("schedule/schedule");
+        model
+                .addObject("stations", stationMapService.getAllStations())
+                .addObject("firstDate", firstDate)
+                .addObject("secondDate", secondDate)
+                .addObject("trips", pagedTrips.getPageList())
+                .addObject("page", page)
+                .addObject("pages", pagedTrips.getPageCount());
+
+//        int tripSize = trips.size();
+//        if (tripSize > paigeSize) {
+//            pages = tripSize / paigeSize;
+//            if (tripSize > page * paigeSize) {
+//                trips = trips.subList(page * paigeSize - paigeSize, page * paigeSize);
+//            } else {
+//                trips = trips.subList(page * paigeSize - paigeSize, tripSize - 1);
+//            }
+//            model.addObject("page", page);
+//            model.addObject("pages", pages);
+//        }
 
         return model;
     }
@@ -78,9 +85,10 @@ public class ScheduleController {
         ModelAndView model = new ModelAndView();
 
         model.setViewName("schedule/add");
-        model.addObject("date", LocalDate.now().plus(1, ChronoUnit.MONTHS));
-        model.addObject("routes", routeService.getAllRoutes());
-        model.addObject("carriages", trainService.getAllCarriages());
+        model
+                .addObject("date", LocalDate.now().plus(1, ChronoUnit.MONTHS))
+                .addObject("routes", routeService.getAllRoutes())
+                .addObject("carriages", trainService.getAllCarriages());
 
         return model;
     }
@@ -97,9 +105,10 @@ public class ScheduleController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("success");
-        model.addObject("page", "schedule");
-        model.addObject("msg", "Расписание обновлено");
-        model.addObject("link", "/schedule");
+        model
+                .addObject("page", "schedule")
+                .addObject("msg", "Расписание обновлено")
+                .addObject("link", "/schedule");
 
         return model;
     }

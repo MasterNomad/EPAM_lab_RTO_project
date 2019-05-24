@@ -16,8 +16,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new MyPasswordEncoder());
+    public void configureGlobal(AuthenticationManagerBuilder authentication) throws Exception {
+        authentication.userDetailsService(userDetailsService).passwordEncoder(new MyPasswordEncoder());
     }
 
     @Override
@@ -25,17 +25,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**")
-                .access("hasAuthority('ADMIN')")
-                .and().exceptionHandling()
-                .accessDeniedPage("/home")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .and()
-                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/css/**", "/js/**", "/img/**", "/error")
-                .permitAll()
+                .antMatchers("/login/**").anonymous()
+                .and()
+                .exceptionHandling().accessDeniedPage("/home")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .csrf().disable()
                 .formLogin()
                 .loginProcessingUrl("/loginPost")
                 .loginPage("/login")
@@ -44,7 +45,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
-                .logout()
-                .permitAll();
+                .logout().permitAll();
     }
 }

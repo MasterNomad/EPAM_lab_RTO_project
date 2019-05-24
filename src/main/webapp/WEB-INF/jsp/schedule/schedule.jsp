@@ -81,7 +81,7 @@
                 </table>
             </form>
             <c:if test="${not empty pages}">
-                <c:forEach begin="1" end="${pages + 1}" varStatus="loop">
+                <c:forEach begin="1" end="${pages}" varStatus="loop">
                     <c:choose>
                         <c:when test="${loop.index == page}">
                             <span> ${loop.index} </span>

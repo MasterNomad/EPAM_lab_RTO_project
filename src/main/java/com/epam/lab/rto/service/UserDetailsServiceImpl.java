@@ -28,11 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Неверный логин или пароль");
         }
 
-        List<GrantedAuthority> grantList = new ArrayList<>();
         GrantedAuthority authority = new SimpleGrantedAuthority(currentUser.getRole().toString());
+        List<GrantedAuthority> grantList = new ArrayList<>();
         grantList.add(authority);
 
         return new org.springframework.security.core.userdetails
-                .User(currentUser.getEmail(), currentUser.getPassword(), grantList);
+                .User(userEmail, currentUser.getPassword(), grantList);
     }
 }
