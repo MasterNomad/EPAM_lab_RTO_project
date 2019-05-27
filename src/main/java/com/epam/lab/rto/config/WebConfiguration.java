@@ -25,9 +25,6 @@ public class WebConfiguration implements WebMvcConfigurer {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         registry.addInterceptor(lci);
-
-//        registry.addInterceptor(userRoleAwareInterceptor()).addPathPatterns("/**")
-//                .excludePathPatterns("/login/**", "/css/**", "/js/**", "/img/**", "/find-train/carriage-change", "/route/getstations", "/route/getlocomotivespeed");
     }
 
 }

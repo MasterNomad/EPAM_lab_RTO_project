@@ -3,6 +3,7 @@ package com.epam.lab.rto.service;
 import com.epam.lab.rto.dto.*;
 import com.epam.lab.rto.dto.enums.RequestStatus;
 import com.epam.lab.rto.dto.enums.UserRole;
+import com.epam.lab.rto.exceptions.AllPlacesSoldException;
 import com.epam.lab.rto.repository.interfaces.IRequestRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
 import com.epam.lab.rto.service.interfaces.IRouteService;
@@ -63,10 +64,13 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public Request addRequest(Request request) {
-
-        requestRepository.addRequest(request);
-        tripService.increaseSoldPlaceByRequest(request);
+    public synchronized Request addRequest(Request request) {
+            if (tripService.isTripContainsCarriageTypePlaces(request.getTrip(), request.getCarriage())) {
+                requestRepository.addRequest(request);
+                tripService.increaseSoldPlaceByRequest(request);
+            } else {
+                throw new AllPlacesSoldException();
+            }
         return request;
     }
 

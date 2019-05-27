@@ -5,13 +5,14 @@ import com.epam.lab.rto.exceptions.PasswordNotMatchException;
 import com.epam.lab.rto.exceptions.SuchUserAlreadyExistException;
 import com.epam.lab.rto.exceptions.WrongAgeException;
 import com.epam.lab.rto.service.interfaces.IUserService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Controller
@@ -35,6 +36,7 @@ public class LoginController {
 
         model.setViewName("login/registration");
         model.addObject("maxDate", LocalDate.now().minusYears(18));
+        model.addObject("user", new User());
 
         return model;
     }
@@ -52,19 +54,20 @@ public class LoginController {
     }
 
     @PostMapping("/login/registration")
-    public ModelAndView registerUser(User user, String confirmPassword) {
+    public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, String confirmPassword) {
         ModelAndView model = new ModelAndView();
-
-        try {
-            userService.registerUser(user, confirmPassword);
-            model.setViewName("redirect:/login/registration/success");
-            return model;
-        } catch (SuchUserAlreadyExistException e) {
-            model.addObject("emailAnswer", e.getMessage());
-        } catch (PasswordNotMatchException e) {
-            model.addObject("passwordAnswer", e.getMessage());
-        } catch (WrongAgeException e) {
-            model.addObject("ageAnswer", e.getMessage());
+        if (!bindingResult.hasErrors()) {
+            try {
+                userService.registerUser(user, confirmPassword);
+                model.setViewName("redirect:/login/registration/success");
+                return model;
+            } catch (SuchUserAlreadyExistException e) {
+                model.addObject("emailAnswer", e.getMessage());
+            } catch (PasswordNotMatchException e) {
+                model.addObject("passwordAnswer", e.getMessage());
+            } catch (WrongAgeException e) {
+                model.addObject("ageAnswer", e.getMessage());
+            }
         }
         model.setViewName("login/registration");
         model.addObject("maxDate", LocalDate.now().minusYears(18));

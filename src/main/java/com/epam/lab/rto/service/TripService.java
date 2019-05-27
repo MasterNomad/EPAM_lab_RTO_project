@@ -13,7 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TripService implements ITripService {
@@ -125,20 +128,21 @@ public class TripService implements ITripService {
         );
     }
 
-
-    private List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {
-        LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
-        LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
-        return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
-    }
-
-    private boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
+    @Override
+    public boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage) {
         for (CarriageComposition currentCarriage : trip.getTrainComposition()) {
             if (currentCarriage.getCarriage().equals(carriage)) {
                 return currentCarriage.getPlacesSold() < currentCarriage.getAmount() * carriage.getPlaces();
             }
         }
         return false;
+    }
+
+
+    private List<Trip> getTripsByRouteAndDepartureDateTime(Route route, LocalDateTime departure) {
+        LocalDateTime firstDateTime = departure.minus(12, ChronoUnit.HOURS);
+        LocalDateTime secondDateTime = departure.plus(12, ChronoUnit.HOURS);
+        return tripRepository.getTripsByRouteTitleAndDepartureBetweenDateTimes(route.getTitle(), firstDateTime, secondDateTime);
     }
 
     private List<CarriageComposition> buildTripComposition(List<Integer> carriages) {

@@ -28,4 +28,6 @@ public interface ITripService {
     void decreaseSoldPlaceByRequest(Request request);
 
     BigDecimal getPriceByTripAndCarriage(Trip trip, Carriage carriage);
+
+    boolean isTripContainsCarriageTypePlaces(Trip trip, Carriage carriage);
 }

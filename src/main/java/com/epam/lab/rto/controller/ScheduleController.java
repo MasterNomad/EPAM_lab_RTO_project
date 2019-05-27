@@ -65,18 +65,6 @@ public class ScheduleController {
                 .addObject("page", page)
                 .addObject("pages", pagedTrips.getPageCount());
 
-//        int tripSize = trips.size();
-//        if (tripSize > paigeSize) {
-//            pages = tripSize / paigeSize;
-//            if (tripSize > page * paigeSize) {
-//                trips = trips.subList(page * paigeSize - paigeSize, page * paigeSize);
-//            } else {
-//                trips = trips.subList(page * paigeSize - paigeSize, tripSize - 1);
-//            }
-//            model.addObject("page", page);
-//            model.addObject("pages", pages);
-//        }
-
         return model;
     }
 
