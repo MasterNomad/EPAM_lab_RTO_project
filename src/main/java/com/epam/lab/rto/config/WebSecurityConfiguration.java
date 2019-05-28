@@ -20,9 +20,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder authentication) throws Exception {
         authentication
                 .jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("SELECT `email`, `role` " +
+                .usersByUsernameQuery("SELECT `email`, `password` , true " +
                         "FROM `users` WHERE `email` = ?")
-                .authoritiesByUsernameQuery("SELECT `email`, `password`, true " +
+                .authoritiesByUsernameQuery("SELECT `email`, `role` " +
                         "FROM `users` WHERE `email` = ?")
                 .passwordEncoder(new MyPasswordEncoder());
     }
@@ -48,7 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/loginPost")
                 .loginPage("/login")
                 .defaultSuccessUrl("/home")
-                .failureUrl("/login?error=true")
+                //.failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
