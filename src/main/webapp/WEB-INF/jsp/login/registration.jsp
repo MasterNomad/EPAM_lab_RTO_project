@@ -74,7 +74,7 @@
 							<form:label path="birthDate">Дата <br> рождения:</form:label>
 						</td>
 						<td>
-							<form:input path="birthDate" type="date" required="true" />
+							<form:input path="birthDate" type="date" required="true" max="${maxDate}" />
 						</td>
 					</tr>
 					<tr>

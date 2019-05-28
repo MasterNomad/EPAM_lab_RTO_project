@@ -100,7 +100,6 @@ public class RequestController {
     @GetMapping("/request/paid")
     public ModelAndView paidRequest(long requestId, Authentication authentication) {
         ModelAndView model = new ModelAndView();
-
         if (requestService.paidRequest(requestId, userRepository.getUserByEmail(authentication.getName()))) {
             model.setViewName("success");
             model.addObject("page", "personal-area");

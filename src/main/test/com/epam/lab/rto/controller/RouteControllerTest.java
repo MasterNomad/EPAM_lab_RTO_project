@@ -8,8 +8,6 @@ import com.epam.lab.rto.service.interfaces.ITrainService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,8 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -89,7 +85,8 @@ public class RouteControllerTest {
         Locomotive locomotive = new Locomotive();
         locomotive.setAverageSpeed(expResult);
 
-        when(trainService.getLocomotiveByName("name")).thenReturn(locomotive);
+        when(trainService.getLocomotiveByName(any()))
+                .thenReturn(locomotive);
 
         int result = Integer.parseInt(mockMvc.perform(get("/route/getlocomotivespeed?locomotiveName=name"))
                 .andExpect(status().isOk())

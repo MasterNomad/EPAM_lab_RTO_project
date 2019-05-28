@@ -111,6 +111,7 @@ public class RequestService implements IRequestService {
     @Override
     public boolean paidRequest(long requestId, User user) {
         Request request = requestRepository.getRequestById(requestId);
+        user.setPassword(null);
         if (!Objects.isNull(request) && user.equals(request.getUser())) {
             return requestRepository.setRequestPaymentStateById(requestId, true) > 0;
         }
