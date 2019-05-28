@@ -26,9 +26,7 @@ public class PersonalAreaController {
         if (authentication.getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ADMIN"))) {
             model.setViewName("redirect:/admin/requests");
-        }
-        if (authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("USER"))) {
+        } else {
             model.setViewName("redirect:/personal-area");
         }
 
@@ -40,12 +38,12 @@ public class PersonalAreaController {
         ModelAndView model = new ModelAndView();
         User currentUser = userRepository.getUserByEmail(authentication.getName());
 
-        if (!history) {
-            model.setViewName("personal/bills");
-            model.addObject("requests", requestService.getActiveRequestsByUser(currentUser));
-        } else {
+        if (history) {
             model.setViewName("personal/history");
             model.addObject("requests", requestService.getInactiveRequestsByUser(currentUser));
+        } else {
+            model.setViewName("personal/bills");
+            model.addObject("requests", requestService.getActiveRequestsByUser(currentUser));
         }
         model.addObject("user", currentUser);
 

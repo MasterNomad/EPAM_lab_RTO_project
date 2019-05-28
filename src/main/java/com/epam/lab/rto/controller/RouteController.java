@@ -32,13 +32,11 @@ public class RouteController {
     @Autowired
     private RouteManager routeManager;
 
-
     @GetMapping("/admin/route")
     public ModelAndView routeList() {
         ModelAndView model = new ModelAndView();
         model.setViewName("route/route");
         model.addObject("routes", routeService.getAllRoutes());
-
         return model;
     }
 
@@ -51,9 +49,9 @@ public class RouteController {
         if (routeWay != null) {
             model.addObject("answer", routeWay);
             model.addObject("next", "true");
+        } else {
+            model.addObject("next", "none");
         }
-        model.addObject("next", "none");
-
         return model;
     }
 
@@ -127,6 +125,8 @@ public class RouteController {
     @ResponseBody
     @GetMapping("/route/getlocomotivespeed")
     public int getLocomotiveSpeed(String locomotiveName) {
-        return trainService.getLocomotiveByName(locomotiveName).getAverageSpeed();
+        return trainService
+                .getLocomotiveByName(locomotiveName)
+                .getAverageSpeed();
     }
 }
