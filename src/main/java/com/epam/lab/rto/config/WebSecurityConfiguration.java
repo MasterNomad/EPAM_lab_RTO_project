@@ -40,7 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedPage("/home")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/error").permitAll()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/error", "/change-lang").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

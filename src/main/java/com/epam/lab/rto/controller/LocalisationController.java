@@ -12,7 +12,7 @@ public class LocalisationController {
 
     @GetMapping("/change-lang")
     public String getInternationalPage(HttpServletRequest request) {
-        return request.getHeader("referer");
+        return "redirect:" + request.getHeader("referer");
     }
 
 }
