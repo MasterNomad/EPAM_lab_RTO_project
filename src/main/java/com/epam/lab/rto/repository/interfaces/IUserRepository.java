@@ -8,7 +8,5 @@ public interface IUserRepository {
 
     User getUserById(long userId);
 
-    User getUserByEmailAndPassword(String email, String password);
-
     User getUserByEmail(String email);
 }

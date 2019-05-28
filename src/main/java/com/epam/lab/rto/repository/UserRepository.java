@@ -35,23 +35,11 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User getUserById(long userId) {
-        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
+        String sql = "SELECT * " +
                 "FROM `users` " +
                 "WHERE `id` = ?";
         try {
             return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public User getUserByEmailAndPassword(String email, String password) {
-        String sql = "SELECT `id`, `email`, `surname`, `name`, `patronymic`, `birthDate`, `sex`, `role` " +
-                "FROM `users` " +
-                "WHERE `email` = ? AND `password` = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, email, password);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

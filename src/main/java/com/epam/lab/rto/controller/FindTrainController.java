@@ -23,9 +23,6 @@ import java.util.List;
 public class FindTrainController {
 
     @Autowired
-    private IRouteService routeService;
-
-    @Autowired
     private IRequestService requestService;
 
     @Autowired

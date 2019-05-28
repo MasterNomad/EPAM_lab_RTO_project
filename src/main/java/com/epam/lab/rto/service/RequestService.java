@@ -6,7 +6,6 @@ import com.epam.lab.rto.dto.enums.UserRole;
 import com.epam.lab.rto.exceptions.AllPlacesSoldException;
 import com.epam.lab.rto.repository.interfaces.IRequestRepository;
 import com.epam.lab.rto.service.interfaces.IRequestService;
-import com.epam.lab.rto.service.interfaces.IRouteService;
 import com.epam.lab.rto.service.interfaces.ITrainService;
 import com.epam.lab.rto.service.interfaces.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class RequestService implements IRequestService {
 
     @Autowired
     private ITripService tripService;
-
-    @Autowired
-    private IRouteService routeService;
 
     @Autowired
     private ITrainService trainService;
@@ -65,12 +61,12 @@ public class RequestService implements IRequestService {
 
     @Override
     public synchronized Request addRequest(Request request) {
-            if (tripService.isTripContainsCarriageTypePlaces(request.getTrip(), request.getCarriage())) {
-                requestRepository.addRequest(request);
-                tripService.increaseSoldPlaceByRequest(request);
-            } else {
-                throw new AllPlacesSoldException();
-            }
+        if (tripService.isTripContainsCarriageTypePlaces(request.getTrip(), request.getCarriage())) {
+            requestRepository.addRequest(request);
+            tripService.increaseSoldPlaceByRequest(request);
+        } else {
+            throw new AllPlacesSoldException();
+        }
         return request;
     }
 
@@ -111,7 +107,6 @@ public class RequestService implements IRequestService {
     @Override
     public boolean paidRequest(long requestId, User user) {
         Request request = requestRepository.getRequestById(requestId);
-        user.setPassword(null);
         if (!Objects.isNull(request) && user.equals(request.getUser())) {
             return requestRepository.setRequestPaymentStateById(requestId, true) > 0;
         }
